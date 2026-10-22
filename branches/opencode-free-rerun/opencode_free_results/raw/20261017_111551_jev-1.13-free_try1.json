@@ -1,0 +1,13 @@
+{
+  "model": "jev-1.13-free",
+  "attempt": 1,
+  "result": {
+    "ok": false,
+    "http_status": 400,
+    "error_type": "ModelProtocolUnsupported",
+    "error_message": "Model does not support this protocol.",
+    "is_definitive": true,
+    "elapsed_s": 0.2,
+    "sse_head": ""
+  }
+}

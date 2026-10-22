@@ -1,0 +1,13 @@
+{
+  "model": "glm-5.3-flash-free",
+  "attempt": 1,
+  "result": {
+    "ok": false,
+    "http_status": 429,
+    "error_type": "Transient429",
+    "error_message": "Upstream request failed: Endpoint is unavailable.",
+    "is_definitive": false,
+    "elapsed_s": 0.3,
+    "sse_head": ""
+  }
+}

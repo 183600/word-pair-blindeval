@@ -1,0 +1,23 @@
+{
+  "model": "deepseek-v4.1-flash-free",
+  "attempt": 1,
+  "result": {
+    "ok": true,
+    "reply": "OK",
+    "reasoning": false,
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 452,
+      "completion_tokens": 2,
+      "total_tokens": 454,
+      "prompt_tokens_details": {
+        "cached_tokens": 384
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    },
+    "elapsed_s": 1.7,
+    "sse_head": "data: {\"id\":\"021792235638107b70b2a74477c2b606f823ac231da83291eecbe\",\"object\":\"chat.completion.chunk\",\"created\":1792235639,\"model\":\"deepseek-v4.1-flash-free\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assi\ndata: {\"id\":\"021792235638107b70b2a74477c2b606f823ac231da83291eecbe\",\"object\":\"chat.completion.chunk\",\"created\":1792235639,\"model\":\"deepseek-v4.1-flash-free\",\"choices\":[{\"index\":0,\"finish_reason\":\"stop\ndata: {\"id\":\"021792235638107b70b2a74477c2b606f823ac231da83291eecbe\",\"object\":\"chat.completion.chunk\",\"created\":1792235639,\"model\":\"deepseek-v4.1-flash-free\",\"choices\":[],\"usage\":{\"prompt_tokens\":452,\"\ndata: [DONE]"
+  }
+}

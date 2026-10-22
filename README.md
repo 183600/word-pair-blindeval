@@ -75,10 +75,17 @@ Git 作者信息而失败（`Author identity unknown`），所以完整结果当
 │   ├── notebook22d6286ede_run.log# 本次 Kaggle 运行日志
 │   ├── provenance.json           # 来源、版本、运行环境、哈希
 │   └── README.md
+├── branches/                     # 已删除分支的文件归档（master / opencode-*-rerun）
+│   └── README.md                 # 归档清单与各分支说明
 ├── README.md
 ├── SECURITY.md
 └── .gitignore
 ```
+
+> **分支说明**：仓库自 2026-10-22 起只保留 `main`。原 `master`、`opencode-free-rerun`、
+> `opencode-experiment-rerun` 三个分支的文件已完整归档到 [`branches/`](branches/README.md)，
+> 删除远程分支不会丢失内容；完整 Git 历史另存为
+> `all-branches-backup-20261022.bundle`（含 4 个分支全部提交）。
 
 ## 4. 密钥与安全
 

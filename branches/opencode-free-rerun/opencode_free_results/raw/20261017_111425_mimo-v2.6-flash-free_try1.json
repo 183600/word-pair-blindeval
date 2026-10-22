@@ -1,0 +1,26 @@
+{
+  "model": "mimo-v2.6-flash-free",
+  "attempt": 1,
+  "result": {
+    "ok": true,
+    "reply": "OK",
+    "reasoning": true,
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 303,
+      "completion_tokens": 18,
+      "total_tokens": 321,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 256,
+        "cache_write_tokens": 0
+      },
+      "completion_tokens_details": {
+        "audio_tokens": 0,
+        "reasoning_tokens": 15
+      }
+    },
+    "elapsed_s": 7.9,
+    "sse_head": ": keep-alive\n: keep-alive\n: keep-alive\n: keep-alive\n: keep-alive\ndata: {\"id\":\"gen-1792235658-D9SXCVIw930gzxnq7yWs\",\"object\":\"chat.completion.chunk\",\"created\":1792235658,\"model\":\"mimo-v2.6-flash-free\",\"choices\":[{\"index\":0,\"finish_reason\":null,\"delta\":{\"role\":\"assis\ndata: {\"id\":\"gen-1792235658-D9SXCVIw930gzxnq7yWs\",\"object\":\"chat.completion.chunk\",\"created\":1792235658,\"model\":\"mimo-v2.6-flash-free\",\"choices\":[{\"index\":0,\"finish_reason\":null,\"delta\":{\"role\":\"assis\ndata: {\"id\":\"gen-1792235658-D9SXCVIw930gzxnq7yWs\",\"object\":\"chat.completion.chunk\",\"created\":1792235658,\"model\":\"mimo-v2.6-flash-free\",\"choices\":[{\"index\":0,\"finish_reason\":null,\"delta\":{\"role\":\"assis\ndata: {\"id\":\"gen-1792235658-D9SXCVIw930gzxnq7yWs\",\"object\":\"chat.completion.chunk\",\"created\":1792235658,\"model\":\"mimo-v2.6-flash-free\",\"choices\":[{\"index\":0,\"finish_reason\":null,\"delta\":{\"role\":\"assis\ndata: {\"id\":\"gen-1792235658-D9SXCVIw930gzxnq7yWs\",\"object\":\"chat.completion.chunk\",\"created\":1792235658,\"model\":\"mimo-v2.6-flash-free\",\"choices\":[{\"index\":0,\"finish_reason\":null,\"delta\":{\"role\":\"assis\ndata: {\"id\":\"gen-1792235658-D9SXCVIw930gzxnq7yWs\",\"object\":\"chat.completion.chunk\",\"created\":1792235658,\"model\":\"mimo-v2.6-flash-free\",\"choices\":[{\"index\":0,\"finish_reason\":\"stop\",\"delta\":{\"role\":\"ass\ndata: {\"id\":\"gen-1792235658-D9SXCVIw930gzxnq7yWs\",\"object\":\"chat.completion.chunk\",\"created\":1792235658,\"model\":\"mimo-v2.6-flash-free\",\"choices\":[{\"index\":0,\"finish_reason\":\"stop\",\"delta\":{\"role\":\"ass\ndata: [DONE]"
+  }
+}

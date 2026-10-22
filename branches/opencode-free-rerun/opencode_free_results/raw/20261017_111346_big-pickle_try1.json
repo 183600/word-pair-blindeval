@@ -1,0 +1,23 @@
+{
+  "model": "big-pickle",
+  "attempt": 1,
+  "result": {
+    "ok": true,
+    "reply": "OK",
+    "reasoning": true,
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 303,
+      "completion_tokens": 10,
+      "total_tokens": 313,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 7
+      }
+    },
+    "elapsed_s": 5.0,
+    "sse_head": "data: {\"id\":\"07c7aea1-dc80-441e-b303-d7289948bb06_40560a4b9a554716abad8f99adf2cd36\",\"object\":\"chat.completion.chunk\",\"created\":1792235625,\"model\":\"big-pickle\",\"choices\":[{\"index\":0,\"finish_reason\":nul\ndata: {\"id\":\"07c7aea1-dc80-441e-b303-d7289948bb06_40560a4b9a554716abad8f99adf2cd36\",\"object\":\"chat.completion.chunk\",\"created\":1792235625,\"model\":\"big-pickle\",\"choices\":[{\"index\":0,\"finish_reason\":nul\ndata: {\"id\":\"07c7aea1-dc80-441e-b303-d7289948bb06_40560a4b9a554716abad8f99adf2cd36\",\"object\":\"chat.completion.chunk\",\"created\":1792235625,\"model\":\"big-pickle\",\"choices\":[{\"index\":0,\"finish_reason\":nul\ndata: {\"id\":\"07c7aea1-dc80-441e-b303-d7289948bb06_40560a4b9a554716abad8f99adf2cd36\",\"object\":\"chat.completion.chunk\",\"created\":1792235625,\"model\":\"big-pickle\",\"choices\":[{\"index\":0,\"finish_reason\":nul\ndata: {\"id\":\"07c7aea1-dc80-441e-b303-d7289948bb06_40560a4b9a554716abad8f99adf2cd36\",\"object\":\"chat.completion.chunk\",\"created\":1792235626,\"model\":\"big-pickle\",\"choices\":[{\"index\":0,\"finish_reason\":nul\ndata: {\"id\":\"07c7aea1-dc80-441e-b303-d7289948bb06_40560a4b9a554716abad8f99adf2cd36\",\"object\":\"chat.completion.chunk\",\"created\":1792235626,\"model\":\"big-pickle\",\"choices\":[{\"index\":0,\"finish_reason\":nul\ndata: {\"id\":\"07c7aea1-dc80-441e-b303-d7289948bb06_40560a4b9a554716abad8f99adf2cd36\",\"object\":\"chat.completion.chunk\",\"created\":1792235626,\"model\":\"big-pickle\",\"choices\":[{\"index\":0,\"finish_reason\":\"st\ndata: {\"id\":\"07c7aea1-dc80-441e-b303-d7289948bb06_40560a4b9a554716abad8f99adf2cd36\",\"object\":\"chat.completion.chunk\",\"created\":1792235626,\"model\":\"big-pickle\",\"choices\":[],\"usage\":{\"prompt_tokens\":303"
+  }
+}

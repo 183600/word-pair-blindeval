@@ -1,0 +1,23 @@
+{
+  "model": "space-bunny-free",
+  "attempt": 1,
+  "result": {
+    "ok": true,
+    "reply": "OK",
+    "reasoning": true,
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 562,
+      "completion_tokens": 17,
+      "total_tokens": 579,
+      "prompt_tokens_details": {
+        "cached_tokens": 561
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 13
+      }
+    },
+    "elapsed_s": 0.8,
+    "sse_head": "data: {\"id\":\"07228b5e6175e8da2793fd37e637e529\",\"object\":\"chat.completion.chunk\",\"created\":1792235614,\"model\":\"space-bunny-free\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\"}}],\"usage\":null}\ndata: {\"id\":\"07228b5e6175e8da2793fd37e637e529\",\"object\":\"chat.completion.chunk\",\"created\":1792235614,\"model\":\"space-bunny-free\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"reasoning_content\":\"T\ndata: {\"id\":\"07228b5e6175e8da2793fd37e637e529\",\"object\":\"chat.completion.chunk\",\"created\":1792235614,\"model\":\"space-bunny-free\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"reasoning_content\":\" \ndata: {\"id\":\"07228b5e6175e8da2793fd37e637e529\",\"object\":\"chat.completion.chunk\",\"created\":1792235614,\"model\":\"space-bunny-free\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"reasoning_content\":\" \ndata: {\"id\":\"07228b5e6175e8da2793fd37e637e529\",\"object\":\"chat.completion.chunk\",\"created\":1792235614,\"model\":\"space-bunny-free\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"reasoning_content\":\"a\ndata: {\"id\":\"07228b5e6175e8da2793fd37e637e529\",\"object\":\"chat.completion.chunk\",\"created\":1792235614,\"model\":\"space-bunny-free\",\"choices\":[{\"index\":0,\"delta\":{\"role\":\"assistant\",\"content\":\"OK\"}}],\"usa\ndata: {\"id\":\"07228b5e6175e8da2793fd37e637e529\",\"object\":\"chat.completion.chunk\",\"created\":1792235614,\"model\":\"space-bunny-free\",\"choices\":[{\"index\":0,\"finish_reason\":\"stop\",\"delta\":{\"role\":\"assistant\"\ndata: {\"id\":\"07228b5e6175e8da2793fd37e637e529\",\"object\":\"chat.completion.chunk\",\"created\":1792235614,\"model\":\"space-bunny-free\",\"choices\":[],\"usage\":{\"prompt_tokens\":562,\"completion_tokens\":17,\"total_\ndata: [DONE]"
+  }
+}

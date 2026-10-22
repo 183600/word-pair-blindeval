@@ -1,0 +1,25 @@
+{
+  "model": "longcat-2.5-preview-free",
+  "attempt": 1,
+  "result": {
+    "ok": true,
+    "reply": "OK",
+    "reasoning": true,
+    "finish_reason": "stop",
+    "usage": {
+      "prompt_tokens": 288,
+      "completion_tokens": 23,
+      "total_tokens": 311,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0,
+        "cache_write_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 19
+      }
+    },
+    "elapsed_s": 2.4,
+    "sse_head": "data: {\"id\":\"cfb5e89537b5469b9e8e70526169acea\",\"object\":\"chat.completion.chunk\",\"created\":1792235650,\"model\":\"longcat-2.5-preview-free\",\"choices\":[{\"index\":0,\"finish_reason\":null,\"logprobs\":null,\"delt\ndata: {\"id\":\"cfb5e89537b5469b9e8e70526169acea\",\"object\":\"chat.completion.chunk\",\"created\":1792235650,\"model\":\"longcat-2.5-preview-free\",\"choices\":[{\"index\":0,\"finish_reason\":null,\"logprobs\":null,\"delt\ndata: {\"id\":\"cfb5e89537b5469b9e8e70526169acea\",\"object\":\"chat.completion.chunk\",\"created\":1792235651,\"model\":\"longcat-2.5-preview-free\",\"choices\":[{\"index\":0,\"finish_reason\":null,\"logprobs\":null,\"delt\ndata: {\"id\":\"cfb5e89537b5469b9e8e70526169acea\",\"object\":\"chat.completion.chunk\",\"created\":1792235651,\"model\":\"longcat-2.5-preview-free\",\"choices\":[{\"index\":0,\"finish_reason\":null,\"logprobs\":null,\"delt\ndata: {\"id\":\"cfb5e89537b5469b9e8e70526169acea\",\"object\":\"chat.completion.chunk\",\"created\":1792235651,\"model\":\"longcat-2.5-preview-free\",\"choices\":[{\"index\":0,\"finish_reason\":null,\"logprobs\":null,\"delt\ndata: {\"id\":\"cfb5e89537b5469b9e8e70526169acea\",\"object\":\"chat.completion.chunk\",\"created\":1792235651,\"model\":\"longcat-2.5-preview-free\",\"choices\":[{\"index\":0,\"finish_reason\":null,\"logprobs\":null,\"delt\ndata: {\"id\":\"cfb5e89537b5469b9e8e70526169acea\",\"object\":\"chat.completion.chunk\",\"created\":1792235651,\"model\":\"longcat-2.5-preview-free\",\"choices\":[{\"index\":0,\"finish_reason\":null,\"logprobs\":null,\"delt\ndata: {\"id\":\"cfb5e89537b5469b9e8e70526169acea\",\"object\":\"chat.completion.chunk\",\"created\":1792235651,\"model\":\"longcat-2.5-preview-free\",\"choices\":[{\"index\":0,\"finish_reason\":null,\"logprobs\":null,\"delt"
+  }
+}
