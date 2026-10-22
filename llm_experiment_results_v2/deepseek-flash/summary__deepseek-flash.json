@@ -1,0 +1,77 @@
+{
+  "model": "deepseek-flash",
+  "judge": "deepseek-flash",
+  "n_comparisons": 60,
+  "wins": {
+    "baseline": 54,
+    "cleaned_word_pairs": 5,
+    "tie": 1
+  },
+  "scores": {
+    "logic": {
+      "baseline": 8.97,
+      "cleaned": 7.95,
+      "diff": 1.02
+    },
+    "concreteness": {
+      "baseline": 8.87,
+      "cleaned": 7.4,
+      "diff": 1.47
+    },
+    "actionability": {
+      "baseline": 8.78,
+      "cleaned": 6.88,
+      "diff": 1.9
+    },
+    "originality": {
+      "baseline": 7.53,
+      "cleaned": 8.05,
+      "diff": -0.52
+    },
+    "overall": {
+      "baseline": 8.88,
+      "cleaned": 7.62,
+      "diff": 1.26
+    }
+  },
+  "position": {
+    "A_mean": 8.33,
+    "B_mean": 8.17,
+    "A_minus_B_when_A_baseline": 1.65,
+    "A_minus_B_when_A_cleaned": -0.97
+  },
+  "by_task": {
+    "4": {
+      "baseline": 10,
+      "cleaned_word_pairs": 0,
+      "tie": 0
+    },
+    "2": {
+      "baseline": 9,
+      "cleaned_word_pairs": 0,
+      "tie": 1
+    },
+    "3": {
+      "baseline": 10,
+      "cleaned_word_pairs": 0,
+      "tie": 0
+    },
+    "6": {
+      "baseline": 9,
+      "cleaned_word_pairs": 1,
+      "tie": 0
+    },
+    "1": {
+      "baseline": 10,
+      "cleaned_word_pairs": 0,
+      "tie": 0
+    },
+    "5": {
+      "baseline": 6,
+      "cleaned_word_pairs": 4,
+      "tie": 0
+    }
+  },
+  "cleaned_valid": 60,
+  "cleaned_residual": 0
+}
