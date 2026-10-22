@@ -119,9 +119,9 @@ CONCURRENCY = int(os.environ.get("CONCURRENCY", "10"))
 COUNTERBALANCE = os.environ.get("COUNTERBALANCE", "0").lower() not in ("0", "false", "no")
 TEMPERATURE_GEN = float(os.environ.get("TEMPERATURE_GEN", "0.6"))
 TEMPERATURE_JUDGE = float(os.environ.get("TEMPERATURE_JUDGE", "0.3"))
-MAX_TOKENS_GEN = int(os.environ.get("MAX_TOKENS_GEN", "16384"))
-MAX_TOKENS_CLEAN = int(os.environ.get("MAX_TOKENS_CLEAN", "16384"))
-MAX_TOKENS_JUDGE = int(os.environ.get("MAX_TOKENS_JUDGE", "16384"))
+MAX_TOKENS_GEN = int(os.environ.get("MAX_TOKENS_GEN", "8192"))
+MAX_TOKENS_CLEAN = int(os.environ.get("MAX_TOKENS_CLEAN", "4096"))
+MAX_TOKENS_JUDGE = int(os.environ.get("MAX_TOKENS_JUDGE", "4096"))
 PER_CALL_TIMEOUT = int(os.environ.get("PER_CALL_TIMEOUT", "1200"))
 MAX_RETRIES = int(os.environ.get("MAX_RETRIES", "3"))
 MODEL_FAILURE_LIMIT = int(os.environ.get("MODEL_FAILURE_LIMIT", "5"))
@@ -538,43 +538,33 @@ def _parse_compare_json(text: str):
         return None
 
 
-async def _stream_once(client, model, prompt, temperature, max_tokens):
+async def _request_once(client, model, prompt, temperature, max_tokens):
+    """非流式请求。NVIDIA 的推理模型在流式模式下经常只发 reasoning 后直接断开，
+    非流式更稳定；超时由外层 asyncio.wait_for 控制。"""
     kwargs = {
         "model": model,
         "messages": [{"role": "user", "content": prompt}],
         "temperature": temperature,
         "max_tokens": max_tokens,
-        "stream": True,
+        "stream": False,
     }
     try:
-        stream = await client.chat.completions.create(**kwargs)
+        resp = await client.chat.completions.create(**kwargs)
     except Exception as e:
         msg = str(e)
         # 兼容部分模型只接受 max_completion_tokens
         if "max_tokens" in msg and "max_completion_tokens" not in msg:
             kwargs.pop("max_tokens", None)
             kwargs["max_completion_tokens"] = max_tokens
-            stream = await client.chat.completions.create(**kwargs)
+            resp = await client.chat.completions.create(**kwargs)
         else:
             raise
-
-    parts, usage, finish = [], None, None
-    async for chunk in stream:
-        _check_deadline()
-        if getattr(chunk, "usage", None):
-            usage = chunk.usage
-        if not getattr(chunk, "choices", None):
-            continue
-        choice = chunk.choices[0]
-        finish = choice.finish_reason or finish
-        delta = choice.delta
-        content = getattr(delta, "content", None)
-        if content:
-            if isinstance(content, list):
-                parts.extend(str(c) for c in content)
-            else:
-                parts.append(content)
-    return "".join(parts), usage, finish
+    content, finish, usage = "", None, getattr(resp, "usage", None)
+    if getattr(resp, "choices", None):
+        choice = resp.choices[0]
+        content = (choice.message.content or "") if getattr(choice, "message", None) else ""
+        finish = getattr(choice, "finish_reason", None)
+    return content, usage, finish
 
 
 async def call_llm(model: str, prompt: str, temperature: float,
@@ -590,10 +580,12 @@ async def call_llm(model: str, prompt: str, temperature: float,
         remaining = max(1.0, min(PER_CALL_TIMEOUT, _deadline - time.monotonic()))
         try:
             text, usage, finish = await asyncio.wait_for(
-                _stream_once(client_for_call, model, prompt, temperature, max_tokens),
+                _request_once(client_for_call, model, prompt, temperature, max_tokens),
                 timeout=remaining,
             )
             if not (text or "").strip():
+                if finish == "length" and max_tokens < 32768:
+                    max_tokens = min(max_tokens * 2, 32768)
                 raise RuntimeError(f"EmptyResponse(finish={finish})")
             _record_model_result(model, True)
             return {
