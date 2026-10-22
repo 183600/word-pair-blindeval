@@ -1,0 +1,402 @@
+# [v2:deepseek-flash 评 deepseek-flash] task6 ML架构 | run 5 | swap=True
+
+**Winner:** baseline (raw=B)
+
+**A:** cleaned_word_pairs | **B:** baseline
+
+---
+
+## 回答 A
+
+## 新机器学习架构：潮群折回网络  
+**Tidal Swarm Origami Echo Network, TSOEN**
+
+### 设计原则
+- 多尺度周期门控与节律调制。
+- 动态稀疏图通信与轻量专家路由。
+- 可逆低秩适配与高效信息传递。
+- 外部回响记忆与检索增强。
+- 异常自修复、隐私保护与边缘部署。
+- 不确定性感知与可信校准。
+
+### 核心结构
+TSOEN 将输入切分为多尺度片段，并构建动态稀疏图；主干由“潮汐双流 + 蜂群专家路由 + 折纸可逆适配 + 回响记忆”组成。
+
+1. **动态多尺度图构建**  
+   节点为文本 token、图像 patch、时序片段或传感器事件；边由内容相似度、位置邻接和可学习路由共同决定：  
+   \[
+   A_{ij}=\text{TopK}(\lambda \cdot \text{sim}(h_i,h_j)+\mu \cdot \text{Adj}_{ij}+\nu \cdot R_\theta(h_i,h_j))
+   \]
+
+2. **潮汐双流主干**  
+   - **快流**：深度可分离卷积/线性注意力，捕获局部高频模式。  
+   - **慢流**：稀疏图消息传递/全局注意力，捕获长程低频规律。  
+   - **潮汐门控**：根据步长、周期相位和不确定性动态融合：  
+   \[
+   g_t=\sigma(W_g[h_t,\Delta_t,\sin(2\pi t/P),\cos(2\pi t/P)])
+   \]  
+   \[
+   h_t'=g_t\odot h_t^{\text{fast}}+(1-g_t)\odot h_t^{\text{slow}}
+   \]  
+   不确定性越高，慢流权重越大。
+
+3. **蜂群专家路由**  
+   每层设多个微型专家，每个 token/节点只激活 top-k 专家；加入负载均衡、路由熵正则和备用专家重路由，实现容错与高效计算：  
+   \[
+   y=\sum_{i\in \text{TopK}(s_t)} \alpha_i E_i(h_t)
+   \]
+
+4. **折纸可逆适配块**  
+   在通道维度进行低秩“折叠—展开”变换，用于参数高效训练和持续学习：  
+   \[
+   z=h+\alpha\,\text{Up}(\text{Down}(h))
+   \]  
+   采用正交初始化和可逆残差，减少显存并提升多任务适配能力。
+
+5. **回响记忆与不确定性校准**  
+   外部记忆 \(M\) 存储历史表示、预测误差、路由模式与异常模式；通过共振检索：  
+   \[
+   r=\text{Softmax}(qM^\top)M,\quad h\leftarrow \text{Fuse}(h,r)
+   \]  
+   回响一致性损失约束相似输入稳定、不同输入可分；不确定性头输出偶然/认知不确定性，触发重路由或慢流增强。
+
+6. **免疫式自修复**  
+   监测专家和层的激活分布，若出现异常漂移则隔离、降权、重训小型适配器；异常模式写入免疫记忆，降低重复错误。
+
+### 训练目标
+\[
+\mathcal{L}=
+\mathcal{L}_{\text{task}}
++\beta\mathcal{L}_{\text{route}}
++\gamma\mathcal{L}_{\text{sparse}}
++\delta\mathcal{L}_{\text{echo}}
++\eta\mathcal{L}_{\text{uncertainty}}
++\rho\mathcal{L}_{\text{recon}}
+\]
+其中路由损失保证专家负载均衡，稀疏损失控制图通信，回响损失增强记忆一致性，重建/自监督损失用于预训练。
+
+### 简化伪代码
+for batch x:
+    V, E = patch_and_build_graph(x)
+    h = embed(V)
+
+    for layer in TSOEN_layers:
+        fast = FastConvOrLinearAttention(h)
+        slow = SparseGraphMessagePassing(h, E)
+        g = TidalGate(h, step, learned_periods)
+        h = g * fast + (1 - g) * slow
+        h = SwarmMoE(h, experts, top_k=2)
+        h = OrigamiInvertibleAdapter(h)
+
+    mem = EchoRetrieve(h, Memory)
+    h = Fuse(h, mem)
+    logits, uncertainty = PredictionHead(h)
+
+    Memory = EchoWrite(Memory, h, uncertainty)
+    experts = ImmuneCheckAndRepair(experts, h)
+
+    loss = task_loss(logits, y) \
+         + route_balance_loss() \
+         + graph_sparse_loss(E) \
+         + echo_consistency_loss(h, mem) \
+         + uncertainty_calibration_loss(uncertainty)
+    update(loss)
+
+### 适用场景与优势
+- **长时序/视频/语音/传感器**：潮汐门控适配周期性与非平稳性。  
+- **多模态与图结构数据**：动态图与专家路由支持异构连接。  
+- **持续学习**：折纸适配器 + 回响记忆降低遗忘。  
+- **边缘与隐私场景**：冻结主干，仅训练路由和低秩适配器，可结合联邦学习、差分隐私和沙箱隔离。  
+- **可信性**：不确定性校准、免疫式异常检测和可解释路由记录。  
+
+可实验对比 Transformer、Performer、Graphormer、MoE、Mamba、外部记忆网络等，在长序列建模、多模态理解、持续学习、时序预测和边缘部署任务上验证。
+
+---
+
+## 回答 B
+
+下面提出一个可落地、但尚未经实验验证的新架构提案，暂命名为 **LatticeRoute（晶格路由网络）**。它的核心目标是：在长序列/多模态/图结构数据上，同时获得 **稀疏计算、动态深度、全局记忆共享和可解释路由**。
+
+---
+
+## 1. 一句话定义
+
+**LatticeRoute 是一种由“稀疏潜在晶格图 + 全局工作区记忆 + 按 token 自适应深度 + 稀疏专家路由”组成的迭代式神经网络架构。**
+
+它不像标准 Transformer 那样每层做全连接注意力，而是每一步动态构造一个稀疏的局部—全局计算图，并让不同 token 决定自己需要计算多深、调用哪些专家、读写哪些记忆。
+
+---
+
+## 2. 总体结构
+
+输入先经过模态编码器得到 token 表示：
+
+\[
+H^0 = \text{Encoder}(X) \in \mathbb{R}^{N\times d}
+\]
+
+同时初始化一个全局工作区记忆：
+
+\[
+M^0 \in \mathbb{R}^{K\times d}
+\]
+
+其中 \(K\) 是固定记忆槽数量，可远小于序列长度 \(N\)。
+
+然后进行最多 \(T\) 轮迭代。每轮包含四个模块：
+
+1. **稀疏潜在晶格图构建与消息传递**
+2. **全局工作区记忆读写**
+3. **稀疏专家路由**
+4. **token 级自适应停止**
+
+结构示意：
+
+```text
+Input X
+  │
+Modality Encoder
+  │
+H0 ───────────────┐
+  │               │
+  ▼               ▼
+[稀疏晶格图消息传递]  [全局工作区记忆 M]
+  │               │
+  ▼               │
+[记忆读写] ◄───────┘
+  │
+  ▼
+[稀疏专家路由]
+  │
+  ▼
+[自适应停止 / 残差更新]
+  │
+  └──► 下一轮，直到停止或达到 T
+  │
+Task Decoder
+```
+
+---
+
+## 3. 关键模块
+
+### 3.1 稀疏潜在晶格图
+
+对每个 token \(i\)，不计算与所有 token 的注意力，而是先选出邻居集合：
+
+\[
+\mathcal{N}_t(i)=\text{TopK}_{j}\left[
+\frac{\langle q_i,k_j\rangle}{\sqrt d}
++ b_{\text{pos}}(i-j)
++ b_{\text{mem}}(i,j)
+\right]
+\]
+
+其中 \(q_i=H_i^tW_Q\)，\(k_j=H_j^tW_K\)。邻居来源可混合三类：
+
+- 局部窗口邻居；
+- 近似最近邻；
+- 通过记忆槽匹配得到的远距离邻居。
+
+每条边带有关系类型 \(c\in\{\text{内容},\text{位置},\text{记忆匹配},\text{结构}\}\)。消息传递为：
+
+\[
+\tilde H_i^t
+=
+H_i^t
++
+\text{MLP}\left(
+\sum_{j\in\mathcal{N}_t(i)}\sum_c
+\alpha_{ij}^c V_c(H_j^t)
+\right)
+\]
+
+其中 \(\alpha_{ij}^c\) 是关系特定的注意力权重。
+
+**优点**：每个 token 只和少量相关节点交互，复杂度从 \(O(N^2)\) 降为约 \(O(Nk)\)，且图结构是动态生成的。
+
+---
+
+### 3.2 全局工作区记忆
+
+维护一个跨层共享的全局记忆 \(M^t\)。每个 token 从记忆中读取信息：
+
+\[
+r_i^t=\text{CrossAttn}(H_i^t, M^t)
+\]
+
+同时把所有 token 的信息有门控地写回记忆：
+
+\[
+M^{t+1}
+=
+M^t
++
+\sigma(g^t)\cdot \text{CrossAttn}(M^t, H^t)
+\]
+
+记忆可以分成两组：
+
+- **共享语义记忆**：跨样本学习通用模式；
+- **实例情节记忆**：针对当前输入保存中间状态。
+
+这使模型不必把所有长距离依赖都挤进 token 表示中，而是通过固定大小的工作区进行信息中转。
+
+---
+
+### 3.3 稀疏专家路由
+
+每个 token 或每组 token 只激活少量专家：
+
+\[
+e_i^t=\sum_{m\in\text{TopE}(i)}
+\pi_{i,m}^t E_m(H_i^t)
+\]
+
+其中专家数 \(E\) 可以较大，但每个 token 只激活 \(e\ll E\) 个专家。路由分数由 token 当前状态、迭代深度和记忆匹配共同决定。
+
+这一模块让模型在不同迭代阶段调用不同能力，例如：
+
+- 浅层调用局部模式专家；
+- 深层调用推理专家；
+- 长距离依赖调用记忆专家；
+- 多模态输入调用对齐专家。
+
+---
+
+### 3.4 token 级自适应停止
+
+每个 token 每轮计算停止概率：
+
+\[
+p_i^t=\sigma\left(\text{MLP}(H_i^t)\right)
+\]
+
+累积停止概率：
+
+\[
+P_i^t=\sum_{\tau=1}^{t}p_i^\tau
+\]
+
+若 \(P_i^t>1-\epsilon\)，该 token 停止更新，冻结状态。未停止的 token 继续参与下一轮。
+
+这类似 Universal Transformer 的 ACT，但 LatticeRoute 中停止决策同时受记忆和路由状态影响，且输出可以是“任意时刻预测”。
+
+---
+
+## 4. 更新公式
+
+每轮 token 状态更新可写为：
+
+\[
+H_i^{t+1}
+=
+H_i^t
++
+\gamma_i^t
+\left(
+\tilde H_i^t
++
+r_i^t
++
+e_i^t
+\right)
+\]
+
+其中 \(\gamma_i^t\) 是门控系数，\(\tilde H_i^t\) 来自晶格图消息，\(r_i^t\) 来自记忆读取，\(e_i^t\) 来自专家路由。
+
+---
+
+## 5. 训练目标
+
+总损失：
+
+\[
+\mathcal{L}
+=
+\mathcal{L}_{\text{task}}
++
+\lambda_1\mathcal{L}_{\text{balance}}
++
+\lambda_2\mathcal{L}_{\text{sparse}}
++
+\lambda_3\mathcal{L}_{\text{halt}}
++
+\lambda_4\mathcal{L}_{\text{cons}}
++
+\lambda_5\mathcal{L}_{\text{mem}}
+\]
+
+各项含义：
+
+- \(\mathcal{L}_{\text{task}}\)：主任务损失；
+- \(\mathcal{L}_{\text{balance}}\)：专家负载均衡损失；
+- \(\mathcal{L}_{\text{sparse}}\)：稀疏路由正则，鼓励低熵和高 top-k 集中；
+- \(\mathcal{L}_{\text{halt}}\)：计算量惩罚，鼓励简单 token 早停；
+- \(\mathcal{L}_{\text{cons}}\)：不同深度预测的一致性，让浅层输出也可用；
+- \(\mathcal{L}_{\text{mem}}\)：记忆对比损失，让 token 表示与对应记忆槽对齐。
+
+训练可分两阶段：
+
+1. **预热阶段**：用局部窗口注意力 + 稠密专家，先稳定表示；
+2. **稀疏阶段**：逐步引入 top-k 晶格图、专家容量限制和自适应停止。
+
+---
+
+## 6. 复杂度
+
+设序列长度 \(N\)，每 token 邻居数 \(k\)，记忆槽 \(K\)，每 token 激活专家 \(e\)，迭代轮数 \(T\)。
+
+每轮复杂度约为：
+
+\[
+O(Nkd + NKd + Ned)
+\]
+
+当 \(k,K,e\ll N\) 时，显著低于全注意力的 \(O(N^2d)\)。主要开销来自近似最近邻搜索和记忆写入，可通过 LSH、分块检索或缓存优化。
+
+---
+
+## 7. 适用场景
+
+LatticeRoute 更适合：
+
+- 长文档建模；
+- 长视频/音频序列；
+- 多模态图文对齐；
+- 大图/异构图消息传递；
+- 需要动态计算预算的端侧推理；
+- 需要解释“哪些 token 调用了哪些专家/记忆”的任务。
+
+不一定适合极小规模表格数据，因为路由和记忆机制可能过重。
+
+---
+
+## 8. 潜在创新点
+
+1. **动态稀疏晶格图**：每轮根据内容、位置和记忆匹配构造稀疏图，而非固定注意力或固定图。
+2. **全局工作区记忆与 token 图联合迭代**：长距离信息通过记忆中转，降低全注意力需求。
+3. **token 级动态深度 + 专家路由联合决策**：每个 token 不仅决定算多久，还决定调用哪些能力。
+4. **任意深度可输出**：训练时加入深度一致性，可在推理时按预算提前输出。
+5. **可解释性较强**：可追踪每个 token 的邻居、边类型、专家使用和记忆读写路径。
+
+---
+
+## 9. 需要验证的实验
+
+建议先做小中规模对照实验：
+
+- 语言建模：WikiText-103、PG-19、LongBench；
+- 基线：Transformer、Universal Transformer、Perceiver、MoE Transformer、Graphormer/稀疏注意力模型；
+- 消融：去掉记忆、去掉动态图、固定 top-k 邻居、去掉自适应停止、去掉专家路由；
+- 指标：任务指标、每 token FLOPs、延迟、显存、专家利用率、不同深度下的 anytime 性能。
+
+---
+
+总结：**LatticeRoute 是一个把“稀疏图计算、全局记忆、动态深度和专家路由”统一到迭代框架中的机器学习架构提案。** 它的关键不是简单堆叠模块，而是让每个 token 在每一轮动态决定：看哪些邻居、读哪些记忆、调用哪些专家、是否继续计算。
+
+---
+
+## 评审输出
+
+{"A": {"logic": 8, "concreteness": 8, "actionability": 7, "originality": 9, "overall": 8}, "B": {"logic": 9, "concreteness": 9, "actionability": 9, "originality": 8, "overall": 9}, "winner": "B", "reason": "B 的整体结构更清晰连贯，模块定义、公式、复杂度、分阶段训练与实验计划更完整，落地性更强；A 创意和模块丰富度更高，但组件堆叠较多、实现与验证路径相对分散。综合看 B 略胜。"}
