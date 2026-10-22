@@ -42,5 +42,6 @@ ls branches/opencode-free-rerun/opencode_free_results/
 git clone all-branches-backup-20261022.bundle repo-all
 ```
 
-完整历史备份：`all-branches-backup-20261022.bundle`（8.3 MB，含 4 个分支全部提交，
-由 `git bundle create <file> --all` 生成，`git bundle verify` 校验通过）。
+完整历史备份未提交到本仓库，单独保存在本地 `all-branches-backup-20261022.bundle`
+（8.3 MB，含 4 个分支的全部提交；由 `git bundle create <file> --all` 生成，
+`git bundle verify` 校验通过）。它比本目录更完整：保留了每个提交的历史、提交信息和删除前的分支指向。
