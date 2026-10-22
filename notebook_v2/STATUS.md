@@ -7,6 +7,26 @@
 - 代码修复：Git identity、提交白名单、密钥扫描、`http.extraheader`、清洗残留校验、
   双评委、确定性 A/B 位置平衡、provenance、时间预算、断点续跑、模型熔断。
 
+## 第二次 Kaggle 运行（已停止）
+
+- 第一次运行产生的是 **错误记录**：`stepfun` 全部为 `[ERROR] model disabled`，
+  `deepseek-v4.1-flash` 仅 2 条有效（其余 429/空）。
+- 将并发从 10 降到 3 后重启：`stepfun` 持续返回 `504 InternalServerError`，
+  `deepseek` 仍有 429；没有产生新的有效 NVIDIA 结果。
+- 为避免继续空烧 Kaggle 配额，已再次停止并删除 Kernel。
+- 结论：当前 NVIDIA key/端点不适合这次 4 模型 × 10 run 的全量实验；Notebook
+  已支持多会话续跑，端点恢复后重新 push/运行即可从 `main` 的 `llm_experiment_results_v2/`
+  继续（错误记录会被 latest-valid 逻辑忽略）。
+
+## 本地 DeepSeek 官方 API 实验（已完成）
+
+- 分支：`v2-deepseek`
+- 模型：`deepseek-flash`、`deepseek-v4-pro`（生成 + 评委）
+- 规模：2 模型 × 6 任务 × 2 条件 × 10 run = 240 条生成；120 条清洗；240 对盲评
+- 并发：2400（按用户要求）
+- 结果：240 对全部有效，清洗残留 **0/60/模型**；baseline 胜率 52–59/60。
+- 详见 `v2-deepseek` 分支的 `llm_experiment_results_v2/SUMMARY.md` 和 `README.md`。
+
 ## 首次 Kaggle 运行（已停止）
 
 - Kernel：`wenjiazhong82355/llm-word-pairs-v2`（已删除，避免空烧配额）。
@@ -31,7 +51,8 @@
 ## 结论
 
 用当前 NVIDIA key/端点，4 个模型 × 6 任务 × 2 条件 × 10 run 的完整实验无法在单次
-Kaggle 会话内完成；即使非流式，单条完整任务也可能超过 10 分钟。需要以下之一：
+Kaggle 会话内完成；两次实测分别遇到流式 `EmptyResponse`、429 限流和 504 网关错误。
+本地 DeepSeek 官方 API 实验已完成，可作为 v2 的主要有效结果。Kaggle 侧后续可选：
 
 1. 更快的 key/端点（推荐）：换用有更高吞吐的 NVIDIA NIM 配额或其他 provider；
 2. 缩小规模：例如 4 模型 × 6 任务 × 2 条件 × 3 run，2 评委，单顺序（约 360 次调用）；
