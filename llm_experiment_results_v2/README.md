@@ -63,7 +63,7 @@ llm_experiment_results_v2/
 
 ## 说明
 
-- 本分支只包含本地 DeepSeek 结果；Kaggle 的 NVIDIA 多模型结果在 `main` 分支。
+- 本目录是本地 DeepSeek 结果；Kaggle NVIDIA 两次尝试均因 429/504 未产生有效结果，详见 `notebook_v2/STATUS.md`。
 - 运行脚本与 v2 Notebook 相同；本实验通过环境变量注入 `OPENAI_API_KEY`/`OPENAI_BASE_URL`，
   仓库中不保存密钥。
 - 参数：`N_RUNS=10`、`CONCURRENCY=2400`、`COUNTERBALANCE=0`（每个评委单顺序，A/B 位置由

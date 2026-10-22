@@ -20,7 +20,7 @@
 
 ## 本地 DeepSeek 官方 API 实验（已完成）
 
-- 分支：`v2-deepseek`
+- 分支：`v2-deepseek`（已合并到 `main`；该分支仍保留）
 - 模型：`deepseek-flash`、`deepseek-v4-pro`（生成 + 评委）
 - 规模：2 模型 × 6 任务 × 2 条件 × 10 run = 240 条生成；120 条清洗；240 对盲评
 - 并发：2400（按用户要求）
