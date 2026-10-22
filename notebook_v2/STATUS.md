@@ -21,6 +21,16 @@
   NVIDIA 重试请使用独立分支（如 `v2-kaggle`）或独立结果目录，避免覆盖本地
   `SUMMARY.md`/`summary.json`。
 
+## 第三次 Kaggle 运行（并发 1，已停止）
+
+- 分支：`v2-kaggle`（从 `707aa33` 创建，不含本地 DeepSeek 结果）
+- Kernel 重新创建，并发设为 **1**，480 个生成任务启动。
+- `stepfun-ai/step-5-preview` 第一条任务 3 次重试全部 **504 InternalServerError**，
+  随后被熔断；剩余 119 条写成 `[ERROR] model disabled`，`v2-kaggle` 上共 120 条错误记录。
+- 转至 `deepseek-ai/deepseek-v4.1-flash` 后同样连续 504；`glm` 尚未开始。
+- 结论：**并发 1 也不能绕过 NVIDIA NIM 的 504**；已再次停止并删除 Kernel。
+- `v2-kaggle` 分支保留为失败尝试记录，**没有有效 NVIDIA 结果**，未合并到 `main`。
+
 ## 本地 DeepSeek 官方 API 实验（已完成）
 
 - 分支：`v2-deepseek`（已合并到 `main`；该分支仍保留）
@@ -53,8 +63,7 @@
 
 ## 结论
 
-用当前 NVIDIA key/端点，4 个模型 × 6 任务 × 2 条件 × 10 run 的完整实验无法在单次
-Kaggle 会话内完成；两次实测分别遇到流式 `EmptyResponse`、429 限流和 504 网关错误。
+用当前 NVIDIA key/端点，4 个模型 × 6 任务 × 2 条件 × 10 run 的完整实验**当前被端点阻塞**；三次实测分别遇到流式 `EmptyResponse`、429 限流和 504 网关错误（并发 10 / 3 / 1 均失败）。
 本地 DeepSeek 官方 API 实验已完成，可作为 v2 的主要有效结果。Kaggle 侧后续可选：
 
 1. 更快的 key/端点（推荐）：换用有更高吞吐的 NVIDIA NIM 配额或其他 provider；
