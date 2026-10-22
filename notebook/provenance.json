@@ -1,0 +1,16 @@
+{
+  "source_url": "https://www.kaggle.com/code/wenjiazhong82355/notebook22d6286ede",
+  "kernel_ref": "wenjiazhong82355/notebook22d6286ede",
+  "title": "notebook22d6286ede",
+  "author": "WenjiaZhong5355385",
+  "last_run_time": "2026-10-19T10:26:38.6484982Z",
+  "version": 1,
+  "language": "python",
+  "kernel_type": "notebook",
+  "enable_gpu": false,
+  "enable_internet": true,
+  "docker_image": "gcr.io/kaggle-images/python@sha256:81b1e7c4b4f0f2a7e0a33943c95754b1b7af6b30d65221633a284b6b601cd84a",
+  "cells_original": 1,
+  "cells_exported": 2,
+  "notebook_sha256": "844f5afab7886cf52a6c716857abbc580c857e978fb8cdeae8a8deba1f2b7ac9"
+}

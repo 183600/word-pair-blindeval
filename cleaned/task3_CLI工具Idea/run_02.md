@@ -1,6 +1,6 @@
 # [清洗] 任务3 CLI工具Idea | word_pairs | 第 2 次
 
-**清洗耗时:** Nones | **tokens:** None/None
+**清洗耗时:** 69.88s | **tokens:** 2279/425
 
 ## 原始输出（含词对）
 
@@ -229,4 +229,22 @@ MVP：Rust/Go 单二进制；用 `inotify/fsevents` 监听文件，shell hook �
 
 ## 清洗后输出
 
-[ERROR] TimeoutError
+灵感来自「快照 / 回放 / 审计 / 诊断 / 导航 / 回滚 / 轨迹 / 复盘」这些词。
+
+**CLI Idea：`rewind` — 本地开发操作时间机**
+
+一个适合独立开发者的 CLI：自动记录你在项目目录里的关键操作与文件变化，把“我刚才到底改了什么、跑了什么命令、为什么测试突然挂了”变成可搜索、可回放、可回滚的时间线。
+
+核心命令：
+- `rewind init`：在 repo 内初始化，轻量监听 git、文件变更、shell 命令、测试退出码。
+- `rewind log`：按时间线展示“命令 → 文件 diff → 测试结果 → 端口/进程变化”。
+- `rewind why`：输入失败测试或报错，自动定位最近一次相关变更。
+- `rewind replay <id>`：重放某段操作到临时沙箱，复现 bug。
+- `rewind restore <id>`：只回滚某个时间段内的文件/依赖/环境变量，不破坏后续工作。
+- `rewind share`：生成加密最小复现包，发给同事或贴到 issue。
+
+差异化：不是又一个 git wrapper，而是把 git commit 之间的“黑盒时间”补齐；本地优先、默认离线、敏感信息脱敏。
+
+MVP：Rust/Go 单二进制；用 `inotify/fsevents` 监听文件，shell hook 捕获命令，SQLite 存事件，git plumbing 做 diff。先做 macOS/Linux + zsh/bash + git 项目。
+
+变现：开源核心；Pro 版卖团队时间线同步、AI 失败归因、CI 事件关联、审计导出。独立开发者可先从开发者工具社区、Hacker News、终端周刊冷启动。

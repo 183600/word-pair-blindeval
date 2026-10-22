@@ -1,6 +1,6 @@
 # [清洗] 任务1 函数式编程语言 | word_pairs | 第 9 次
 
-**清洗耗时:** 177.4s | **tokens:** 2890/33
+**清洗耗时:** 96.48s | **tokens:** 2890/1180
 
 ## 原始输出（含词对）
 
@@ -197,4 +197,146 @@ main := do
 
 ## 清洗后输出
 
+# 第二部分：函数式编程语言 **「汐（Tide）」**
 
+从以上词组中汲取核心灵感：**潮汐·引力**（惰性求值如引力牵引）、**管道·流通**、**契约·约束**、**快照·回溯**、**共鸣·叠加**、**留白·意境**。
+
+## 设计理念
+
+汐语言围绕三个核心隐喻构建：
+
+1. **引力求值（Tidal Evaluation）**：数据像潮水，只在被"引力"（消费需求）牵引时流动——默认完全惰性。
+2. **潮道（Channels as Pipes）**：计算是管道网络，函数是阀门与滤网。
+3. **快照与回溯（Amber Snapshots）**：借鉴"琥珀·封存"，任何计算状态可被封存、回溯、分叉。
+
+## 基本语法
+
+```tide
+-- 定义：无需关键字，:= 即绑定
+double := x -> x * 2
+
+-- 管道：数据从左流向右，如溪流
+result := [1..10]
+  |> filter even
+  |> map double
+  |> fold (+) 0
+
+-- 类型即契约（灵感：契约·约束）
+contract gcd : Int -> Int -> Int
+  where a > 0, b > 0          -- 前置约束，编译期+运行期双重校验
+
+gcd a b := if b == 0 then a else gcd b (a % b)
+```
+
+## 核心特性
+
+### 1. 潮汐流（Tide Streams）—— 无限数据结构的自然表达
+
+```tide
+-- 斐波那契：如涟漪扩散，永不主动计算
+fibs := 0 : 1 : zipWith (+) fibs (tail fibs)
+
+-- 引力触发：take 是"引力源"
+main := print (take 10 fibs)
+```
+
+### 2. 琥珀快照（Amber）—— 可回溯计算
+
+```tide
+-- 封存任意计算状态
+amber checkpoint := freeze expensiveComputation
+
+-- 回溯：如琥珀中的昆虫，随时复活
+resume checkpoint with { fuel = 1000 }
+```
+
+### 3. 共鸣模式匹配（Resonance Matching）
+
+```tide
+-- 模式如和弦，可叠加多个匹配器，取第一个"共振"的
+describe := match
+  | 0           -> "静默"       -- 休止符
+  | n when n<0  -> "负向"
+  | _           -> "正向"       -- 留白：兜底
+```
+
+### 4. 效应即季风（Effects as Monsoons）
+
+副作用被建模为**季风系统**：有方向、有季节、可预测：
+
+```tide
+effect Logger where
+  log : String -> ()
+
+greet := do
+  log "开始"        -- 效应被类型系统追踪
+  pure "你好"
+
+-- 效应处理器 = 季风的"疏导河道"
+runLogger (handle greet)
+```
+
+### 5. 榫卯模块系统
+
+模块通过**接口榫头**与**实现卯眼**契合，无需继承：
+
+```tide
+mortise Stack t where          -- 卯眼：接口
+  push : t -> Stack t -> Stack t
+  pop  : Stack t -> Maybe (t, Stack t)
+
+tenon ListStack : Stack t      -- 榫头：实现
+  push x xs := x : xs
+  pop (x:xs) := Just (x, xs)
+```
+
+### 6. 量子叠加式错误处理
+
+```tide
+-- 结果处于 成功⊗失败 的叠加，直到被观测（match）
+divide a b := if b == 0 then collapse "除零" else yield (a / b)
+
+-- 观测即坍缩
+case divide 10 0 of
+  yield v    -> show v
+  collapse e -> "错误: " ++ e
+```
+
+## 类型系统速写
+
+- **Hindley-Milner 全家桶** + 代数数据类型
+- ** refinement types（精化类型）**：`type PosInt = { n : Int | n > 0 }`，呼应"滤网·筛选"
+- **线性类型可选**：`linear` 标注的资源必须恰好消费一次，如"沙漏·流逝"
+
+## 一个完整示例
+
+```tide
+-- 潮汐计算：单词频率统计
+contract wordFreq : Text -> Map String Int
+
+wordFreq text :=
+  text
+    |> words                    -- 拆分：溪流分支
+    |> map toLower              -- 研磨·细化
+    |> filter (not . isStop)    -- 滤网
+    |> groupBy identity         -- 蜂巢·归类
+    |> map (length <$>)         -- 计数
+    |> freeze                   -- 琥珀：封存结果
+
+main := do
+  content <- readFile "poem.txt"
+  print (wordFreq content)
+```
+
+## 设计哲学总结
+
+| 灵感词 | 语言特性 |
+|---|---|
+| 潮汐·引力 | 惰性求值 |
+| 琥珀·封存 | 可回溯快照 |
+| 榫卯·契合 | 结构化模块 |
+| 季风·洋流 | 代数效应 |
+| 留白·意境 | 极简语法，类型推断 |
+| 量子·叠加 | 错误即未观测态 |
+
+汐语言相信：**程序不是被"执行"的，而是被"引力唤醒"的潮水**。

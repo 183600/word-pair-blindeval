@@ -1,6 +1,6 @@
 # [清洗] 任务1 函数式编程语言 | word_pairs | 第 6 次
 
-**清洗耗时:** 111.3s | **tokens:** 2777/32
+**清洗耗时:** 127.11s | **tokens:** 2777/1072
 
 ## 原始输出（含词对）
 
@@ -176,4 +176,125 @@ Tide 的信条：**"计算如潮，来去守恒；结构如晶，对称生长。
 
 ## 清洗后输出
 
+# 语言设计：Tide（汐）
 
+受上述自然意象启发，设计一门纯函数式语言 **Tide**——核心隐喻是**潮汐节律**与**根系蔓延**：数据如潮汐般流动，函数如根系般分支，计算如晶体般生长。
+
+## 核心概念
+
+### 1. 流（Flow）与潭（Pool）
+一切计算发生在"流"上。流是惰性序列，潭是流的物化缓存（受"瀑布·深潭"启发）。
+
+```tide
+let river = stream 1..∞        -- 无限流
+let pool  = river |> take 10 |> freeze   -- 冻结为潭
+```
+
+### 2. 根系模式匹配（Root Pattern）
+模式匹配像根系一样**同时向多个方向蔓延**，支持并行解构：
+
+```tide
+match tree with
+| root { left: Leaf x, right: Leaf y } -> x + y
+| root { left: l & right: r }          -> sum l + sum r   -- & 为并列根须
+| sprout _                              -> 0
+```
+
+### 3. 潮汐效应系统（Tidal Effects）
+副作用被建模为**潮涨（surge）与潮落（ebb）**，类型系统追踪效应的"相位"：
+
+```tide
+readFile : Path -> surge IO String
+writeLog : String -> ebb IO ()
+
+-- 效应必须成对平衡，如潮汐守恒
+tide do
+  content <- surge (readFile "a.txt")
+  ebb (writeLog content)
+```
+
+### 4. 共生类型（Symbiosis）
+受"珊瑚·共生"启发：两个类型可声明共生关系，自动获得双向转换与共享不变量：
+
+```tide
+symbiosis Celsius <-> Fahrenheit where
+  to   c = c * 9/5 + 32
+  from f = (f - 32) * 5/9
+  invariant: both represent same temperature
+```
+
+### 5. 年轮记忆（Ring Memoization）
+纯函数可通过 `ring` 注解获得透明记忆化，缓存像年轮一样**分层**，可指定淘汰策略：
+
+```tide
+ring [layers: 100, shed: lru]
+fib 0 = 0
+fib 1 = 1
+fib n = fib (n-1) + fib (n-2)
+```
+
+### 6. 孢子模块（Spore Modules）
+模块是休眠的孢子——**默认不加载**，被引用时才萌发，且可热替换（蝉蜕式版本迁移）：
+
+```tide
+spore MathUtils v2
+import MathUtils when needed
+molt MathUtils v1 -> v2   -- 蝉蜕：运行时迁移
+```
+
+### 7. 雁阵并发（Flock Concurrency）
+并发单元自动排成"雁阵"：领头任务承担调度，失败时后续自动补位：
+
+```tide
+flock [fetchA, fetchB, fetchC]
+  |> leadBy (retry 3)
+  |> onFall (substitute cacheValue)
+```
+
+### 8. 晶体推导（Crystal Deriving）
+类型类实例如冰晶般**对称生长**，只需给出一条公理，其余由对称性推导：
+
+```tide
+crystal Eq for Tree where
+  seed: Leaf a == Leaf b  iff  a == b
+  -- Branch 的相等性由结构对称自动生长
+```
+
+### 9. 沙漏类型级计算
+类型级函数用 `hourglass` 声明，编译期"流尽"完成求值，带步数上限防发散：
+
+```tide
+hourglass (sand: 1000)
+type family Length (xs : List) : Nat where
+  Length []      = 0
+  Length (_::t)  = 1 + Length t
+```
+
+## 完整示例
+
+```tide
+spore Main
+
+tide main : surge IO ()
+main = do
+  words <- surge (readFile "corpus.txt")
+  let counts = words
+             |> splitOn whitespace      -- 流式切分
+             |> flock map countWord      -- 雁阵并行
+             |> freeze                   -- 汇入深潭
+  ebb (writeLog (show counts))
+```
+
+## 设计哲学
+
+| 自然意象 | 语言特性 |
+|---|---|
+| 潮汐守恒 | 效应必须涨落成对 |
+| 根系蔓延 | 多方向并行模式匹配 |
+| 年轮层叠 | 分层可淘汰的记忆化 |
+| 孢子休眠 | 惰性加载模块 |
+| 雁阵补位 | 容错并发 |
+| 晶体对称 | 公理驱动的实例推导 |
+| 沙漏计量 | 有界的类型级计算 |
+
+Tide 的信条：**"计算如潮，来去守恒；结构如晶，对称生长。"**

@@ -2,147 +2,15 @@
 
 **任务 prompt:** 设计一个全新的函数式编程语言
 
-**A 来源:** cleaned_word_pairs  |  **B 来源:** baseline  |  **是否交换:** True
+**A 来源:** baseline  |  **B 来源:** cleaned_word_pairs  |  **是否交换:** False
 
-**Winner（原始 A/B/tie）:** None  |  **Winner（条件映射）:** None
+**Winner（原始 A/B/tie）:** A  |  **Winner（条件映射）:** baseline
 
-**耗时:** 183.67s | **tokens:** 2672/32
-
----
-
-## 回答 A（cleaned_word_pairs）
-
-# 第二部分：语言设计 —— **Tide（汐）**
-
-从这些词中提炼出核心意象：**潮汐（周期与惰性）、河流（流式数据）、晶体（不可变结构）、共振（模式匹配）、蒸馏（管道提纯）、棘轮（单向保证）、沙漏（时间语义）**。
-
-## 1. 设计哲学
-
-> **"数据如潮汐，函数如河道，类型如河床。"**
-
-- 一切皆**流（Stream）**：列表、标量、事件都是流的特例（灵感：河流·分支、瀑布·落差）
-- **惰性为默认**，严格需显式声明（惰性·按需 / 严格·立即）
-- **不可变为河床**，可变只能发生在"三角洲"——明确的边界区域（三角洲·汇聚）
-- **单向性**：像棘轮和二极管，效果（Effect）只能单向流动，不可倒灌（棘轮·单向）
-
-## 2. 基本语法
-
-```tide
--- 定义：名字 ~ 表达式（波浪号象征潮汐流动）
-double ~ x -> x * 2
-
--- 管道：蒸馏式提纯，数据自上而下流动
-result ~ source
-    |> filter isPrime
-    |> map double
-    |> take 10
-    |> fold (+) 0
-
--- 类型即河床：声明数据的形状
-type Tree a =
-    | Leaf a
-    | Node (Tree a) (Tree a)   -- 树·层级
-```
-
-## 3. 核心特性
-
-### 3.1 潮汐求值（Ebb & Flow）
-所有表达式默认惰性，用 `!`（感叹号，灵感：闪电·瞬间）强制求值：
-
-```tide
-naturals ~ iterate (+1) 0        -- 无限流，不计算
-first5 ~ take 5 naturals !       -- 此刻才"涨潮"
-```
-
-### 3.2 共振匹配（Resonance）
-模式匹配称为"共振"——结构相契合则触发（琴弦·共振、锁钥·匹配）：
-
-```tide
-describe ~ case
-    | Leaf x        -> "one leaf: {x}"
-    | Node l r when depth l == depth r -> "balanced"   -- 天平·平衡
-    | Node _ _      -> "wild"
-```
-
-### 3.3 三角洲效应系统（Delta Effects）
-副作用只能发生在 `delta` 块中，且必须声明效果类型（容器·封装、沙箱·隔离）：
-
-```tide
-main : Delta [IO, Clock] ()
-main ~ delta
-    now   <- tick            -- 时钟读取
-    _     <- pour "hello"    -- 输出：墨水·晕染
-    pure ()
-```
-
-效果**不可倒灌**：`Delta` 内可以调用纯函数，纯函数不能触碰 `Delta`（二极管·单向）。
-
-### 3.4 棘轮类型（Ratchet Types）
-单向细化类型：值只能"收紧"不能"放松"（棘轮·单向、淬火·强化）：
-
-```tide
-parse : String -> Maybe (Ratchet Validated)
-use  : Ratchet Validated -> Result   -- 编译期保证已验证
-```
-
-### 3.5 沙漏并发（Hourglass Concurrency）
-基于通道的 CSP 并发，通道称为 `strait`（海峡）（通道·通信、握手·建立）：
-
-```tide
-worker ~ delta
-    s <- strait Int        -- 建立海峡
-    spawn <| flow s        -- 生产者
-    sum <- drain s |> fold (+) 0
-```
-
-### 3.6 晶体数据（Crystal Data）
-所有数据结构是持久化不可变晶体，"修改"即生长新晶体（晶体·生长、年轮·记录）：
-
-```tide
-t2 ~ t1 |> graft branch    -- 嫁接·融合：结构共享，O(log n)
-```
-
-## 4. 类型系统速览
-
-| 特性 | 灵感来源 | 说明 |
-|---|---|---|
-| 代数数据类型 | 拼图·契合 | 和类型 + 积类型 |
-| 泛型 + 高阶类型 | 抽象·提炼 | `Functor`、`Monad` 内建 |
-| 透镜/棱镜 | 透镜·聚焦、棱镜·分解 | 内建 `focus` 语法 |
-| 依赖类型（受限） | 锁钥·匹配 | 长度索引向量等 |
-| 效果行多态 | 滤波器·选择 | `Delta [IO \| e]` |
-
-## 5. 一个完整示例
-
-```tide
--- 词频统计：河流式处理
-type Word = String
-
-wordFreq : Stream Word -> Map Word Int
-wordFreq ~ 
-    |> map lowercase
-    |> filter (not . isStopWord)
-    |> groupBy identity
-    |> mapValues length
-
-main : Delta [IO, FS] ()
-main ~ delta
-    text <- readFile "poem.txt"
-    freq <- pure (wordFreq (words text) !)   -- 涨潮时刻
-    pour (show (take 10 (sortByCount freq)))
-```
-
-## 6. 总结
-
-**Tide** 的座右铭：
-
-> *"纯者如潮，效者如汐；河床既定，奔流自洽。"*
-
-它以**潮汐求值**统一惰性与严格，以**三角洲**圈禁副作用，以**棘轮类型**保证单向安全，以**晶体数据**实现不可变之美——一门从自然意象中生长出来的函数式语言。
+**耗时:** 298.57s | **tokens:** 2673/227
 
 ---
 
-## 回答 B（baseline）
+## 回答 A（baseline）
 
 # 🌊 Flux — 一门全新的函数式编程语言
 
@@ -351,10 +219,159 @@ main =
 
 ---
 
+## 回答 B（cleaned_word_pairs）
+
+# 第二部分：语言设计 —— **Tide（汐）**
+
+从这些词中提炼出核心意象：**潮汐（周期与惰性）、河流（流式数据）、晶体（不可变结构）、共振（模式匹配）、蒸馏（管道提纯）、棘轮（单向保证）、沙漏（时间语义）**。
+
+## 1. 设计哲学
+
+> **"数据如潮汐，函数如河道，类型如河床。"**
+
+- 一切皆**流（Stream）**：列表、标量、事件都是流的特例（灵感：河流·分支、瀑布·落差）
+- **惰性为默认**，严格需显式声明（惰性·按需 / 严格·立即）
+- **不可变为河床**，可变只能发生在"三角洲"——明确的边界区域（三角洲·汇聚）
+- **单向性**：像棘轮和二极管，效果（Effect）只能单向流动，不可倒灌（棘轮·单向）
+
+## 2. 基本语法
+
+```tide
+-- 定义：名字 ~ 表达式（波浪号象征潮汐流动）
+double ~ x -> x * 2
+
+-- 管道：蒸馏式提纯，数据自上而下流动
+result ~ source
+    |> filter isPrime
+    |> map double
+    |> take 10
+    |> fold (+) 0
+
+-- 类型即河床：声明数据的形状
+type Tree a =
+    | Leaf a
+    | Node (Tree a) (Tree a)   -- 树·层级
+```
+
+## 3. 核心特性
+
+### 3.1 潮汐求值（Ebb & Flow）
+所有表达式默认惰性，用 `!`（感叹号，灵感：闪电·瞬间）强制求值：
+
+```tide
+naturals ~ iterate (+1) 0        -- 无限流，不计算
+first5 ~ take 5 naturals !       -- 此刻才"涨潮"
+```
+
+### 3.2 共振匹配（Resonance）
+模式匹配称为"共振"——结构相契合则触发（琴弦·共振、锁钥·匹配）：
+
+```tide
+describe ~ case
+    | Leaf x        -> "one leaf: {x}"
+    | Node l r when depth l == depth r -> "balanced"   -- 天平·平衡
+    | Node _ _      -> "wild"
+```
+
+### 3.3 三角洲效应系统（Delta Effects）
+副作用只能发生在 `delta` 块中，且必须声明效果类型（容器·封装、沙箱·隔离）：
+
+```tide
+main : Delta [IO, Clock] ()
+main ~ delta
+    now   <- tick            -- 时钟读取
+    _     <- pour "hello"    -- 输出：墨水·晕染
+    pure ()
+```
+
+效果**不可倒灌**：`Delta` 内可以调用纯函数，纯函数不能触碰 `Delta`（二极管·单向）。
+
+### 3.4 棘轮类型（Ratchet Types）
+单向细化类型：值只能"收紧"不能"放松"（棘轮·单向、淬火·强化）：
+
+```tide
+parse : String -> Maybe (Ratchet Validated)
+use  : Ratchet Validated -> Result   -- 编译期保证已验证
+```
+
+### 3.5 沙漏并发（Hourglass Concurrency）
+基于通道的 CSP 并发，通道称为 `strait`（海峡）（通道·通信、握手·建立）：
+
+```tide
+worker ~ delta
+    s <- strait Int        -- 建立海峡
+    spawn <| flow s        -- 生产者
+    sum <- drain s |> fold (+) 0
+```
+
+### 3.6 晶体数据（Crystal Data）
+所有数据结构是持久化不可变晶体，"修改"即生长新晶体（晶体·生长、年轮·记录）：
+
+```tide
+t2 ~ t1 |> graft branch    -- 嫁接·融合：结构共享，O(log n)
+```
+
+## 4. 类型系统速览
+
+| 特性 | 灵感来源 | 说明 |
+|---|---|---|
+| 代数数据类型 | 拼图·契合 | 和类型 + 积类型 |
+| 泛型 + 高阶类型 | 抽象·提炼 | `Functor`、`Monad` 内建 |
+| 透镜/棱镜 | 透镜·聚焦、棱镜·分解 | 内建 `focus` 语法 |
+| 依赖类型（受限） | 锁钥·匹配 | 长度索引向量等 |
+| 效果行多态 | 滤波器·选择 | `Delta [IO \| e]` |
+
+## 5. 一个完整示例
+
+```tide
+-- 词频统计：河流式处理
+type Word = String
+
+wordFreq : Stream Word -> Map Word Int
+wordFreq ~ 
+    |> map lowercase
+    |> filter (not . isStopWord)
+    |> groupBy identity
+    |> mapValues length
+
+main : Delta [IO, FS] ()
+main ~ delta
+    text <- readFile "poem.txt"
+    freq <- pure (wordFreq (words text) !)   -- 涨潮时刻
+    pour (show (take 10 (sortByCount freq)))
+```
+
+## 6. 总结
+
+**Tide** 的座右铭：
+
+> *"纯者如潮，效者如汐；河床既定，奔流自洽。"*
+
+它以**潮汐求值**统一惰性与严格，以**三角洲**圈禁副作用，以**棘轮类型**保证单向安全，以**晶体数据**实现不可变之美——一门从自然意象中生长出来的函数式语言。
+
+---
+
 ## 评审输出
 
 ```json
-None
+{
+  "A": {
+    "logic": 9,
+    "concreteness": 9,
+    "actionability": 9,
+    "originality": 7,
+    "overall": 9
+  },
+  "B": {
+    "logic": 8,
+    "concreteness": 7,
+    "actionability": 7,
+    "originality": 9,
+    "overall": 8
+  },
+  "winner": "A",
+  "reason": "A 结构完整、语法示例丰富且自洽，效果系统、错误处理、并发、透镜等特性均有可运行的代码演示，可操作性强；B 的意象体系（潮汐、棘轮、三角洲）原创性突出，但部分概念（如棘轮类型、沙漏并发）仅点到为止，细节与一致性略逊，且开头'第二部分'显得突兀。综合 A 更胜。"
+}
 ```
 
-**理由:** None
+**理由:** A 结构完整、语法示例丰富且自洽，效果系统、错误处理、并发、透镜等特性均有可运行的代码演示，可操作性强；B 的意象体系（潮汐、棘轮、三角洲）原创性突出，但部分概念（如棘轮类型、沙漏并发）仅点到为止，细节与一致性略逊，且开头'第二部分'显得突兀。综合 A 更胜。

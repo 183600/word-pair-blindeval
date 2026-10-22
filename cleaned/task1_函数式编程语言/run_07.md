@@ -1,6 +1,6 @@
 # [清洗] 任务1 函数式编程语言 | word_pairs | 第 7 次
 
-**清洗耗时:** 90.74s | **tokens:** 3046/32
+**清洗耗时:** 183.56s | **tokens:** 3046/1193
 
 ## 原始输出（含词对）
 
@@ -354,4 +354,143 @@ let add5 = add 5
 
 ## 清洗后输出
 
+# 第二部分：函数式编程语言「涟」(Lian / Ripple)
 
+灵感来源：**涟漪/池塘、管道/流水、陶瓷/窑变、榫卯/契合、惰性/流、效应/处理、茶道/仪式**
+
+## 设计理念
+
+> "投石入水，涟漪自开。" —— 程序即投入静水之石，数据如涟漪自然扩散。
+
+**涟** 是一门纯函数式、惰性求值、强静态类型的语言，核心哲学是：
+
+1. **一切皆流（涟漪）**：所有计算都是可组合的流变换
+2. **效应即仪式（茶道）**：副作用必须通过显式的"仪式"声明与处理
+3. **类型即窑变**：类型在编译期"烧制"定型，运行时零成本
+4. **结构即榫卯**：模块通过接口精确咬合，无需继承
+
+## 基本语法
+
+### 值与函数
+
+```lian
+-- 定义（不可变，如磐石）
+let pi = 3.14159
+
+-- 函数定义（流水式）
+let area r = pi * r * r
+
+-- 管道运算符 |> （河流/管道）
+let result =
+  [1, 2, 3, 4, 5]
+  |> map (\x -> x * x)
+  |> filter (\x -> x > 4)
+  |> fold (+) 0
+-- => 54
+```
+
+### 涟漪流（核心特性：惰性流）
+
+```lian
+-- ripple 创建惰性无限流（涟漪扩散）
+let naturals = ripple 0 (\n -> n + 1)
+
+-- 流是惰性的，take 时才求值（如涟漪触及岸边才显现）
+let evens = naturals
+  |> map (* 2)
+  |> take 10
+  |> freeze        -- freeze 将流"冻结"为列表（琥珀/封存）
+-- => [0, 2, 4, 6, 8, 10, 12, 14, 16, 18]
+```
+
+### 类型与窑变（代数数据类型）
+
+```lian
+-- kiln 定义代数类型（窑变：一经烧制，形态永恒）
+kiln Shape =
+  | Circle Float
+  | Rect Float Float
+  | Empty
+
+-- 模式匹配（如叶脉般穷尽分支）
+let describe shape =
+  match shape with
+  | Circle r    -> "圆，半径 {r}"
+  | Rect w h    -> "矩形 {w}×{h}"
+  | Empty       -> "空"
+```
+
+### 效应仪式（茶道式副作用管理）
+
+```lian
+-- 声明效应（仪式）
+effect Console where
+  print : String -> ()
+  read  : () -> String
+
+-- 带效应的函数，类型中显式标注
+let greet : () -> String ! Console
+let greet () =
+  let! name = read ()        -- let! 执行效应
+  print ("你好, {name}")
+  pure name
+
+-- 处理效应（完成仪式，回归纯净）
+let main =
+  handle greet () with
+  | print s, k -> io_print s; k ()
+  | read (), k -> k (io_readline ())
+```
+
+### 榫卯模块系统
+
+```lian
+-- 卯（接口）
+mortise Numeric where
+  zero : Self
+  add  : Self -> Self -> Self
+
+-- 榫（实现）
+tenon Numeric for Int where
+  zero = 0
+  add = (+)
+
+-- 泛型约束（榫卯咬合）
+let sum : Numeric a => List a -> a
+let sum = fold add zero
+```
+
+### 其他特性速览
+
+```lian
+-- 递归即自指（年轮）
+let fib = ripple (0, 1) (\(a, b) -> (b, a + b)) |> map fst
+
+-- 守卫（如门环叩问）
+let abs x
+  | x >= 0    = x
+  | otherwise = -x
+
+-- 记录（如碑刻）
+record Person = { name : String, age : Int }
+let older p = { p with age = p.age + 1 }   -- 拓印式更新
+
+-- 部分应用（柯里化，如折扇渐开）
+let add = \x y -> x + y
+let add5 = add 5
+```
+
+## 语言特性总结
+
+| 特性 | 灵感来源 | 说明 |
+|------|---------|------|
+| `ripple` 惰性流 | 涟漪/池塘 | 核心抽象，一切皆流 |
+| `freeze` | 琥珀/封存 | 流的具体化 |
+| `kiln` 类型定义 | 瓷器/窑变 | 代数数据类型 |
+| `effect`/`handle` | 茶道/仪式 | 代数效应系统 |
+| `mortise`/`tenon` | 榫卯 | 模块与类型类 |
+| `|>` 管道 | 河流/管道 | 数据流组合 |
+| 不可变默认 | 磐石/稳定 | 引用透明 |
+| 模式匹配穷尽检查 | 叶脉/网络 | 编译期保证 |
+
+**「涟」的座右铭**：*静水无波，投石成纹；纯者自纯，效者自明。*

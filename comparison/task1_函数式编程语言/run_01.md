@@ -2,134 +2,15 @@
 
 **任务 prompt:** 设计一个全新的函数式编程语言
 
-**A 来源:** cleaned_word_pairs  |  **B 来源:** baseline  |  **是否交换:** True
+**A 来源:** baseline  |  **B 来源:** cleaned_word_pairs  |  **是否交换:** False
 
-**Winner（原始 A/B/tie）:** None  |  **Winner（条件映射）:** None
+**Winner（原始 A/B/tie）:** A  |  **Winner（条件映射）:** baseline
 
-**耗时:** 218.04s | **tokens:** 2749/33
-
----
-
-## 回答 A（cleaned_word_pairs）
-
-# 语言设计：**Flux（流汐）**
-
-一门从"水、流、潮汐、纯净、惰性"中获得灵感的函数式语言。
-
-## 核心理念
-
-1. **一切皆流（Stream）**——数据如河流，函数如河道
-2. **默认惰性**——像水一样，只在需要时流动
-3. **不可变为本**——如冰晶结构，一旦形成不可更改
-4. **潮汐式并发**——计算如潮汐自然涨落
-
-## 基本语法
-
-```flux
--- 函数定义：像河道引导水流
-flow double = x -> x * 2
-
--- 管道：数据从左向右流动（瀑布式）
-[1, 2, 3, 4, 5]
-  |> map double
-  |> sieve (x -> x > 4)   -- 筛子：过滤
-  |> fold (+) 0            -- 折叠：归约
--- 结果：16
-```
-
-## 类型系统：晶体类型
-
-```flux
--- 类型如晶体结构，精确而稳定
-crystal Shape =
-  | Circle radius: Float
-  | River  width: Float depth: Float   -- 河流：有宽有深
-
--- 模式匹配：棱镜分解
-shine area shape =
-  match shape with
-  | Circle r    -> pi * r * r
-  | River w d   -> w * d
-```
-
-## 特色一：潮汐并发（Tide）
-
-```flux
--- 灵感：蚁群涌现、候鸟迁徙
-tide fetchAll urls =
-  urls
-    |> swell 10          -- 涨潮：最多10个并发浪
-    |> wave fetch        -- 每一浪执行 fetch
-    |> ebb               -- 退潮：收集所有结果
-```
-
-## 特色二：泉眼记忆化（Spring）
-
-```flux
--- 灵感：泉水涌出后形成潭——结果自然缓存
-spring fib =
-  | 0 -> 0
-  | 1 -> 1
-  | n -> fib (n-1) + fib (n-2)
--- spring 关键字自动记忆化
-```
-
-## 特色三：守卫如阀门
-
-```flux
-flow classify temp
-  | temp < 0    = "冰"     -- 凝固
-  | temp < 100  = "水"     -- 流动
-  | otherwise   = "汽"     -- 蒸发
-```
-
-## 特色四：惰性无限流（溪）
-
-```flux
--- 溪流：永不枯竭但按需取水
-creek naturals = 1 ~> map (+1) naturals
-
-take 10 naturals |> toList   -- [1..10]，只计算所需
-```
-
-## 特色五：效果如涟漪（Ripple）
-
-副作用必须显式声明，如涟漪从中心扩散，边界清晰：
-
-```flux
-ripple main : IO ()
-ripple main =
-  let! name = readLine        -- 投入石子
-  in echo ("你好, " ++ name)  -- 涟漪扩散
-```
-
-## 特色六：熔合（Fusion）优化
-
-编译器自动将相邻管道操作熔合为单次遍历，如岩浆冷却成一块岩石：
-
-```flux
--- 逻辑上三步，实际只遍历一次
-list |> map f |> sieve p |> fold g z
-```
-
-## 设计哲学总结
-
-| 灵感词 | 语言特性 |
-|---|---|
-| 河流·分支 | 管道与分支计算 |
-| 筛子·过滤 | `sieve` 过滤操作 |
-| 潮汐·涨落 | `swell`/`ebb` 并发模型 |
-| 泉·涌出 | `spring` 记忆化 |
-| 晶体·结构 | 代数数据类型 |
-| 涟漪·扩散 | 显式效果系统 |
-| 惰性·延迟 | 默认惰性求值 |
-| 不可变·恒定 | 所有绑定不可变 |
-
-**Flux 的座右铭**：*"如水一般——纯净、流动、随形而变，却永不失其本质。"*
+**耗时:** 84.21s | **tokens:** 2749/254
 
 ---
 
-## 回答 B（baseline）
+## 回答 A（baseline）
 
 # Lumen —— 一门全新的函数式编程语言设计
 
@@ -385,10 +266,146 @@ Lumen 试图回答一个问题：**如果今天从零设计一门函数式语言
 
 ---
 
+## 回答 B（cleaned_word_pairs）
+
+# 语言设计：**Flux（流汐）**
+
+一门从"水、流、潮汐、纯净、惰性"中获得灵感的函数式语言。
+
+## 核心理念
+
+1. **一切皆流（Stream）**——数据如河流，函数如河道
+2. **默认惰性**——像水一样，只在需要时流动
+3. **不可变为本**——如冰晶结构，一旦形成不可更改
+4. **潮汐式并发**——计算如潮汐自然涨落
+
+## 基本语法
+
+```flux
+-- 函数定义：像河道引导水流
+flow double = x -> x * 2
+
+-- 管道：数据从左向右流动（瀑布式）
+[1, 2, 3, 4, 5]
+  |> map double
+  |> sieve (x -> x > 4)   -- 筛子：过滤
+  |> fold (+) 0            -- 折叠：归约
+-- 结果：16
+```
+
+## 类型系统：晶体类型
+
+```flux
+-- 类型如晶体结构，精确而稳定
+crystal Shape =
+  | Circle radius: Float
+  | River  width: Float depth: Float   -- 河流：有宽有深
+
+-- 模式匹配：棱镜分解
+shine area shape =
+  match shape with
+  | Circle r    -> pi * r * r
+  | River w d   -> w * d
+```
+
+## 特色一：潮汐并发（Tide）
+
+```flux
+-- 灵感：蚁群涌现、候鸟迁徙
+tide fetchAll urls =
+  urls
+    |> swell 10          -- 涨潮：最多10个并发浪
+    |> wave fetch        -- 每一浪执行 fetch
+    |> ebb               -- 退潮：收集所有结果
+```
+
+## 特色二：泉眼记忆化（Spring）
+
+```flux
+-- 灵感：泉水涌出后形成潭——结果自然缓存
+spring fib =
+  | 0 -> 0
+  | 1 -> 1
+  | n -> fib (n-1) + fib (n-2)
+-- spring 关键字自动记忆化
+```
+
+## 特色三：守卫如阀门
+
+```flux
+flow classify temp
+  | temp < 0    = "冰"     -- 凝固
+  | temp < 100  = "水"     -- 流动
+  | otherwise   = "汽"     -- 蒸发
+```
+
+## 特色四：惰性无限流（溪）
+
+```flux
+-- 溪流：永不枯竭但按需取水
+creek naturals = 1 ~> map (+1) naturals
+
+take 10 naturals |> toList   -- [1..10]，只计算所需
+```
+
+## 特色五：效果如涟漪（Ripple）
+
+副作用必须显式声明，如涟漪从中心扩散，边界清晰：
+
+```flux
+ripple main : IO ()
+ripple main =
+  let! name = readLine        -- 投入石子
+  in echo ("你好, " ++ name)  -- 涟漪扩散
+```
+
+## 特色六：熔合（Fusion）优化
+
+编译器自动将相邻管道操作熔合为单次遍历，如岩浆冷却成一块岩石：
+
+```flux
+-- 逻辑上三步，实际只遍历一次
+list |> map f |> sieve p |> fold g z
+```
+
+## 设计哲学总结
+
+| 灵感词 | 语言特性 |
+|---|---|
+| 河流·分支 | 管道与分支计算 |
+| 筛子·过滤 | `sieve` 过滤操作 |
+| 潮汐·涨落 | `swell`/`ebb` 并发模型 |
+| 泉·涌出 | `spring` 记忆化 |
+| 晶体·结构 | 代数数据类型 |
+| 涟漪·扩散 | 显式效果系统 |
+| 惰性·延迟 | 默认惰性求值 |
+| 不可变·恒定 | 所有绑定不可变 |
+
+**Flux 的座右铭**：*"如水一般——纯净、流动、随形而变，却永不失其本质。"*
+
+---
+
 ## 评审输出
 
 ```json
-None
+{
+  "A": {
+    "logic": 9,
+    "concreteness": 9,
+    "actionability": 8,
+    "originality": 7,
+    "overall": 9
+  },
+  "B": {
+    "logic": 7,
+    "concreteness": 6,
+    "actionability": 5,
+    "originality": 8,
+    "overall": 6
+  },
+  "winner": "A",
+  "reason": "A 在逻辑结构、具体性和可操作性上全面领先：它系统性地覆盖了语法、类型系统（ADT/GADT/行多态/依赖类型分层）、效果系统、并发模型、模块系统、错误处理，并给出完整可运行的 Web 服务示例和与现有语言的对比表，设计决策有明确依据且相互呼应。B 的'水/潮汐'隐喻体系颇具原创性和美感，但多数特性（如 tide 并发、spring 记忆化、ripple 效果）仅停留在命名和一句话示例层面，缺乏类型签名、语义规则和组合方式的深入说明，作为一门语言设计显得单薄。综合而言 A 是更严谨、更完整的语言设计方案。"
+}
 ```
 
-**理由:** None
+**理由:** A 在逻辑结构、具体性和可操作性上全面领先：它系统性地覆盖了语法、类型系统（ADT/GADT/行多态/依赖类型分层）、效果系统、并发模型、模块系统、错误处理，并给出完整可运行的 Web 服务示例和与现有语言的对比表，设计决策有明确依据且相互呼应。B 的'水/潮汐'隐喻体系颇具原创性和美感，但多数特性（如 tide 并发、spring 记忆化、ripple 效果）仅停留在命名和一句话示例层面，缺乏类型签名、语义规则和组合方式的深入说明，作为一门语言设计显得单薄。综合而言 A 是更严谨、更完整的语言设计方案。

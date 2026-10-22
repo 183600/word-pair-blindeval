@@ -1,6 +1,6 @@
 # [清洗] 任务3 CLI工具Idea | word_pairs | 第 9 次
 
-**清洗耗时:** Nones | **tokens:** None/None
+**清洗耗时:** 126.63s | **tokens:** 2091/435
 
 ## 原始输出（含词对）
 
@@ -230,4 +230,23 @@ MVP 范围：只做 `git diff + commit + shell history + 本地日志` 四路输
 
 ## 清洗后输出
 
-[ERROR] TimeoutError
+灵感提炼：从「差异 低语」「终端 记忆」「提交 织网」「复盘 镜面」「文档 回声」「发布列车 汽笛」这些组合出发，做一个“把开发者一天的工作自动变成清晰叙述”的工具。
+
+CLI Idea：**`devlog` — 本地优先的开发者工作叙事生成器**
+
+一句话：在终端里运行 `devlog today`，它读取本地 git diff、commit、分支切换、终端历史、测试/构建结果、TODO 注释与 issue 编号，自动生成可编辑的日报、PR 描述、changelog 草稿或复盘笔记。
+
+核心命令：
+- `devlog today`：生成今日工作总结，支持 `--standup`、`--pr`、`--changelog`。
+- `devlog why <file|line>`：解释某段改动相关的提交、命令历史和测试失败原因。
+- `devlog draft pr`：根据当前分支 diff 生成 PR 标题、风险点、测试清单。
+- `devlog recall "登录报错"`：检索本地历史命令、日志片段和相关 commit。
+- `devlog ship`：输出 release note 草稿，并标记未测试/未文档化的变更。
+
+差异化：
+- 默认离线、本地优先；敏感代码不出机器。
+- 可选接入 LLM，但内置规则引擎也能生成 80% 结果。
+- 输出不是流水账，而是“变更 → 意图 → 风险 → 下一步”的结构。
+- 可嵌入 git hooks、CI、tmux，适合独立开发者先做小而美。
+
+MVP 范围：只做 `git diff + commit + shell history + 本地日志` 四路输入，生成 Markdown；支持 `--json` 方便自动化。收费点可以是团队模板、知识库检索、CI 集成与本地向量索引。
