@@ -17,6 +17,9 @@
 - 结论：当前 NVIDIA key/端点不适合这次 4 模型 × 10 run 的全量实验；Notebook
   已支持多会话续跑，端点恢复后重新 push/运行即可从 `main` 的 `llm_experiment_results_v2/`
   继续（错误记录会被 latest-valid 逻辑忽略）。
+- **重试注意**：本地 DeepSeek 结果已经在 `main` 的 `llm_experiment_results_v2/` 下；
+  NVIDIA 重试请使用独立分支（如 `v2-kaggle`）或独立结果目录，避免覆盖本地
+  `SUMMARY.md`/`summary.json`。
 
 ## 本地 DeepSeek 官方 API 实验（已完成）
 
