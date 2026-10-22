@@ -6,8 +6,10 @@
 
 - `notebook/notebook22d6286ede.ipynb`、`notebook/notebook22d6286ede.py`、`jvdfka.py`、`vfdjk.py`
   中的硬编码凭据均已替换为环境变量 / Kaggle Secrets 读取或空默认值。
-- 2026-10-22 已重写 Git 历史，清除了历史提交中出现的 Gitee 访问令牌、Kaggle 访问令牌和
+- 2026-10-22 已重写 Git 历史，清除了所有分支可达历史中出现的 Gitee 访问令牌、Kaggle 访问令牌和
   NVIDIA API key，并强制推送了所有分支。
+- **注意**：Git 托管平台通常不会立即删除不可达对象；Gitee 仍可能通过旧 commit SHA 提供旧文件
+  （实测旧 raw 链接可访问）。因此历史清理只是降低暴露面，**轮换密钥才是根本修复**。
 - 这些密钥此前已随公开仓库暴露，**历史清理不能替代轮换**。请立即：
   1. 在 Gitee「设置 → 私人令牌」撤销旧 token，重新生成；
   2. 在 NVIDIA API 控制台吊销旧 key；
