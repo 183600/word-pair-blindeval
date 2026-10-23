@@ -6,6 +6,10 @@
 > **v2 多模型实验**：通用/Kaggle 代码见 [`notebook_v2/`](notebook_v2/)，
 > DeepSeek 官方 API 本地实验入口见 [`deepseek_local/`](deepseek_local/)，
 > 结果与汇总见 [`llm_experiment_results_v2/`](llm_experiment_results_v2/)。
+>
+> **论文**：针对本仓库 v2 数据的独立复算论文见 [`paper/`](paper/)（PDF：[`paper/paper.pdf`](paper/paper.pdf)）。
+> 该文用 240 对盲评重新核算了胜负、五维评分与长度效应，指出原结论中“质量下降”约有一半可由
+> 正文长度压缩解释，并附全部复算脚本与中间结果。
 
 ## 1. 实验设计
 
@@ -125,3 +129,23 @@ python3 vfdjk.py
 
 去掉 `DRY_RUN=1` 后才会真正调用模型补齐缺失项。脚本按 `(task_id, condition, run)` /
 `(task_id, run)` 取最新有效记录，支持断点续跑。
+
+## 6. 论文：对 v2 数据的独立复算
+
+[`paper/`](paper/) 收录了一篇针对本仓库 v2 实验的中文学术论文及其复算材料：
+
+- [`paper/paper.pdf`](paper/paper.pdf)：成稿（15 页，XeLaTeX）
+- [`paper/paper.tex`](paper/paper.tex)：源码；[`paper/figs/`](paper/figs/) 为 4 幅矢量图
+- [`paper/scripts/`](paper/scripts/)：复算脚本；[`paper/out/`](paper/out/)：中间结果与逐对数据
+
+论文的核心结论：
+
+| 项目 | 结果 |
+|---|---|
+| 主效应 | 直接回答胜 224/240（93.3%），任务聚类 95% CI [86.7%, 97.1%] |
+| 五维 | 仅原创性 +0.31；可操作性 −2.32、具体性 −2.08、逻辑性 −1.54、整体 −1.72 |
+| 长度 | 长度比与分差 Spearman ρ=0.585；长度比 ≥0.9 子集胜率降至 67.9% |
+| 等长效应 | 回归截距 −0.82（95% CI [−1.38, −0.26]），长度约解释一半差距 |
+| 机制 | 输出 token 2.02×/1.60×，正文 73%/46%；词元复现率 16.9%/15.1% |
+
+复算方式见 [`paper/README.md`](paper/README.md)。

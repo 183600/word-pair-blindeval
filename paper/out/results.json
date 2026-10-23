@@ -1,0 +1,604 @@
+{
+  "N": 240,
+  "overall_wins": {
+    "baseline": 224,
+    "cleaned_word_pairs": 15,
+    "tie": 1
+  },
+  "cells": {
+    "deepseek-flash|deepseek-flash": {
+      "n": 60,
+      "wins": {
+        "baseline": 54,
+        "cleaned_word_pairs": 5,
+        "tie": 1
+      },
+      "win_rate_base": 0.9,
+      "d_overall": -1.2666666666666666,
+      "dims": {
+        "logic": -1.0166666666666666,
+        "concreteness": -1.4666666666666666,
+        "actionability": -1.9,
+        "originality": 0.5166666666666667,
+        "overall": -1.2666666666666666
+      }
+    },
+    "deepseek-flash|deepseek-v4-pro": {
+      "n": 60,
+      "wins": {
+        "baseline": 52,
+        "cleaned_word_pairs": 8,
+        "tie": 0
+      },
+      "win_rate_base": 0.8666666666666667,
+      "d_overall": -1.05,
+      "dims": {
+        "logic": -1.0833333333333333,
+        "concreteness": -1.3,
+        "actionability": -1.65,
+        "originality": 0.65,
+        "overall": -1.05
+      }
+    },
+    "deepseek-v4-pro|deepseek-flash": {
+      "n": 60,
+      "wins": {
+        "baseline": 59,
+        "cleaned_word_pairs": 1,
+        "tie": 0
+      },
+      "win_rate_base": 0.9833333333333333,
+      "d_overall": -2.3833333333333333,
+      "dims": {
+        "logic": -1.9833333333333334,
+        "concreteness": -2.7666666666666666,
+        "actionability": -2.8833333333333333,
+        "originality": -0.21666666666666667,
+        "overall": -2.3833333333333333
+      }
+    },
+    "deepseek-v4-pro|deepseek-v4-pro": {
+      "n": 60,
+      "wins": {
+        "baseline": 59,
+        "cleaned_word_pairs": 1,
+        "tie": 0
+      },
+      "win_rate_base": 0.9833333333333333,
+      "d_overall": -2.183333333333333,
+      "dims": {
+        "logic": -2.0833333333333335,
+        "concreteness": -2.7666666666666666,
+        "actionability": -2.8333333333333335,
+        "originality": 0.3,
+        "overall": -2.183333333333333
+      }
+    }
+  },
+  "dims": {
+    "logic": {
+      "baseline": 8.979166666666666,
+      "cleaned": 7.4375,
+      "diff": -1.541666666666666,
+      "sd_diff": 1.2300003968658293,
+      "cohens_dz": -1.253387129463532
+    },
+    "concreteness": {
+      "baseline": 8.904166666666667,
+      "cleaned": 6.829166666666667,
+      "diff": -2.075,
+      "sd_diff": 1.5233880979813152,
+      "cohens_dz": -1.3620954520713675
+    },
+    "actionability": {
+      "baseline": 8.666666666666666,
+      "cleaned": 6.35,
+      "diff": -2.3166666666666664,
+      "sd_diff": 1.568429821827298,
+      "cohens_dz": -1.4770610928371892
+    },
+    "originality": {
+      "baseline": 7.5375,
+      "cleaned": 7.85,
+      "diff": 0.3125,
+      "sd_diff": 1.2468579757596618,
+      "cohens_dz": 0.2506299883991246
+    },
+    "overall": {
+      "baseline": 8.833333333333334,
+      "cleaned": 7.1125,
+      "diff": -1.720833333333334,
+      "sd_diff": 1.2680427268208416,
+      "cohens_dz": -1.3570783514903322
+    }
+  },
+  "dims_by_gen": {
+    "deepseek-flash": {
+      "logic": {
+        "baseline": 8.983333333333333,
+        "cleaned": 7.933333333333334,
+        "diff": -1.05
+      },
+      "concreteness": {
+        "baseline": 8.891666666666667,
+        "cleaned": 7.508333333333334,
+        "diff": -1.3833333333333333
+      },
+      "actionability": {
+        "baseline": 8.816666666666666,
+        "cleaned": 7.041666666666667,
+        "diff": -1.775
+      },
+      "originality": {
+        "baseline": 7.608333333333333,
+        "cleaned": 8.191666666666666,
+        "diff": 0.5833333333333334
+      },
+      "overall": {
+        "baseline": 8.875,
+        "cleaned": 7.716666666666667,
+        "diff": -1.1583333333333334
+      }
+    },
+    "deepseek-v4-pro": {
+      "logic": {
+        "baseline": 8.975,
+        "cleaned": 6.941666666666666,
+        "diff": -2.033333333333333
+      },
+      "concreteness": {
+        "baseline": 8.916666666666666,
+        "cleaned": 6.15,
+        "diff": -2.7666666666666666
+      },
+      "actionability": {
+        "baseline": 8.516666666666667,
+        "cleaned": 5.658333333333333,
+        "diff": -2.8583333333333334
+      },
+      "originality": {
+        "baseline": 7.466666666666667,
+        "cleaned": 7.508333333333334,
+        "diff": 0.041666666666666664
+      },
+      "overall": {
+        "baseline": 8.791666666666666,
+        "cleaned": 6.508333333333334,
+        "diff": -2.283333333333333
+      }
+    }
+  },
+  "length": {
+    "deepseek-flash": {
+      "lb_mean": 2773.7,
+      "lc_mean": 1960.3333333333333,
+      "ratio_mean": 0.7164626141207117,
+      "ratio_median": 0.6750577321648882,
+      "pc_clean_longer": 0.15
+    },
+    "deepseek-v4-pro": {
+      "lb_mean": 3575.65,
+      "lc_mean": 1588.3,
+      "ratio_mean": 0.4528537646059028,
+      "ratio_median": 0.4273009462610644,
+      "pc_clean_longer": 0.0
+    },
+    "all": {
+      "lb_mean": 3174.675,
+      "lc_mean": 1774.3166666666666,
+      "ratio_mean": 0.5846581893633072,
+      "ratio_median": 0.5755880909973521
+    }
+  },
+  "corr": {
+    "deepseek-flash": {
+      "spearman_ratio_doverall": 0.382776008743423,
+      "p": 1.5980909943141835e-05,
+      "pearson": 0.45893384836431633,
+      "p_pearson": 1.3506624271922918e-07,
+      "n": 120
+    },
+    "deepseek-v4-pro": {
+      "spearman_ratio_doverall": 0.5209376555243743,
+      "p": 1.0635623249938023e-09,
+      "pearson": 0.5814548888128012,
+      "p_pearson": 3.318078952641147e-12,
+      "n": 120
+    },
+    "all": {
+      "spearman_ratio_doverall": 0.5852946177900035,
+      "p": 1.847240770107472e-23,
+      "pearson": 0.6147630371371579,
+      "p_pearson": 2.4441697405810225e-26,
+      "n": 240
+    }
+  },
+  "strata": [
+    {
+      "lo": 0,
+      "hi": 0.5,
+      "n": 100,
+      "w_baseline": 100,
+      "w_cleaned_word_pairs": 0,
+      "w_tie": 0,
+      "d_overall": -2.5,
+      "wr": 1.0
+    },
+    {
+      "lo": 0.5,
+      "hi": 0.8,
+      "n": 96,
+      "w_baseline": 92,
+      "w_cleaned_word_pairs": 4,
+      "w_tie": 0,
+      "d_overall": -1.3645833333333333,
+      "wr": 0.9583333333333334
+    },
+    {
+      "lo": 0.8,
+      "hi": 1.0,
+      "n": 26,
+      "w_baseline": 23,
+      "w_cleaned_word_pairs": 2,
+      "w_tie": 1,
+      "d_overall": -1.0769230769230769,
+      "wr": 0.8846153846153846
+    },
+    {
+      "lo": 1.0,
+      "hi": 1.2,
+      "n": 10,
+      "w_baseline": 7,
+      "w_cleaned_word_pairs": 3,
+      "w_tie": 0,
+      "d_overall": -0.7,
+      "wr": 0.7
+    },
+    {
+      "lo": 1.2,
+      "hi": 99,
+      "n": 8,
+      "w_baseline": 2,
+      "w_cleaned_word_pairs": 6,
+      "w_tie": 0,
+      "d_overall": 0.375,
+      "wr": 0.25
+    }
+  ],
+  "subsets": [
+    {
+      "name": "ratio>=0.9",
+      "n": 28,
+      "baseline": 19,
+      "cleaned_word_pairs": 9,
+      "tie": 0,
+      "wr": 0.6785714285714286,
+      "d_overall": -0.5,
+      "d_orig": 0.6785714285714286
+    },
+    {
+      "name": "ratio>=1.0",
+      "n": 18,
+      "baseline": 9,
+      "cleaned_word_pairs": 9,
+      "tie": 0,
+      "wr": 0.5,
+      "d_overall": -0.2222222222222222,
+      "d_orig": 0.6666666666666666
+    },
+    {
+      "name": "|ratio-1|<=0.15",
+      "n": 26,
+      "baseline": 20,
+      "cleaned_word_pairs": 5,
+      "tie": 1,
+      "wr": 0.7692307692307693,
+      "d_overall": -0.6538461538461539,
+      "d_orig": 0.8076923076923077
+    },
+    {
+      "name": "|ratio-1|<=0.30",
+      "n": 72,
+      "baseline": 60,
+      "cleaned_word_pairs": 11,
+      "tie": 1,
+      "wr": 0.8333333333333334,
+      "d_overall": -0.9861111111111112,
+      "d_orig": 0.5833333333333334
+    }
+  ],
+  "by_task": {
+    "1": {
+      "task_name": "函数式编程语言",
+      "n": 40,
+      "baseline": 38,
+      "cleaned_word_pairs": 2,
+      "tie": 0,
+      "wr": 0.95,
+      "d_overall": -2.0,
+      "ratio": 0.556815979902051,
+      "d_orig": 1.0
+    },
+    "2": {
+      "task_name": "提升LLM性能",
+      "n": 40,
+      "baseline": 38,
+      "cleaned_word_pairs": 1,
+      "tie": 1,
+      "wr": 0.95,
+      "d_overall": -1.075,
+      "ratio": 0.612714471560213,
+      "d_orig": -0.6
+    },
+    "3": {
+      "task_name": "CLI工具Idea",
+      "n": 40,
+      "baseline": 39,
+      "cleaned_word_pairs": 1,
+      "tie": 0,
+      "wr": 0.975,
+      "d_overall": -1.8,
+      "ratio": 0.4086668050238793,
+      "d_orig": 0.125
+    },
+    "4": {
+      "task_name": "新理论",
+      "n": 40,
+      "baseline": 39,
+      "cleaned_word_pairs": 1,
+      "tie": 0,
+      "wr": 0.975,
+      "d_overall": -1.95,
+      "ratio": 0.5994029513159822,
+      "d_orig": 0.325
+    },
+    "5": {
+      "task_name": "人格模型",
+      "n": 40,
+      "baseline": 31,
+      "cleaned_word_pairs": 9,
+      "tie": 0,
+      "wr": 0.775,
+      "d_overall": -1.275,
+      "ratio": 0.7363537151354114,
+      "d_orig": 0.325
+    },
+    "6": {
+      "task_name": "ML架构",
+      "n": 40,
+      "baseline": 39,
+      "cleaned_word_pairs": 1,
+      "tie": 0,
+      "wr": 0.975,
+      "d_overall": -2.225,
+      "ratio": 0.5939952132423066,
+      "d_orig": 0.7
+    }
+  },
+  "sign_test": {
+    "n_pos": 0,
+    "n": 6,
+    "p_two_sided": 0.03125
+  },
+  "cluster_boot": {
+    "wr_mean": 0.9337904166666667,
+    "wr_ci": [
+      0.8666666666666667,
+      0.9708333333333333
+    ],
+    "d_mean": -1.72191875,
+    "d_ci": [
+      -2.0375,
+      -1.3833333333333333
+    ],
+    "B": 10000
+  },
+  "naive_binom": {
+    "wins": 224,
+    "n": 240,
+    "p_two_sided": 4.231370343341126e-48
+  },
+  "position": {
+    "n_A_baseline": 113,
+    "n_A_cleaned": 127,
+    "D1_AminusB_when_A_base": 2.1150442477876106,
+    "D2_AminusB_when_A_clean": -1.3700787401574803,
+    "cond_effect": 1.7425614939725453,
+    "pos_effect": 0.3724827538150651
+  },
+  "agreement": {
+    "deepseek-flash": {
+      "n": 60,
+      "agree": 0.8666666666666667,
+      "kappa3": 0.36170212765957466,
+      "matrix": [
+        [
+          49,
+          5,
+          0
+        ],
+        [
+          2,
+          3,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ]
+      ],
+      "j1_base_wins": 54,
+      "j2_base_wins": 52
+    },
+    "deepseek-v4-pro": {
+      "n": 60,
+      "agree": 1.0,
+      "kappa3": 1.0,
+      "matrix": [
+        [
+          59,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "j1_base_wins": 59,
+      "j2_base_wins": 59
+    }
+  },
+  "score_dist": {
+    "values": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "counts": [
+      1,
+      2,
+      5,
+      14,
+      43,
+      69,
+      128,
+      216,
+      2
+    ],
+    "mean": 7.972916666666666,
+    "sd": 1.256837596750996,
+    "n_9": 216,
+    "n_10": 2,
+    "n_total": 480
+  },
+  "score_sd_by_cell": {
+    "deepseek-flash|deepseek-flash": 0.9097972809571233,
+    "deepseek-flash|deepseek-v4-pro": 0.7938400801352448,
+    "deepseek-v4-pro|deepseek-flash": 1.5256674160595325,
+    "deepseek-v4-pro|deepseek-v4-pro": 1.4632520092509802
+  },
+  "reg": {
+    "intercept": -0.8219311439238794,
+    "se_intercept": 0.2175272284807165,
+    "slope_logratio": 1.650330689543181,
+    "se_slope": 0.30472909891593075,
+    "t_slope": 5.415730546948775,
+    "p_slope": 0.002905093957638716,
+    "intercept_ci": [
+      -1.3811026862127198,
+      -0.2627596016350392
+    ]
+  },
+  "reg_null": {
+    "mean_d": -1.7208333333333334,
+    "se_cluster": 0.08966416109692979
+  },
+  "mech": {
+    "gen": {
+      "deepseek-flash": {
+        "raw_len_mean": 4318.483333333334,
+        "baseline_len_mean": 2773.7,
+        "body_len_mean": 2030.7166666666667,
+        "body_over_baseline": 0.7321327709076926,
+        "pair_count_mean": 199.85,
+        "pair_count_min": 191,
+        "pair_ge190": 60,
+        "pair_eq0": 0,
+        "coverage_mean": 0.16945205761895069,
+        "coverage_median": 0.14039617508593025,
+        "coverage_max": 0.5085324232081911,
+        "wp_completion_mean": 8252.3,
+        "base_completion_mean": 4089.616666666667,
+        "n_at_8192": 23,
+        "n_base_at_8192": 5
+      },
+      "deepseek-v4-pro": {
+        "raw_len_mean": 4090.3333333333335,
+        "baseline_len_mean": 3575.65,
+        "body_len_mean": 1652.7166666666667,
+        "body_over_baseline": 0.4622143293293993,
+        "pair_count_mean": 192.26666666666668,
+        "pair_count_min": 0,
+        "pair_ge190": 58,
+        "pair_eq0": 1,
+        "coverage_mean": 0.15101510108885646,
+        "coverage_median": 0.13320756924336813,
+        "coverage_max": 0.7317073170731707,
+        "wp_completion_mean": 9795.666666666666,
+        "base_completion_mean": 6123.366666666667,
+        "n_at_8192": 38,
+        "n_base_at_8192": 15
+      }
+    },
+    "coverage": {},
+    "clean_fidelity": {
+      "n": 120,
+      "mean": 0.9794615729692853,
+      "median": 0.9903091115139513,
+      "min": 0.6347182229535171,
+      "p10": 0.8766741383589327,
+      "n_lt_0.6": 0,
+      "n_residual": 0,
+      "worst": {
+        "gen": "deepseek-v4-pro",
+        "task": 1,
+        "run": 8,
+        "body": 7293,
+        "clean": 4629,
+        "ratio": 0.6347182229535171,
+        "residual": false
+      }
+    }
+  },
+  "v1": {
+    "n_raw": 68,
+    "n_valid": 60,
+    "wins": {
+      "baseline": 49,
+      "cleaned_word_pairs": 10,
+      "tie": 1
+    },
+    "dims": {
+      "logic": {
+        "baseline": 8.916666666666666,
+        "cleaned": 7.783333333333333,
+        "diff": -1.1333333333333329
+      },
+      "concreteness": {
+        "baseline": 8.483333333333333,
+        "cleaned": 7.283333333333333,
+        "diff": -1.1999999999999993
+      },
+      "actionability": {
+        "baseline": 8.233333333333333,
+        "cleaned": 6.583333333333333,
+        "diff": -1.6499999999999995
+      },
+      "originality": {
+        "baseline": 7.15,
+        "cleaned": 8.25,
+        "diff": 1.0999999999999996
+      },
+      "overall": {
+        "baseline": 8.516666666666667,
+        "cleaned": 7.483333333333333,
+        "diff": -1.033333333333334
+      }
+    },
+    "has_len": true
+  }
+}
