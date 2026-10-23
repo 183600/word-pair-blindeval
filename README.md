@@ -3,6 +3,10 @@
 本仓库归档 Kaggle Notebook **`notebook22d6286ede`** 的代码、运行日志、LLM 生成内容和盲评实验结果。
 原 Notebook 地址：<https://www.kaggle.com/code/wenjiazhong82355/notebook22d6286ede>
 
+> **v2 多模型实验**：通用/Kaggle 代码见 [`notebook_v2/`](notebook_v2/)，
+> DeepSeek 官方 API 本地实验入口见 [`deepseek_local/`](deepseek_local/)，
+> 结果与汇总见 [`llm_experiment_results_v2/`](llm_experiment_results_v2/)。
+
 ## 1. 实验设计
 
 | 项目 | 内容 |
