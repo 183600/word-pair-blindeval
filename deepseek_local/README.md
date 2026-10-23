@@ -24,7 +24,7 @@
 | 盲评 | 2 评委 × 2 生成模型 × 60 对 = 240 对 |
 | 并发 | 2400 |
 | 位置平衡 | 每个评委单顺序，A/B 位置由确定性 hash 平衡 |
-| 断点续跑 | 每 5 条 commit、每 20 条 push；结果分支 `v2-deepseek` |
+| 断点续跑 | 每 5 条 commit、每 20 条 push；结果分支 `main`（原 `v2-deepseek` 已并入） |
 
 ## 运行
 
@@ -46,14 +46,15 @@ N_RUNS=3 CONCURRENCY=64 GIT_BRANCH=v2-deepseek-pilot \
 
 脚本的工作方式：
 
-1. 从 Gitee `v2-deepseek` 分支 clone 或 pull 到 `REPO_DIR`（默认 `./jkdsfn_deepseek_repo`）；
+1. 从 Gitee `main` 分支 clone 或 pull 到 `REPO_DIR`（默认 `./jkdsfn_deepseek_repo`）；
 2. 分析 `llm_experiment_results_v2/` 中的缺口；
 3. 补生成 → 补清洗 → 双评委盲评；
 4. 每 5 条 commit、每 20 条 push；中断后重跑自动续。
 
 ## 结果
 
-完整结果已归档在 `main` 分支的 `llm_experiment_results_v2/`，也保留在 `v2-deepseek` 分支。
+完整结果已归档在 `main` 分支的 `llm_experiment_results_v2/`。原 `v2-deepseek` 分支已并入
+main 并从远程删除，其历史与论文源码保留在 main 中。
 
 汇总：<https://gitee.com/qwe12345678/jkdsfn/blob/main/llm_experiment_results_v2/SUMMARY.md>
 

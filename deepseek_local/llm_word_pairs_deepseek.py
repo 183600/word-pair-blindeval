@@ -51,7 +51,8 @@ def main() -> None:
     _set_default("GIT_PUSH_INTERVAL", "20")
     _set_default("GITEE_USER", "qwe12345678")
     _set_default("GIT_REMOTE_URL", "https://gitee.com/qwe12345678/jkdsfn.git")
-    _set_default("GIT_BRANCH", "v2-deepseek")
+    # 原 v2-deepseek 已并入 main；如需并行实验，可用 GIT_BRANCH 覆盖
+    _set_default("GIT_BRANCH", "main")
     _set_default("REPO_DIR", str(Path.cwd() / "jkdsfn_deepseek_repo"))
 
     if not SCRIPT.exists():

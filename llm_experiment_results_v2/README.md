@@ -1,7 +1,7 @@
 # v2 本地 DeepSeek 官方 API 实验
 
 本目录是 **本地** 运行的 v2 实验结果，使用 DeepSeek 官方 API（`https://api.deepseek.com/v1`），
-与 Kaggle 上的 NVIDIA 多模型实验分开保存在分支 `v2-deepseek`。
+结果已合并到 `main` 分支；原 `v2-deepseek` 分支已并入 main 并从远程删除。
 
 ## 配置
 
@@ -68,4 +68,4 @@ llm_experiment_results_v2/
   通用实现是 `notebook_v2/llm_word_pairs_v2.py`。本实验通过环境变量注入
   `DEEPSEEK_API_KEY`/`OPENAI_BASE_URL`，仓库中不保存密钥。
 - 参数：`N_RUNS=10`、`CONCURRENCY=2400`、`COUNTERBALANCE=0`（每个评委单顺序，A/B 位置由
-  确定性 hash 平衡）、`GIT_BRANCH=v2-deepseek`。
+  确定性 hash 平衡）、`GIT_BRANCH=main`。

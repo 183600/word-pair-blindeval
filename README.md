@@ -87,9 +87,10 @@ N_RUNS=3 CONCURRENCY=64 GIT_BRANCH=v2-deepseek-pilot \
   bash deepseek_local/run_deepseek_v2.sh
 ```
 
-脚本会从 Gitee 的 `v2-deepseek` 分支 clone/pull 到 `REPO_DIR`，分析
+脚本会从 Gitee 的 `main` 分支 clone/pull 到 `REPO_DIR`，分析
 `llm_experiment_results_v2/` 的缺口，然后补生成、补清洗、双评委盲评；每 5 条 commit、
-每 20 条 push，中断后重跑可续。默认结果分支是 `v2-deepseek`，可用 `GIT_BRANCH` 覆盖。
+每 20 条 push，中断后重跑可续。默认结果分支是 `main`（原 `v2-deepseek` 已并入），
+可用 `GIT_BRANCH` 覆盖。
 
 ## 5. 论文
 

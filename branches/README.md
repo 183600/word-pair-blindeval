@@ -3,6 +3,9 @@
 本目录保存 main 的历史快照，以及 main 以外分支的文件快照。历史版本原样归档在这里；
 即使删除远程分支，也不会丢失文件内容。当前 main 以 v2 DeepSeek 实验为主线。
 
+> **2026-10-23 状态**：远程 `v2-kaggle`、`v2-deepseek` 已删除，仓库只保留 `main`。
+> 删除前的 refs 与完整历史另存为本地 bundle，见文末。
+
 ## 归档清单
 
 | 子目录 | 来源 | 归档所用 commit | 提交时间 | 文件数 | 目录大小 |
@@ -45,8 +48,10 @@
 
 - **`main`**：当前 v2 DeepSeek 实验主线（`deepseek_local/` + `llm_experiment_results_v2/`
   + `notebook_v2/` + `paper/`），v1 Kaggle 内容和 v2 Kaggle 快照已移入本目录。
-- **`v2-deepseek`**：DeepSeek 官方 API 实验分支；已合并进 main，保留其历史与论文源码。
-- **`v2-kaggle`**：Kaggle/NVIDIA v2 实验分支；完整文件快照已归档到 `v2-kaggle/`。
+- **`v2-deepseek`**：DeepSeek 官方 API 实验分支；已合并进 main，远程分支已删除，
+  其历史与论文源码保留在 main 中。
+- **`v2-kaggle`**：Kaggle/NVIDIA v2 实验分支；完整文件快照已归档到 `v2-kaggle/`，
+  远程分支已删除。
 - **`opencode-free-rerun`**：新增 `opencode_free_rerun.ipynb`、`opencode_free_rerun.py`、
   `opencode_free_results/`、`opencode_free_results_README.md`，共 15 个提交。
 - **`opencode-experiment-rerun`**：新增 `opencode_experiment_rerun.ipynb`、

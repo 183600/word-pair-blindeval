@@ -29,16 +29,17 @@
   随后被熔断；剩余 119 条写成 `[ERROR] model disabled`，`v2-kaggle` 上共 120 条错误记录。
 - 转至 `deepseek-ai/deepseek-v4.1-flash` 后同样连续 504；`glm` 尚未开始。
 - 结论：**并发 1 也不能绕过 NVIDIA NIM 的 504**；已再次停止并删除 Kernel。
-- `v2-kaggle` 分支保留为失败尝试记录，**没有有效 NVIDIA 结果**，未合并到 `main`。
+- `v2-kaggle` 分支的失败尝试记录已完整归档到 `branches/v2-kaggle/`，**没有有效 NVIDIA 结果**，
+  未合并到 `main`；该远程分支已删除。
 
 ## 本地 DeepSeek 官方 API 实验（已完成）
 
-- 分支：`v2-deepseek`（已合并到 `main`；该分支仍保留）
+- 分支：`main`（原 `v2-deepseek` 已合并，远程分支已删除）
 - 模型：`deepseek-flash`、`deepseek-v4-pro`（生成 + 评委）
 - 规模：2 模型 × 6 任务 × 2 条件 × 10 run = 240 条生成；120 条清洗；240 对盲评
 - 并发：2400（按用户要求）
 - 结果：240 对全部有效，清洗残留 **0/60/模型**；baseline 胜率 52–59/60。
-- 详见 `v2-deepseek` 分支的 `llm_experiment_results_v2/SUMMARY.md` 和 `README.md`。
+- 详见 `main` 分支的 `llm_experiment_results_v2/SUMMARY.md` 和 `README.md`。
 
 ## 首次 Kaggle 运行（已停止）
 
