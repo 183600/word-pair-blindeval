@@ -29,7 +29,7 @@ LLM 词对实验 v2（多生成模型 + 双评委 + 断点续跑）
   - clone 后显式设置 git identity；commit 失败立即抛错，不再“假完成”
   - 只 git add 结果白名单；提交前扫描密钥；token 用 http.extraheader，不写进 remote URL
   - 清洗 prompt 去除词对编号/“从上面词对中”等残留；正则校验 + 二次清洗
-  - 每个评委对每对做 A/B 双顺序；记录 swap 和 A/B 来源
+  - 每个评委默认对每对做一次评审（A/B 位置由 hash 平衡）；COUNTERBALANCE=1 可双顺序
   - 每条记录带 run_id/timestamp/model/temperature/prompt_version
   - 全局时间预算 + 每条 checkpoint + 断点续跑
   - 单个模型连续失败会熔断，避免一个坏模型烧完全部时间
@@ -980,7 +980,8 @@ def write_summary(models, judges):
         )
     lines += [
         "",
-        "> 每个评委内部对每对做 A/B 双顺序；位置偏差见每个 `summary__*.json` 的 `position` 字段。",
+        f"> 每个评委对每对做 {'A/B 双顺序' if COUNTERBALANCE else '一次评审（A/B 位置由确定性 hash 平衡）'}；"
+        "位置偏差见每个 `summary__*.json` 的 `position` 字段。",
         "> `cleaned_residual` 是清洗后仍含词对编号/“这些词中”等引用的条数。",
     ]
     (RESULTS_ROOT / "SUMMARY.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
