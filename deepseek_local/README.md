@@ -32,7 +32,7 @@
 python3 -m pip install -r deepseek_local/requirements.txt
 
 export DEEPSEEK_API_KEY='sk-...'      # 不要写入仓库
-export GITEE_TOKEN='...'              # 用于 push；只跑本地可以改成空并跳过 push
+export GITEE_TOKEN='...'              # 必需：运行结束会 push 到 Gitee
 
 bash deepseek_local/run_deepseek_v2.sh
 ```
