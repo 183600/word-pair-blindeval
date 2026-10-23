@@ -1,0 +1,199 @@
+% ============================================================
+% 词对提示对大语言模型开放式生成质量的影响
+% 主文档：导言区 + 标题块 + 摘要 + 章节引入
+% ============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[UTF8,scheme=plain]{ctex}
+\usepackage{geometry}
+\geometry{a4paper, top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{indentfirst}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage[
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=blue!55!black,
+    urlcolor=blue!55!black,
+    bookmarks=true,
+    bookmarksnumbered=true,
+    unicode=true
+]{hyperref}
+
+% ---------- 排版细节 ----------
+\widowpenalty=10000
+\clubpenalty=10000
+\setlength{\parskip}{0.3em}
+\linespread{1.32}
+\captionsetup{font=small, labelfont=bf, skip=5pt}
+
+% ---------- 标题样式（中文期刊风格） ----------
+\titleformat{\section}{\large\bfseries\heiti}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\normalsize\bfseries\heiti}{\thesubsection}{0.8em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.8em}{}
+\titlespacing*{\section}{0pt}{1.4em plus 0.3em minus 0.1em}{0.7em}
+\titlespacing*{\subsection}{0pt}{1.0em plus 0.2em minus 0.1em}{0.5em}
+
+% ---------- 页眉页脚 ----------
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape 词对提示对大语言模型开放式生成质量的影响}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ---------- 常用命令 ----------
+\newcommand{\baseline}{\textsc{baseline}}
+\newcommand{\wordpairs}{\textsc{word\_pairs}}
+
+\begin{document}
+
+% ============================================================
+% 标题块（正文首页，封面另行生成合并）
+% ============================================================
+\begin{center}
+{\zihao{2}\bfseries\heiti 词对提示对大语言模型开放式生成质量的影响\\[0.5em]}
+{\zihao{4}\bfseries\heiti 基于 DeepSeek 双模型生成与双评委盲评的实证研究\par}
+\vspace{1.2em}
+{\zihao{4} 183600\textsuperscript{1}\par}
+\vspace{0.3em}
+{\zihao{-5} \textsuperscript{1} 独立研究者（Gitee: qwe12345678），实验数据与代码归档于\\
+\url{https://gitee.com/qwe12345678/jkdsfn}（分支 \texttt{v2-deepseek}）\par}
+\vspace{0.8em}
+{\zihao{-5} 2026 年 10 月\par}
+\end{center}
+\vspace{0.6em}
+
+\noindent\rule{\textwidth}{0.75pt}
+\begin{center}
+{\bfseries\heiti 摘\quad 要}
+\end{center}
+\noindent
+针对“让大语言模型在正式作答前先输出 200 组灵感词对能否提升开放式生成质量”这一问题，本文设计并实施了一项受控实验。以 DeepSeek-V4.1-Flash 与 DeepSeek-V4-Pro 两个商用大语言模型为生成模型，在 6 个开放式生成任务上对比 \baseline{}（直接作答）与 \wordpairs{}（先输出 200 组词对再作答）两种条件，每格重复 10 次，共获得 240 条有效生成。词对条件的输出经严格协议清洗（残留引用 0 条）后，由上述两个模型作为评委对每对回答进行位置哈希平衡的 A/B 盲评，共获得 240 对有效比较。结果表明：\baseline{} 在 93.3\%（224/240）的比较中胜出，整体质量配对平均分差为 $+1.72$ 分（配对 $t$ 检验 $t=21.02$，$p<0.001$；Wilcoxon 符号秩检验 $p<0.001$）；词对提示仅在原创性维度获得小幅但统计显著的提升（平均 $+0.31$ 分，$p<0.001$），在逻辑性、具体性与可操作性三个维度均显著落后。任务分解显示原创性收益集中于概念构建型任务（如人格模型设计），而词对条件的生成 token 成本约为 \baseline{} 的 $1.60\sim2.02$ 倍，清洗后正文长度反而更短。机理分析表明，指令目标稀释、联想语境干扰与清洗信息损失是词对提示整体失效的三条主要途径。本研究为“先发散、后收敛”类提示策略的适用边界提供了可复现的实证依据，并讨论了以原创性为首要目标时该类提示的可行用法。
+
+\vspace{0.4em}
+
+\noindent{\bfseries\heiti 关键词：} 大语言模型；提示工程；词对提示；开放式生成；LLM 盲评；原创性评价
+
+\noindent\rule{\textwidth}{0.75pt}
+\vspace{1.0em}
+
+\begin{center}
+{\bfseries Abstract}
+\end{center}
+\noindent
+To answer whether asking large language models (LLMs) to first output 200 inspiration word pairs before answering improves the quality of open-ended generation, we conducted a controlled experiment. Using two commercial LLMs, DeepSeek-V4.1-Flash and DeepSeek-V4-Pro, as generators, we compared the \textsc{baseline} (direct answering) condition against the \textsc{word\_pairs} condition (outputting 200 word pairs before answering) on six open-ended generation tasks, with 10 runs per cell, yielding 240 valid generations. After a strict cleaning protocol (zero residual references), the word-pair outputs were evaluated through position-balanced A/B blind comparisons by both models acting as judges, producing 240 valid paired judgments. The \textsc{baseline} won 93.3\% (224/240) of comparisons, with a mean paired overall-quality difference of $+1.72$ points (paired $t=21.02$, $p<0.001$; Wilcoxon $p<0.001$). The word-pair prime yielded only a small but significant gain in originality ($+0.31$ points, $p<0.001$) while lagging significantly in logic, concreteness, and actionability. Task-level analysis shows that originality gains concentrate in concept-construction tasks, whereas the word-pair condition costs $1.60\sim2.02\times$ more completion tokens and produces shorter post-cleaning texts. We identify goal dilution, associative-context distraction, and cleaning-induced information loss as three mechanisms underlying the overall failure of word-pair priming. The study provides reproducible empirical evidence for the applicability boundary of diverge-then-converge prompting strategies.
+\vspace{0.4em}
+
+\noindent{\bfseries Keywords:} large language models; prompt engineering; word-pair priming; open-ended generation; LLM-as-a-judge; originality evaluation
+
+\vspace{1.2em}
+
+\input{sec-intro}
+\input{sec-method}
+\input{sec-results}
+\input{sec-discussion}
+
+% ============================================================
+% 参考文献
+% ============================================================
+\begin{thebibliography}{99}
+\zihao{-5}
+\setlength{\itemsep}{0.2em}
+
+\bibitem{wei2022cot}
+Wei J, Wang X, Schuurmans D, et al.
+Chain-of-thought prompting elicits reasoning in large language models[C]//
+Advances in Neural Information Processing Systems (NeurIPS 2022). 2022: 24824--24837.
+arXiv:2201.11903.
+
+\bibitem{kojima2022zeroshot}
+Kojima T, Gu S S, Reid M, et al.
+Large language models are zero-shot reasoners[C]//
+Advances in Neural Information Processing Systems (NeurIPS 2022). 2022: 22199--22213.
+arXiv:2205.11916.
+
+\bibitem{wang2023selfconsistency}
+Wang X, Wei J, Schuurmans D, et al.
+Self-consistency improves chain of thought reasoning in language models[C]//
+International Conference on Learning Representations (ICLR 2023). 2023.
+arXiv:2203.11171.
+
+\bibitem{yao2023tot}
+Yao S, Yu D, Zhao J, et al.
+Tree of thoughts: Deliberate problem solving with large language models[C]//
+Advances in Neural Information Processing Systems (NeurIPS 2023). 2023.
+arXiv:2305.10601.
+
+\bibitem{sclar2024format}
+Sclar M, Choi Y, Tsvetkov Y, et al.
+Quantifying language models' sensitivity to spurious features in prompt design or: How I learned to start worrying about prompt formatting[C]//
+International Conference on Learning Representations (ICLR 2024). 2024.
+arXiv:2310.11324.
+
+\bibitem{shi2023distracted}
+Shi F, Chen X, Misra K, et al.
+Large language models can be easily distracted by irrelevant context[C]//
+International Conference on Machine Learning (ICML 2023). 2023: 31220--31236.
+arXiv:2302.00093.
+
+\bibitem{liu2024lost}
+Liu N F, Lin K, Hewitt J, et al.
+Lost in the middle: How language models use long contexts[J]//
+Transactions of the Association for Computational Linguistics, 2024, 12: 157--173.
+arXiv:2307.03172.
+
+\bibitem{zheng2023judging}
+Zheng L, Chiang W L, Sheng Y, et al.
+Judging LLM-as-a-judge with MT-Bench and Chatbot Arena[C]//
+Advances in Neural Information Processing Systems (NeurIPS 2023), Datasets and Benchmarks Track. 2023.
+arXiv:2306.05685.
+
+\bibitem{shi2025position}
+Shi L, Zhao H, Zhang Y, et al.
+A systematic study of position bias in LLM-as-a-judge[C]//
+Proceedings of IJCNLP-AACL 2025. 2025: 312--335.
+
+\bibitem{ouyang2022instructgpt}
+Ouyang L, Wu J, Jiang X, et al.
+Training language models to follow instructions with human feedback[C]//
+Advances in Neural Information Processing Systems (NeurIPS 2022). 2022: 27730--27744.
+arXiv:2203.02155.
+
+\bibitem{li2023emotion}
+Li Y, Li Y, Yuan Y, et al.
+Large language models understand and can be improved by emotion stimuli[J].
+arXiv preprint arXiv:2307.11760, 2023.
+
+\bibitem{deepseekv3}
+DeepSeek-AI.
+DeepSeek-V3 technical report[J]. arXiv preprint arXiv:2412.19437, 2024.
+
+\bibitem{deepseekr1}
+DeepSeek-AI.
+DeepSeek-R1: Incentivizing reasoning capability in LLMs via reinforcement learning[J].
+arXiv preprint arXiv:2501.12948, 2025.
+
+\end{thebibliography}
+
+% ---------- PDF 元数据 ----------
+\hypersetup{
+    pdftitle={词对提示对大语言模型开放式生成质量的影响},
+    pdfauthor={183600},
+    pdfsubject={大语言模型提示工程实证研究},
+    pdfkeywords={大语言模型, 提示工程, 词对提示, 开放式生成, LLM盲评, 原创性}
+}
+
+\end{document}

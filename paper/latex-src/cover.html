@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Serif+SC:wght@400;700;900&family=Inter:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    @page { size: 794px 1123px; margin: 0; }
+    :root {
+      --c-bg: #162032;
+      --c-accent: #8B7E5A;
+      --c-text: #FFFFFF;
+      --c-muted: #8898A8;
+      --c-footer: #607080;
+    }
+    html, body { margin: 0; padding: 0; width: 794px; height: 1123px; background: var(--c-bg); color: var(--c-text); font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+    @media screen {
+      html { height: auto; display: flex; justify-content: center; min-height: 100vh; background: var(--c-bg); }
+      body { transform-origin: top center; scale: min(1, calc(100vw / 794), calc(100vh / 1123)); margin: 0 auto; box-shadow: 0 0 60px rgba(0,0,0,0.3); }
+    }
+    .cover { width: 794px; height: 1123px; position: relative; box-sizing: border-box; }
+    .vline { position: absolute; left: 57px; top: 76px; bottom: 76px; width: 2.5px; background: var(--c-accent); }
+    .content { position: absolute; left: 100px; right: 70px; top: 0; bottom: 0; }
+    .label { position: absolute; top: 132px; font-size: 9pt; color: var(--c-accent); letter-spacing: 3px; text-transform: uppercase; font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+    .title { position: absolute; top: 210px; font-size: 29pt; font-weight: 700; line-height: 1.42; font-family: 'Noto Serif SC', 'Playfair Display', serif; color: var(--c-text); max-width: 570px; }
+    .subtitle { position: absolute; top: 480px; font-size: 14pt; font-weight: 400; line-height: 1.5; color: var(--c-accent); max-width: 540px; font-family: 'Noto Serif SC', 'Playfair Display', serif; }
+    .keywords { position: absolute; top: 580px; font-size: 10.5pt; line-height: 1.7; color: var(--c-muted); max-width: 540px; }
+    .stats { position: absolute; top: 700px; display: flex; gap: 44px; }
+    .stat { display: flex; flex-direction: column; }
+    .stat .num { font-size: 21pt; font-weight: 700; color: var(--c-text); font-family: 'Inter', 'Noto Sans SC', sans-serif; }
+    .stat .cap { font-size: 8.5pt; color: var(--c-muted); margin-top: 5px; letter-spacing: 0.5px; }
+    .authors { position: absolute; top: 850px; font-size: 12pt; color: var(--c-text); }
+    .institution { position: absolute; top: 888px; font-size: 10pt; color: var(--c-muted); line-height: 1.5; }
+    .footer { position: absolute; bottom: 76px; left: 0; right: 0; display: flex; justify-content: space-between; font-size: 9pt; color: var(--c-footer); }
+  </style>
+</head>
+<body>
+  <div class="cover">
+    <div class="vline"></div>
+    <div class="content">
+      <div class="label">研究论文 · RESEARCH PAPER</div>
+      <div class="title">词对提示对大语言模型<br>开放式生成质量的影响</div>
+      <div class="subtitle">基于 DeepSeek 双模型生成<br>与双评委盲评的实证研究</div>
+      <div class="keywords">大语言模型 · 提示工程 · 词对提示 · 开放式生成 · LLM 盲评 · 原创性评价</div>
+      <div class="stats">
+        <div class="stat"><span class="num">240</span><span class="cap">有效生成</span></div>
+        <div class="stat"><span class="num">240</span><span class="cap">盲评配对</span></div>
+        <div class="stat"><span class="num">93.3%</span><span class="cap">baseline 胜率</span></div>
+        <div class="stat"><span class="num">p&lt;0.001</span><span class="cap">整体质量差异</span></div>
+      </div>
+      <div class="authors">183600</div>
+      <div class="institution">独立研究者（Gitee: qwe12345678）<br>实验数据与代码归档：gitee.com/qwe12345678/jkdsfn（分支 v2-deepseek）</div>
+      <div class="footer">
+        <span>LLM Word-Pair Priming Experiment</span>
+        <span>2026 年 10 月</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

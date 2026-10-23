@@ -1,0 +1,86 @@
+% ============================================================
+% 第 3 章 实验设计
+% ============================================================
+\section{实验设计}\label{sec:method}
+
+\subsection{总体架构}
+
+实验遵循“生成—清洗—盲评”三阶段流水线（图~\ref{fig:pipeline}）。阶段 0 为生成阶段：对每个任务以两种条件各调用生成模型 10 次；阶段 1 为清洗阶段：仅对 \wordpairs{} 条件的输出剥离词对列表与正文中的词对引用；阶段 2 为盲评阶段：将同一（任务，重复）下的 \baseline{} 正文与清洗后词对正文组成一对，交由评委模型进行 A/B 盲评。两个生成模型同时充当评委，形成 $2\times2$ 的生成$\times$评审交叉设计。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  font=\small,
+  box/.style={draw=gray!70, rounded corners=2pt, text width=2.15cm,
+              minimum height=1.05cm, align=center, fill=blue!4, inner sep=2pt},
+  arr/.style={-{Stealth[length=5pt]}, thick, gray!70}
+]
+  \node[box] (tasks) {6 个开放式\\任务};
+  \node[box, right=0.72cm of tasks] (gen) {双条件生成\\$2$ 模型 $\times 2$ 条件\\$\times 10$ 次};
+  \node[box, right=0.72cm of gen] (clean) {LLM 清洗\\正则校验\\二次清洗};
+  \node[box, right=0.72cm of clean] (judge) {A/B 盲评\\$2$ 评委\\位置哈希平衡};
+  \node[box, right=0.72cm of judge] (stats) {配对统计\\胜负 / 分差\\显著性检验};
+  \draw[arr] (tasks) -- (gen);
+  \draw[arr] (gen) -- (clean) node[midway, above, font=\small\bfseries, text=black] {词对输出};
+  \draw[arr] (gen) to[bend right=28] node[midway, below, font=\small\bfseries, text=black] {baseline 正文} (judge);
+  \draw[arr] (clean) -- (judge);
+  \draw[arr] (judge) -- (stats);
+\end{tikzpicture}
+\caption{实验三阶段流水线。生成阶段的 \baseline{} 输出直接进入盲评，\wordpairs{} 输出需先经清洗阶段剥离词对列表与引用。}
+\label{fig:pipeline}
+\end{figure}
+
+\subsection{任务集}\label{sec:tasks}
+
+为覆盖开放式生成的不同类型，实验选取 6 个中文开放式任务（表~\ref{tab:tasks}）：T1、T3、T6 偏工程方案设计（编程语言、CLI 工具、机器学习架构），T2 偏方法论综合，T4、T5 偏概念构建（新理论、人格分类模型）。所有任务均无唯一正确答案，评价只能依赖多维度质量判断而非客观对错，这与词对提示的目标场景（提升发散产出质量）一致。任务指令保持极简（一句中文），以避免指令本身对生成施加结构约束。
+
+\begin{table}[htbp]
+\centering
+\caption{实验任务与指令原文}
+\label{tab:tasks}
+\small
+\begin{tabularx}{\textwidth}{clX}
+\toprule
+编号 & 主题 & 指令原文 \\
+\midrule
+T1 & 函数式编程语言 & 设计一个全新的函数式编程语言 \\
+T2 & 提升 LLM 性能 & 怎么低成本不需要额外训练大幅提升现有 LLM 的性能 \\
+T3 & CLI 工具 Idea & 给出适合独立开发者开发 CLI 工具的一个 Idea \\
+T4 & 新理论 & 提出一个新的理论 \\
+T5 & 人格模型 & 提出一个新的类似于九型和荣格八维的模型 \\
+T6 & ML 架构 & 提出一个新的机器学习架构 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{实验条件与词对前缀}
+
+两种条件仅相差一个前置指令。\baseline{} 条件直接输入任务指令；\wordpairs{} 条件在任务指令前附加如下前缀：
+
+\begin{quote}
+\small\itshape “在回答前面输出200组词，每组有两个词，从这些词获得灵感”
+\end{quote}
+
+前缀之后拼接原任务指令。除该前缀外，两个条件使用完全相同的模型、温度（$0.6$）、随机种子与解码参数，保证差异仅来源于前缀本身。值得强调的是，该前缀并未规定词对的领域或与任务的相关性，模型需要自行决定联想方向；这正是对“自由头脑风暴”策略的忠实模拟，也是其风险来源——没有任何机制保证 200 组联想词与任务质量相关。
+
+\subsection{清洗协议}\label{sec:cleaning}
+
+\wordpairs{} 输出的正文常显式引用词对（如“从上面词对中”“第 N 组的意象”），若不剥离，评委可能将其视为对不可见信息的幻觉引用而惩罚。为此，清洗阶段使用 LLM 执行严格指令：删除开头词对列表；删除或改写正文中所有依赖该词表的表述；改写后不得新增事实；只输出清洗后的正文。清洗后使用正则表达式校验残留（匹配“第 N 组 / 词组 N / 词对 N / 从上面 / 这些词中”等模式），命中者触发第二轮强化清洗，仍残留者打上 \texttt{residual} 标记。最终两个模型各 60 条清洗结果中残留均为 \textbf{0 条}，且 60/60 全部清洗成功，为盲评提供了干净的输入。清洗本身由生成模型在低温（$0.3$）下执行，与盲评温度一致。
+
+\subsection{盲评协议}\label{sec:judge}
+
+盲评采用成对 A/B 比较。对每个（生成模型，任务，重复）三元组，将 \baseline{} 正文与清洗后词对正文随机分配到 A/B 位置——具体由 (模型, 任务, 重复, 评委) 的确定性哈希决定，保证两端位置总体均衡且实验完全可复现。评委通过系统提示被要求以五维 1--10 整数评分并给出最终胜负（A/B/tie）：\textbf{逻辑性}（logic，逻辑与结构）、\textbf{具体性}（concreteness，细节丰富度）、\textbf{可操作性}（actionability）、\textbf{原创性}（originality）与\textbf{整体质量}（overall），并以 JSON 格式输出评分与理由。评委 prompt 中明确写入：“两篇回答都可能引用了一组未展示给您的灵感词；这种引用本身不应作为扣分理由”，以切断评委对清洗残余的惩罚性归因。
+
+两个生成模型（V4.1-Flash、V4-Pro）各自对全部 120 对（2 生成模型 $\times$ 60 对）评审一次，形成每格 20 次、总计 240 对的评审矩阵。该交叉设计有两个作用：其一，任何一组的结论若在另一评委下复现，则可排除单评委偏好；其二，生成模型自评其输出构成的格子（如 V4-Pro 评审 V4-Pro 生成）可与交叉格子对比，检验自我增强偏差的影响。
+
+\subsection{实现细节与数据完整性}
+
+实验通过 DeepSeek 官方 API（\texttt{api.deepseek.com/v1}，OpenAI 兼容接口）于 2026-10-22 执行，运行标识 \texttt{v2-deepseek-20261022T235120Z}，全局随机种子 20261022。每条记录附完整溯源字段（\texttt{schema\_version}、\texttt{run\_id}、时间戳、模型、\texttt{prompt\_version}、种子），生成与清洗温度为 $0.6$ 与 $0.3$。数据完整性如下：生成阶段 $2\times120=240$ 条记录全部有效（0 条错误）；清洗阶段两模型各 60 条，全部成功且 0 残留；盲评阶段 240 对全部解析成功。全部原始数据、逐条 markdown 与汇总脚本均归档于公开仓库\footnote{生成正文、清洗结果与盲评理由的逐条归档位于仓库 \texttt{llm\_experiment\_results\_v2/} 目录，共 720 个 markdown 文件与 6 个 JSONL 数据文件。}，支持独立复核。
+
+\subsection{评价指标与统计方法}\label{sec:metrics}
+
+报告四类指标。（1）\textbf{胜负频次}：各（生成模型 $\times$ 评委）格子的 \baseline{} 胜、\wordpairs{} 胜、平局计数。（2）\textbf{五维平均分}：按格子报告两条件在五个维度上的均值。（3）\textbf{配对分差}：对每次比较 $i$，定义第 $d$ 维配对分差
+\begin{equation}\label{eq:diff}
+\Delta_i^{(d)} = S^{\,(d)}_{\text{base},i} - S^{\,(d)}_{\text{wp},i},
+\end{equation}
+其中 $S^{\,(d)}_{\text{base},i}$、$S^{\,(d)}_{\text{wp},i}$ 分别为该次评审中 \baseline{} 与 \wordpairs{} 文本在第 $d$ 维的得分。注意分差按“\baseline{} 减 \wordpairs{}”定向，正值表示 \baseline{} 更优。对合并的 240 个配对，报告 $\Delta^{(d)}$ 的均值、标准差、中位数与正/零/负计数，并用配对 $t$ 检验与 Wilcoxon 符号秩检验（剔除零差）检验 $\Delta^{(d)}=0$ 原假设；两个检验分别响应分差的近似正态性与秩结构，结论一致时推断更稳健。（4）\textbf{成本指标}：生成阶段的完成 token 数与耗时，以及清洗阶段的长度压缩比（清洗后字符数 / 原始字符数）。位置偏差通过 A 位与 B 位平均分之差 $\bar S_A - \bar S_B$ 及条件化分差（A 为 \baseline{} 时、A 为 \wordpairs{} 时的 A$-$B 分差）度量。
