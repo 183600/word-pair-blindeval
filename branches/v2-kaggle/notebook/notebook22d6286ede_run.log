@@ -1,0 +1,779 @@
+[{"stream_name":"stderr","time":8.610677749,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.610729719,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.610737271,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.61074231,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":9.393610863,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.393661513,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.393668242,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.39367282,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":13.852292216,"data":"============================================================\n"}
+,{"stream_name":"stdout","time":13.853420071,"data":"Kaggle 补数脚本（Gitee 版）：补生成 / 补清洗 / 补盲评\n"}
+,{"stream_name":"stdout","time":13.854387914,"data":"============================================================\n"}
+,{"stream_name":"stdout","time":13.855569459,"data":"运行环境 : Kaggle\n"}
+,{"stream_name":"stdout","time":13.855594191,"data":"工作目录 : /kaggle/working\n"}
+,{"stream_name":"stdout","time":13.855599691,"data":"输出目录 : /kaggle/working/llm_experiment_results\n"}
+,{"stream_name":"stdout","time":13.855604359,"data":"模型     : moonshotai/kimi-k3 @ https://integrate.api.nvidia.com/v1\n"}
+,{"stream_name":"stdout","time":13.855609026,"data":"并发     : 2 | 单次超时 600s | 重试预算 1800s | 熔断阈值 5\n"}
+,{"stream_name":"stdout","time":13.855613897,"data":"期望网格 : 6 任务 x 2 条件 x 10 run = 120 条\n"}
+,{"stream_name":"stdout","time":13.855618747,"data":"DRY_RUN  : False | SKIP_SYNC : False\n"}
+,{"stream_name":"stdout","time":13.856527188,"data":"============================================================\n"}
+,{"stream_name":"stdout","time":13.857479609,"data":"[Git] 从 Gitee 同步最新内容（branch=main）…\n"}
+,{"stream_name":"stdout","time":29.699966599,"data":"[Git] clone 成功 -\u003e /kaggle/working/llm_experiment_results\n"}
+,{"stream_name":"stdout","time":29.727569133,"data":"\n"}
+,{"stream_name":"stdout","time":29.727608967,"data":"========== 缺失分析 ==========\n"}
+,{"stream_name":"stdout","time":29.728753063,"data":"results.jsonl   : 共 120 行，有效 120 / 期望 120 -\u003e 待补生成 0 条\n"}
+,{"stream_name":"stdout","time":29.729864791,"data":"cleaned.jsonl   : 共 60 行，有效 44 / 期望 60 -\u003e 待补清洗 16 条\n"}
+,{"stream_name":"stdout","time":29.731264102,"data":"    缺清洗: task1 run6\n"}
+,{"stream_name":"stdout","time":29.732392176,"data":"    缺清洗: task1 run7\n"}
+,{"stream_name":"stdout","time":29.733532442,"data":"    缺清洗: task1 run9\n"}
+,{"stream_name":"stdout","time":29.734603064,"data":"    缺清洗: task3 run2\n"}
+,{"stream_name":"stdout","time":29.735503201,"data":"    缺清洗: task3 run3\n"}
+,{"stream_name":"stdout","time":29.736489123,"data":"    缺清洗: task3 run8\n"}
+,{"stream_name":"stdout","time":29.737532139,"data":"    缺清洗: task3 run9\n"}
+,{"stream_name":"stdout","time":29.738552387,"data":"    缺清洗: task4 run5\n"}
+,{"stream_name":"stdout","time":29.739660819,"data":"    缺清洗: task4 run10\n"}
+,{"stream_name":"stdout","time":29.740749194,"data":"    缺清洗: task5 run5\n"}
+,{"stream_name":"stdout","time":29.741770552,"data":"    缺清洗: task6 run1\n"}
+,{"stream_name":"stdout","time":29.742919782,"data":"    缺清洗: task6 run2\n"}
+,{"stream_name":"stdout","time":29.744027381,"data":"    缺清洗: task6 run3\n"}
+,{"stream_name":"stdout","time":29.745035563,"data":"    缺清洗: task6 run4\n"}
+,{"stream_name":"stdout","time":29.746107007,"data":"    缺清洗: task6 run5\n"}
+,{"stream_name":"stdout","time":29.747491857,"data":"    缺清洗: task6 run9\n"}
+,{"stream_name":"stdout","time":29.748562413,"data":"comparison.jsonl: 共 40 行，有效 32 / 期望 60 -\u003e 待补盲评 12 对\n"}
+,{"stream_name":"stdout","time":29.749553195,"data":"    缺盲评: task1 run1\n"}
+,{"stream_name":"stdout","time":29.750722178,"data":"    缺盲评: task1 run2\n"}
+,{"stream_name":"stdout","time":29.751838803,"data":"    缺盲评: task1 run8\n"}
+,{"stream_name":"stdout","time":29.752974565,"data":"    缺盲评: task1 run10\n"}
+,{"stream_name":"stdout","time":29.7540729,"data":"    缺盲评: task2 run3\n"}
+,{"stream_name":"stdout","time":29.755239814,"data":"    缺盲评: task2 run6\n"}
+,{"stream_name":"stdout","time":29.756291303,"data":"    缺盲评: task4 run7\n"}
+,{"stream_name":"stdout","time":29.757331122,"data":"    缺盲评: task4 run8\n"}
+,{"stream_name":"stdout","time":29.75847308,"data":"    缺盲评: task6 run6\n"}
+,{"stream_name":"stdout","time":29.759563289,"data":"    缺盲评: task6 run7\n"}
+,{"stream_name":"stdout","time":29.7607462,"data":"    缺盲评: task6 run8\n"}
+,{"stream_name":"stdout","time":29.76179685,"data":"    缺盲评: task6 run10\n"}
+,{"stream_name":"stdout","time":29.762830472,"data":"（另有 16 对因缺有效清洗暂无法盲评：[(1, 6), (1, 7), (1, 9), (3, 2), (3, 3), (3, 8), (3, 9), (4, 5), (4, 10), (5, 5), (6, 1), (6, 2), (6, 3), (6, 4), (6, 5), (6, 9)]，将在阶段 1 补齐后于下次重跑时补评）\n"}
+,{"stream_name":"stdout","time":29.763834682,"data":"========================================\n"}
+,{"stream_name":"stdout","time":29.764932331,"data":"\n"}
+,{"stream_name":"stdout","time":29.764945815,"data":"========== 阶段 0：补生成（0 条） ==========\n"}
+,{"stream_name":"stdout","time":29.766068885,"data":"[生成] 无缺失，跳过\n"}
+,{"stream_name":"stdout","time":29.79852223,"data":"\n"}
+,{"stream_name":"stdout","time":29.798557316,"data":"========== 阶段 1：补清洗 word_pairs（16 条） ==========\n"}
+,{"stream_name":"stdout","time":157.255955539,"data":"[清洗完成] 任务1 函数式编程语言 | run  6 | 127.11s\n"}
+,{"stream_name":"stdout","time":157.318834276,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":157.318871349,"data":"\n"}
+,{"stream_name":"stdout","time":157.318876132,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":157.318880079,"data":"\n"}
+,{"stream_name":"stdout","time":157.318883723,"data":"Run\n"}
+,{"stream_name":"stdout","time":157.318887408,"data":"\n"}
+,{"stream_name":"stdout","time":157.318892817,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":157.318898669,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":157.318904413,"data":"\n"}
+,{"stream_name":"stdout","time":157.318909346,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":157.318914821,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":157.318936239,"data":"\n"}
+,{"stream_name":"stdout","time":157.318941843,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":215.127910213,"data":"[清洗完成] 任务1 函数式编程语言 | run  7 | 183.56s\n"}
+,{"stream_name":"stdout","time":215.16763417,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":215.167680598,"data":"\n"}
+,{"stream_name":"stdout","time":215.16768829,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":215.167694602,"data":"\n"}
+,{"stream_name":"stdout","time":215.167700552,"data":"Run\n"}
+,{"stream_name":"stdout","time":215.167706019,"data":"\n"}
+,{"stream_name":"stdout","time":215.167711696,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":215.167715999,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":215.167719801,"data":"\n"}
+,{"stream_name":"stdout","time":215.167723383,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":215.167727,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":215.167730777,"data":"\n"}
+,{"stream_name":"stdout","time":215.16773425,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":253.801632701,"data":"[清洗完成] 任务1 函数式编程语言 | run  9 | 96.48s\n"}
+,{"stream_name":"stdout","time":253.842843617,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":253.842886165,"data":"\n"}
+,{"stream_name":"stdout","time":253.842891257,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":253.842895091,"data":"\n"}
+,{"stream_name":"stdout","time":253.842898962,"data":"Run\n"}
+,{"stream_name":"stdout","time":253.842902421,"data":"\n"}
+,{"stream_name":"stdout","time":253.842905872,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":253.842909682,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":253.842913484,"data":"\n"}
+,{"stream_name":"stdout","time":253.842917011,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":253.842920756,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":253.842924426,"data":"\n"}
+,{"stream_name":"stdout","time":253.842927946,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":285.05306318,"data":"[清洗完成] 任务3 CLI工具Idea | run  2 | 69.88s\n"}
+,{"stream_name":"stdout","time":285.093730229,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":285.093772258,"data":"\n"}
+,{"stream_name":"stdout","time":285.093780388,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":285.093786555,"data":"\n"}
+,{"stream_name":"stdout","time":285.093791944,"data":"Run\n"}
+,{"stream_name":"stdout","time":285.09379691,"data":"\n"}
+,{"stream_name":"stdout","time":285.09380215,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":285.093808005,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":285.093813433,"data":"\n"}
+,{"stream_name":"stdout","time":285.093818726,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":285.09383828,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":285.093843372,"data":"\n"}
+,{"stream_name":"stdout","time":285.093847925,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":330.295541422,"data":"[清洗完成] 任务3 CLI工具Idea | run  3 | 76.45s\n"}
+,{"stream_name":"stdout","time":330.336929594,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":330.336978746,"data":"\n"}
+,{"stream_name":"stdout","time":330.337009074,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":330.337015884,"data":"\n"}
+,{"stream_name":"stdout","time":330.337021503,"data":"Run\n"}
+,{"stream_name":"stdout","time":330.337026936,"data":"\n"}
+,{"stream_name":"stdout","time":330.337032442,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":330.337038578,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":330.337044428,"data":"\n"}
+,{"stream_name":"stdout","time":330.337049809,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":330.337055548,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":330.337061366,"data":"\n"}
+,{"stream_name":"stdout","time":330.337066876,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":360.966975871,"data":"  [警告] LLM 返回空内容 (attempt 1/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":456.973110509,"data":"[清洗完成] 任务3 CLI工具Idea | run  9 | 126.63s\n"}
+,{"stream_name":"stdout","time":457.014119529,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":457.014168773,"data":"\n"}
+,{"stream_name":"stdout","time":457.014176598,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":457.014182624,"data":"\n"}
+,{"stream_name":"stdout","time":457.014188047,"data":"Run\n"}
+,{"stream_name":"stdout","time":457.014193006,"data":"\n"}
+,{"stream_name":"stdout","time":457.014198141,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":457.014203727,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":457.014208914,"data":"\n"}
+,{"stream_name":"stdout","time":457.014213641,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":457.014219052,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":457.014225334,"data":"\n"}
+,{"stream_name":"stdout","time":457.014230956,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":536.795937221,"data":"  [警告] LLM 返回空内容 (attempt 2/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":579.429279841,"data":"[清洗完成] 任务4 新理论 | run  5 | 122.41s\n"}
+,{"stream_name":"stdout","time":579.468333635,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":579.468383337,"data":"\n"}
+,{"stream_name":"stdout","time":579.468389519,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":579.468393818,"data":"\n"}
+,{"stream_name":"stdout","time":579.468397402,"data":"Run\n"}
+,{"stream_name":"stdout","time":579.468400936,"data":"\n"}
+,{"stream_name":"stdout","time":579.468405527,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":579.468426667,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":579.468431495,"data":"\n"}
+,{"stream_name":"stdout","time":579.468435565,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":579.468439862,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":579.468444671,"data":"\n"}
+,{"stream_name":"stdout","time":579.468449382,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":744.737781879,"data":"  [警告] LLM 返回空内容 (attempt 1/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":774.688748641,"data":"[清洗完成] 任务3 CLI工具Idea | run  8 | 233.89s\n"}
+,{"stream_name":"stdout","time":774.734365353,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":774.734417756,"data":"\n"}
+,{"stream_name":"stdout","time":774.734425169,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":774.734431302,"data":"\n"}
+,{"stream_name":"stdout","time":774.734436718,"data":"Run\n"}
+,{"stream_name":"stdout","time":774.734442269,"data":"\n"}
+,{"stream_name":"stdout","time":774.73444773,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":774.734453662,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":774.734459492,"data":"\n"}
+,{"stream_name":"stdout","time":774.734464906,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":774.734470543,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":774.734476402,"data":"\n"}
+,{"stream_name":"stdout","time":774.734482014,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":830.46629549,"data":"[清洗完成] 任务4 新理论 | run 10 | 83.72s\n"}
+,{"stream_name":"stdout","time":830.508830521,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":830.508884193,"data":"\n"}
+,{"stream_name":"stdout","time":830.508891646,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":830.508897863,"data":"\n"}
+,{"stream_name":"stdout","time":830.508903193,"data":"Run\n"}
+,{"stream_name":"stdout","time":830.508908783,"data":"\n"}
+,{"stream_name":"stdout","time":830.508914061,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":830.508919861,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":830.508925481,"data":"\n"}
+,{"stream_name":"stdout","time":830.508931141,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":830.508936297,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":830.508942181,"data":"\n"}
+,{"stream_name":"stdout","time":830.508947661,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":848.055870175,"data":"  [警告] LLM 返回空内容 (attempt 1/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":933.479495941,"data":"[清洗完成] 任务6 ML架构 | run  1 | 102.96s\n"}
+,{"stream_name":"stdout","time":933.520006943,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":933.52005147,"data":"\n"}
+,{"stream_name":"stdout","time":933.520073405,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":933.520078221,"data":"\n"}
+,{"stream_name":"stdout","time":933.520082711,"data":"Run\n"}
+,{"stream_name":"stdout","time":933.52008665,"data":"\n"}
+,{"stream_name":"stdout","time":933.520090902,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":933.520095701,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":933.520100428,"data":"\n"}
+,{"stream_name":"stdout","time":933.52010501,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":933.520109821,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":933.520114664,"data":"\n"}
+,{"stream_name":"stdout","time":933.520119118,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":996.020319132,"data":"[清洗完成] 任务5 人格模型 | run  5 | 145.96s\n"}
+,{"stream_name":"stdout","time":996.06374169,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":996.063789543,"data":"\n"}
+,{"stream_name":"stdout","time":996.063797123,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":996.063802968,"data":"\n"}
+,{"stream_name":"stdout","time":996.063808422,"data":"Run\n"}
+,{"stream_name":"stdout","time":996.063813988,"data":"\n"}
+,{"stream_name":"stdout","time":996.063819653,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":996.063825406,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":996.063831299,"data":"\n"}
+,{"stream_name":"stdout","time":996.063836726,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":996.063842315,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":996.06384802,"data":"\n"}
+,{"stream_name":"stdout","time":996.063853402,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":1013.167929876,"data":"  [警告] LLM 返回空内容 (attempt 1/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":1101.859009778,"data":"  [警告] LLM 返回空内容 (attempt 2/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":1102.144430551,"data":"[清洗完成] 任务6 ML架构 | run  3 | 106.08s\n"}
+,{"stream_name":"stdout","time":1102.192408897,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":1102.192447866,"data":"\n"}
+,{"stream_name":"stdout","time":1102.192454566,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":1102.192460594,"data":"\n"}
+,{"stream_name":"stdout","time":1102.192466114,"data":"Run\n"}
+,{"stream_name":"stdout","time":1102.192471614,"data":"\n"}
+,{"stream_name":"stdout","time":1102.192476861,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":1102.192483158,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":1102.192487185,"data":"\n"}
+,{"stream_name":"stdout","time":1102.192490585,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":1102.192494356,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":1102.192498193,"data":"\n"}
+,{"stream_name":"stdout","time":1102.192501812,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":1171.434110958,"data":"  [警告] LLM 返回空内容 (attempt 1/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":1213.682018929,"data":"  [警告] LLM 返回空内容 (attempt 3/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":1346.168139444,"data":"[清洗完成] 任务6 ML架构 | run  4 | 172.73s\n"}
+,{"stream_name":"stdout","time":1346.212002285,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":1346.212042453,"data":"\n"}
+,{"stream_name":"stdout","time":1346.212048959,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":1346.212054921,"data":"\n"}
+,{"stream_name":"stdout","time":1346.212060356,"data":"Run\n"}
+,{"stream_name":"stdout","time":1346.212065638,"data":"\n"}
+,{"stream_name":"stdout","time":1346.212071211,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":1346.212076435,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":1346.212080441,"data":"\n"}
+,{"stream_name":"stdout","time":1346.212083939,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":1346.212087699,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":1346.212091556,"data":"\n"}
+,{"stream_name":"stdout","time":1346.212095073,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":1493.611388608,"data":"[清洗完成] 任务6 ML架构 | run  5 | 147.39s\n"}
+,{"stream_name":"stdout","time":1493.655939444,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":1493.655999371,"data":"\n"}
+,{"stream_name":"stdout","time":1493.656008624,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":1493.656015401,"data":"\n"}
+,{"stream_name":"stdout","time":1493.656020837,"data":"Run\n"}
+,{"stream_name":"stdout","time":1493.656026299,"data":"\n"}
+,{"stream_name":"stdout","time":1493.656031729,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":1493.656037707,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":1493.656043647,"data":"\n"}
+,{"stream_name":"stdout","time":1493.656048911,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":1493.656054522,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":1493.656060197,"data":"\n"}
+,{"stream_name":"stdout","time":1493.656065902,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":1594.52721065,"data":"[清洗完成] 任务6 ML架构 | run  9 | 100.87s\n"}
+,{"stream_name":"stdout","time":1594.571744183,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":1594.571784124,"data":"\n"}
+,{"stream_name":"stdout","time":1594.571791301,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":1594.571796092,"data":"\n"}
+,{"stream_name":"stdout","time":1594.571799616,"data":"Run\n"}
+,{"stream_name":"stdout","time":1594.571803216,"data":"\n"}
+,{"stream_name":"stdout","time":1594.571806792,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":1594.571810688,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":1594.571814443,"data":"\n"}
+,{"stream_name":"stdout","time":1594.571833292,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":1594.571836584,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":1594.571839618,"data":"\n"}
+,{"stream_name":"stdout","time":1594.571842509,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":1718.110049209,"data":"[清洗完成] 任务6 ML架构 | run  2 | 496.42s\n"}
+,{"stream_name":"stdout","time":1718.155894878,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":1718.155958319,"data":"\n"}
+,{"stream_name":"stdout","time":1718.155965713,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":1718.155971253,"data":"\n"}
+,{"stream_name":"stdout","time":1718.155976857,"data":"Run\n"}
+,{"stream_name":"stdout","time":1718.156000319,"data":"\n"}
+,{"stream_name":"stdout","time":1718.156007208,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":1718.156013314,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":1718.156019271,"data":"\n"}
+,{"stream_name":"stdout","time":1718.156024606,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":1718.156030078,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":1718.156035793,"data":"\n"}
+,{"stream_name":"stdout","time":1718.156041281,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":1718.185115179,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":1718.185156728,"data":"\n"}
+,{"stream_name":"stdout","time":1718.185163643,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":1718.185169719,"data":"\n"}
+,{"stream_name":"stdout","time":1718.18517531,"data":"Run\n"}
+,{"stream_name":"stdout","time":1718.185181066,"data":"\n"}
+,{"stream_name":"stdout","time":1718.185186613,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":1718.185192401,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":1718.185198661,"data":"\n"}
+,{"stream_name":"stdout","time":1718.185203675,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":1718.185209446,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":1718.185215451,"data":"\n"}
+,{"stream_name":"stdout","time":1718.185220821,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":1718.186460095,"data":"\n"}
+,{"stream_name":"stdout","time":1718.186486813,"data":"[阶段1完成] 本次补清洗 16 条\n"}
+,{"stream_name":"stdout","time":1718.217652611,"data":"\n"}
+,{"stream_name":"stdout","time":1718.217692377,"data":"========== 阶段 2：补盲评（28 对） ==========\n"}
+,{"stream_name":"stdout","time":1802.470175792,"data":"[比较完成] 任务1 函数式编程语言 | run  1 | winner=baseline | 84.21s\n"}
+,{"stream_name":"stdout","time":1802.505448584,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":1802.50549118,"data":"\n"}
+,{"stream_name":"stdout","time":1802.505497895,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":1802.505503855,"data":"\n"}
+,{"stream_name":"stdout","time":1802.505509012,"data":"Run\n"}
+,{"stream_name":"stdout","time":1802.505527422,"data":"\n"}
+,{"stream_name":"stdout","time":1802.505530493,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":1802.505533723,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":1802.505536926,"data":"\n"}
+,{"stream_name":"stdout","time":1802.505539697,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":1802.505542669,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":1802.505551992,"data":"\n"}
+,{"stream_name":"stdout","time":1802.50555497,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":1901.14304495,"data":"[比较完成] 任务1 函数式编程语言 | run  6 | winner=baseline | 98.63s\n"}
+,{"stream_name":"stdout","time":1901.1740479,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":1901.174117636,"data":"\n"}
+,{"stream_name":"stdout","time":1901.174125747,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":1901.174132212,"data":"\n"}
+,{"stream_name":"stdout","time":1901.174138054,"data":"Run\n"}
+,{"stream_name":"stdout","time":1901.174143977,"data":"\n"}
+,{"stream_name":"stdout","time":1901.174149518,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":1901.174155297,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":1901.174161053,"data":"\n"}
+,{"stream_name":"stdout","time":1901.174166136,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":1901.174172197,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":1901.174178121,"data":"\n"}
+,{"stream_name":"stdout","time":1901.174184052,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":1998.937809367,"data":"  [警告] LLM 返回空内容 (attempt 1/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":2016.829475823,"data":"[比较完成] 任务1 函数式编程语言 | run  2 | winner=baseline | 298.57s\n"}
+,{"stream_name":"stdout","time":2016.866060844,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":2016.866104202,"data":"\n"}
+,{"stream_name":"stdout","time":2016.866111343,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":2016.866117222,"data":"\n"}
+,{"stream_name":"stdout","time":2016.866123236,"data":"Run\n"}
+,{"stream_name":"stdout","time":2016.866129259,"data":"\n"}
+,{"stream_name":"stdout","time":2016.866133073,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":2016.866137039,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":2016.866140781,"data":"\n"}
+,{"stream_name":"stdout","time":2016.866144476,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":2016.866148218,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":2016.866152023,"data":"\n"}
+,{"stream_name":"stdout","time":2016.866155481,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":2175.923905157,"data":"[比较完成] 任务1 函数式编程语言 | run  8 | winner=baseline | 159.05s\n"}
+,{"stream_name":"stdout","time":2175.956398844,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":2175.956463821,"data":"\n"}
+,{"stream_name":"stdout","time":2175.956468338,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":2175.956471578,"data":"\n"}
+,{"stream_name":"stdout","time":2175.956474409,"data":"Run\n"}
+,{"stream_name":"stdout","time":2175.956477243,"data":"\n"}
+,{"stream_name":"stdout","time":2175.956480162,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":2175.956483334,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":2175.956486334,"data":"\n"}
+,{"stream_name":"stdout","time":2175.956489094,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":2175.956492089,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":2175.956495099,"data":"\n"}
+,{"stream_name":"stdout","time":2175.956498047,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":2190.175139321,"data":"[比较完成] 任务1 函数式编程语言 | run  7 | winner=baseline | 189.24s\n"}
+,{"stream_name":"stdout","time":2190.212129708,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":2190.212167877,"data":"\n"}
+,{"stream_name":"stdout","time":2190.212172305,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":2190.21217569,"data":"\n"}
+,{"stream_name":"stdout","time":2190.212178767,"data":"Run\n"}
+,{"stream_name":"stdout","time":2190.212181711,"data":"\n"}
+,{"stream_name":"stdout","time":2190.21218493,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":2190.212188701,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":2190.212192951,"data":"\n"}
+,{"stream_name":"stdout","time":2190.212197657,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":2190.212201706,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":2190.212205846,"data":"\n"}
+,{"stream_name":"stdout","time":2190.212210517,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":2305.149294549,"data":"[比较完成] 任务1 函数式编程语言 | run  9 | winner=baseline | 129.19s\n"}
+,{"stream_name":"stdout","time":2305.182627154,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":2305.182670117,"data":"\n"}
+,{"stream_name":"stdout","time":2305.182677379,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":2305.1826833,"data":"\n"}
+,{"stream_name":"stdout","time":2305.182689242,"data":"Run\n"}
+,{"stream_name":"stdout","time":2305.182693314,"data":"\n"}
+,{"stream_name":"stdout","time":2305.182696847,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":2305.182700763,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":2305.182704575,"data":"\n"}
+,{"stream_name":"stdout","time":2305.182707982,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":2305.182711644,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":2305.182715455,"data":"\n"}
+,{"stream_name":"stdout","time":2305.18271892,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":2377.592783238,"data":"[比较完成] 任务1 函数式编程语言 | run 10 | winner=baseline | 187.38s\n"}
+,{"stream_name":"stdout","time":2377.625250581,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":2377.625289902,"data":"\n"}
+,{"stream_name":"stdout","time":2377.625295982,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":2377.625300924,"data":"\n"}
+,{"stream_name":"stdout","time":2377.625305308,"data":"Run\n"}
+,{"stream_name":"stdout","time":2377.625309867,"data":"\n"}
+,{"stream_name":"stdout","time":2377.625314364,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":2377.625319442,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":2377.625324209,"data":"\n"}
+,{"stream_name":"stdout","time":2377.62532857,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":2377.625333055,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":2377.625338024,"data":"\n"}
+,{"stream_name":"stdout","time":2377.62534229,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":2563.790508466,"data":"[比较完成] 任务2 提升LLM性能 | run  3 | winner=baseline | 258.6s\n"}
+,{"stream_name":"stdout","time":2563.822551232,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":2563.822591422,"data":"\n"}
+,{"stream_name":"stdout","time":2563.822596956,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":2563.822600902,"data":"\n"}
+,{"stream_name":"stdout","time":2563.822604495,"data":"Run\n"}
+,{"stream_name":"stdout","time":2563.82260807,"data":"\n"}
+,{"stream_name":"stdout","time":2563.822611583,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":2563.822615599,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":2563.822619258,"data":"\n"}
+,{"stream_name":"stdout","time":2563.822622662,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":2563.822626272,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":2563.822630024,"data":"\n"}
+,{"stream_name":"stdout","time":2563.822633523,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":2576.98150863,"data":"  [警告] LLM 返回空内容 (attempt 1/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":2704.235843719,"data":"  [警告] LLM 返回空内容 (attempt 1/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":2791.771535062,"data":"[比较完成] 任务3 CLI工具Idea | run  2 | winner=cleaned_word_pairs | 85.53s\n"}
+,{"stream_name":"stdout","time":2791.801118963,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":2791.801163356,"data":"\n"}
+,{"stream_name":"stdout","time":2791.801169302,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":2791.801173238,"data":"\n"}
+,{"stream_name":"stdout","time":2791.801176779,"data":"Run\n"}
+,{"stream_name":"stdout","time":2791.801180456,"data":"\n"}
+,{"stream_name":"stdout","time":2791.80118397,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":2791.801187908,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":2791.801191662,"data":"\n"}
+,{"stream_name":"stdout","time":2791.801195158,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":2791.801214694,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":2791.801218367,"data":"\n"}
+,{"stream_name":"stdout","time":2791.801221317,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":2847.214854341,"data":"  [警告] LLM 返回空内容 (attempt 2/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":2876.449922784,"data":"  [警告] LLM 返回空内容 (attempt 1/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":2937.106016017,"data":"[比较完成] 任务2 提升LLM性能 | run  6 | winner=baseline | 85.88s\n"}
+,{"stream_name":"stdout","time":2937.140040596,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":2937.140084221,"data":"\n"}
+,{"stream_name":"stdout","time":2937.140090855,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":2937.140096451,"data":"\n"}
+,{"stream_name":"stdout","time":2937.140101628,"data":"Run\n"}
+,{"stream_name":"stdout","time":2937.140107043,"data":"\n"}
+,{"stream_name":"stdout","time":2937.140112401,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":2937.140118461,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":2937.140124551,"data":"\n"}
+,{"stream_name":"stdout","time":2937.140130402,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":2937.140136174,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":2937.140142168,"data":"\n"}
+,{"stream_name":"stdout","time":2937.140147793,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":3038.081833796,"data":"[比较完成] 任务3 CLI工具Idea | run  3 | winner=baseline | 159.62s\n"}
+,{"stream_name":"stdout","time":3038.118807322,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":3038.118848689,"data":"\n"}
+,{"stream_name":"stdout","time":3038.118853463,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":3038.118857313,"data":"\n"}
+,{"stream_name":"stdout","time":3038.118860933,"data":"Run\n"}
+,{"stream_name":"stdout","time":3038.118873727,"data":"\n"}
+,{"stream_name":"stdout","time":3038.118879343,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":3038.118885528,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":3038.118891859,"data":"\n"}
+,{"stream_name":"stdout","time":3038.118896994,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":3038.118902536,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":3038.118908266,"data":"\n"}
+,{"stream_name":"stdout","time":3038.118913511,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":3039.925860101,"data":"[比较完成] 任务3 CLI工具Idea | run  8 | winner=baseline | 102.79s\n"}
+,{"stream_name":"stdout","time":3039.967315025,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":3039.967369162,"data":"\n"}
+,{"stream_name":"stdout","time":3039.967376393,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":3039.967382276,"data":"\n"}
+,{"stream_name":"stdout","time":3039.967387701,"data":"Run\n"}
+,{"stream_name":"stdout","time":3039.967411918,"data":"\n"}
+,{"stream_name":"stdout","time":3039.967416469,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":3039.967420772,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":3039.967425202,"data":"\n"}
+,{"stream_name":"stdout","time":3039.967429223,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":3039.9674338,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":3039.967438763,"data":"\n"}
+,{"stream_name":"stdout","time":3039.967442113,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":3153.243340872,"data":"  [警告] LLM 返回空内容 (attempt 1/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":3163.102522441,"data":"[比较完成] 任务3 CLI工具Idea | run  9 | winner=cleaned_word_pairs | 124.98s\n"}
+,{"stream_name":"stdout","time":3163.145065423,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":3163.145121597,"data":"\n"}
+,{"stream_name":"stdout","time":3163.145131653,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":3163.145141471,"data":"\n"}
+,{"stream_name":"stdout","time":3163.14514579,"data":"Run\n"}
+,{"stream_name":"stdout","time":3163.14514966,"data":"\n"}
+,{"stream_name":"stdout","time":3163.145153177,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":3163.145157077,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":3163.145160913,"data":"\n"}
+,{"stream_name":"stdout","time":3163.145164364,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":3163.145168216,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":3163.145356272,"data":"\n"}
+,{"stream_name":"stdout","time":3163.145369344,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":3293.110630838,"data":"[比较完成] 任务4 新理论 | run  5 | winner=baseline | 137.86s\n"}
+,{"stream_name":"stdout","time":3293.144304038,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":3293.144343295,"data":"\n"}
+,{"stream_name":"stdout","time":3293.144348208,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":3293.144352268,"data":"\n"}
+,{"stream_name":"stdout","time":3293.144356483,"data":"Run\n"}
+,{"stream_name":"stdout","time":3293.14436209,"data":"\n"}
+,{"stream_name":"stdout","time":3293.144367564,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":3293.144373716,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":3293.144379391,"data":"\n"}
+,{"stream_name":"stdout","time":3293.144384977,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":3293.144401903,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":3293.144408027,"data":"\n"}
+,{"stream_name":"stdout","time":3293.144413525,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":3365.146034849,"data":"  [警告] LLM 返回空内容 (attempt 1/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":3461.991535498,"data":"[比较完成] 任务4 新理论 | run  7 | winner=baseline | 94.84s\n"}
+,{"stream_name":"stdout","time":3462.035472232,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":3462.03573557,"data":"\n"}
+,{"stream_name":"stdout","time":3462.035745363,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":3462.035750612,"data":"\n"}
+,{"stream_name":"stdout","time":3462.035755187,"data":"Run\n"}
+,{"stream_name":"stdout","time":3462.035759668,"data":"\n"}
+,{"stream_name":"stdout","time":3462.035764475,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":3462.035768918,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":3462.035773537,"data":"\n"}
+,{"stream_name":"stdout","time":3462.035777708,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":3462.035782328,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":3462.035786765,"data":"\n"}
+,{"stream_name":"stdout","time":3462.035791015,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":3552.207605349,"data":"[比较完成] 任务4 新理论 | run  8 | winner=baseline | 259.05s\n"}
+,{"stream_name":"stdout","time":3552.251909753,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":3552.251956918,"data":"\n"}
+,{"stream_name":"stdout","time":3552.251961711,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":3552.251965725,"data":"\n"}
+,{"stream_name":"stdout","time":3552.251969448,"data":"Run\n"}
+,{"stream_name":"stdout","time":3552.251973117,"data":"\n"}
+,{"stream_name":"stdout","time":3552.251976958,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":3552.252007958,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":3552.252015628,"data":"\n"}
+,{"stream_name":"stdout","time":3552.252020856,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":3552.252026603,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":3552.252032411,"data":"\n"}
+,{"stream_name":"stdout","time":3552.252038458,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":3557.820283701,"data":"[比较完成] 任务4 新理论 | run 10 | winner=cleaned_word_pairs | 95.79s\n"}
+,{"stream_name":"stdout","time":3557.863124821,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":3557.863169586,"data":"\n"}
+,{"stream_name":"stdout","time":3557.863176836,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":3557.863182392,"data":"\n"}
+,{"stream_name":"stdout","time":3557.863187819,"data":"Run\n"}
+,{"stream_name":"stdout","time":3557.863193413,"data":"\n"}
+,{"stream_name":"stdout","time":3557.863197448,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":3557.863201553,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":3557.863205564,"data":"\n"}
+,{"stream_name":"stdout","time":3557.863209091,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":3557.863212872,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":3557.863216633,"data":"\n"}
+,{"stream_name":"stdout","time":3557.863220201,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":3628.531205314,"data":"[比较完成] 任务5 人格模型 | run  5 | winner=cleaned_word_pairs | 76.27s\n"}
+,{"stream_name":"stdout","time":3628.56647596,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":3628.566508478,"data":"\n"}
+,{"stream_name":"stdout","time":3628.566513335,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":3628.566517507,"data":"\n"}
+,{"stream_name":"stdout","time":3628.566521063,"data":"Run\n"}
+,{"stream_name":"stdout","time":3628.566524663,"data":"\n"}
+,{"stream_name":"stdout","time":3628.566528242,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":3628.566532282,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":3628.566535927,"data":"\n"}
+,{"stream_name":"stdout","time":3628.566539332,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":3628.566542945,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":3628.566546823,"data":"\n"}
+,{"stream_name":"stdout","time":3628.566550263,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":3727.031250306,"data":"  [警告] LLM 返回空内容 (attempt 1/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":3729.103501007,"data":"[比较完成] 任务6 ML架构 | run  1 | winner=baseline | 171.24s\n"}
+,{"stream_name":"stdout","time":3729.154763633,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":3729.154850874,"data":"\n"}
+,{"stream_name":"stdout","time":3729.154857149,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":3729.154861061,"data":"\n"}
+,{"stream_name":"stdout","time":3729.154864837,"data":"Run\n"}
+,{"stream_name":"stdout","time":3729.154868429,"data":"\n"}
+,{"stream_name":"stdout","time":3729.154871927,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":3729.154876723,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":3729.154882626,"data":"\n"}
+,{"stream_name":"stdout","time":3729.154888111,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":3729.154894021,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":3729.154900011,"data":"\n"}
+,{"stream_name":"stdout","time":3729.15490527,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":3847.309464207,"data":"[比较完成] 任务6 ML架构 | run  3 | winner=baseline | 118.14s\n"}
+,{"stream_name":"stdout","time":3847.346722166,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":3847.346766183,"data":"\n"}
+,{"stream_name":"stdout","time":3847.346773333,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":3847.346779024,"data":"\n"}
+,{"stream_name":"stdout","time":3847.346784837,"data":"Run\n"}
+,{"stream_name":"stdout","time":3847.346790081,"data":"\n"}
+,{"stream_name":"stdout","time":3847.346795607,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":3847.346801501,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":3847.34680747,"data":"\n"}
+,{"stream_name":"stdout","time":3847.346812841,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":3847.346818428,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":3847.346841984,"data":"\n"}
+,{"stream_name":"stdout","time":3847.34684542,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":3865.38480171,"data":"[比较完成] 任务6 ML架构 | run  2 | winner=baseline | 136.36s\n"}
+,{"stream_name":"stdout","time":3865.429447363,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":3865.429481667,"data":"\n"}
+,{"stream_name":"stdout","time":3865.429485756,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":3865.429490692,"data":"\n"}
+,{"stream_name":"stdout","time":3865.429495095,"data":"Run\n"}
+,{"stream_name":"stdout","time":3865.429505523,"data":"\n"}
+,{"stream_name":"stdout","time":3865.429510084,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":3865.429515075,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":3865.429519574,"data":"\n"}
+,{"stream_name":"stdout","time":3865.429523814,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":3865.429528434,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":3865.429533733,"data":"\n"}
+,{"stream_name":"stdout","time":3865.429538016,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":3951.64130491,"data":"  [警告] LLM 返回空内容 (attempt 1/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":4038.179398749,"data":"[比较完成] 任务6 ML架构 | run  4 | winner=baseline | 190.82s\n"}
+,{"stream_name":"stdout","time":4038.228143057,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":4038.228210853,"data":"\n"}
+,{"stream_name":"stdout","time":4038.228218306,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":4038.22822436,"data":"\n"}
+,{"stream_name":"stdout","time":4038.228229893,"data":"Run\n"}
+,{"stream_name":"stdout","time":4038.228235403,"data":"\n"}
+,{"stream_name":"stdout","time":4038.22824108,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":4038.228247036,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":4038.228252505,"data":"\n"}
+,{"stream_name":"stdout","time":4038.228257699,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":4038.228263576,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":4038.228269353,"data":"\n"}
+,{"stream_name":"stdout","time":4038.22842952,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":4055.030328063,"data":"[比较完成] 任务6 ML架构 | run  5 | winner=baseline | 101.39s\n"}
+,{"stream_name":"stdout","time":4055.081591488,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":4055.081634577,"data":"\n"}
+,{"stream_name":"stdout","time":4055.081641941,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":4055.081647961,"data":"\n"}
+,{"stream_name":"stdout","time":4055.081653563,"data":"Run\n"}
+,{"stream_name":"stdout","time":4055.081659332,"data":"\n"}
+,{"stream_name":"stdout","time":4055.081663846,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":4055.081667884,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":4055.081687366,"data":"\n"}
+,{"stream_name":"stdout","time":4055.081702598,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":4055.08170587,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":4055.081709078,"data":"\n"}
+,{"stream_name":"stdout","time":4055.081711959,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":4149.470233701,"data":"[比较完成] 任务6 ML架构 | run  6 | winner=baseline | 111.23s\n"}
+,{"stream_name":"stdout","time":4149.51222206,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":4149.512287456,"data":"\n"}
+,{"stream_name":"stdout","time":4149.512294556,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":4149.512300392,"data":"\n"}
+,{"stream_name":"stdout","time":4149.512306311,"data":"Run\n"}
+,{"stream_name":"stdout","time":4149.512312209,"data":"\n"}
+,{"stream_name":"stdout","time":4149.512333718,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":4149.512340146,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":4149.512346117,"data":"\n"}
+,{"stream_name":"stdout","time":4149.512351401,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":4149.512357085,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":4149.512362898,"data":"\n"}
+,{"stream_name":"stdout","time":4149.512368183,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":4176.795050664,"data":"[比较完成] 任务6 ML架构 | run  7 | winner=baseline | 121.71s\n"}
+,{"stream_name":"stdout","time":4176.846960018,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":4176.847022546,"data":"\n"}
+,{"stream_name":"stdout","time":4176.847031131,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":4176.847037369,"data":"\n"}
+,{"stream_name":"stdout","time":4176.84704316,"data":"Run\n"}
+,{"stream_name":"stdout","time":4176.847048895,"data":"\n"}
+,{"stream_name":"stdout","time":4176.847054423,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":4176.847060667,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":4176.847066378,"data":"\n"}
+,{"stream_name":"stdout","time":4176.847071661,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":4176.847077201,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":4176.847082855,"data":"\n"}
+,{"stream_name":"stdout","time":4176.847087986,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":4261.198813115,"data":"  [警告] LLM 返回空内容 (attempt 1/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":4290.31493887,"data":"[比较完成] 任务6 ML架构 | run  9 | winner=baseline | 113.47s\n"}
+,{"stream_name":"stdout","time":4290.365558227,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":4290.365597482,"data":"\n"}
+,{"stream_name":"stdout","time":4290.365602152,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":4290.365606219,"data":"\n"}
+,{"stream_name":"stdout","time":4290.365630955,"data":"Run\n"}
+,{"stream_name":"stdout","time":4290.365636085,"data":"\n"}
+,{"stream_name":"stdout","time":4290.365640454,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":4290.365645174,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":4290.365650057,"data":"\n"}
+,{"stream_name":"stdout","time":4290.365654203,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":4290.365658994,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":4290.365663867,"data":"\n"}
+,{"stream_name":"stdout","time":4290.365668307,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":4382.288279222,"data":"  [警告] LLM 返回空内容 (attempt 2/20)，视为失败重试\n"}
+,{"stream_name":"stdout","time":4409.390671383,"data":"[比较完成] 任务6 ML架构 | run 10 | winner=baseline | 119.03s\n"}
+,{"stream_name":"stdout","time":4409.440552832,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":4409.440593532,"data":"\n"}
+,{"stream_name":"stdout","time":4409.440600337,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":4409.44060442,"data":"\n"}
+,{"stream_name":"stdout","time":4409.440607984,"data":"Run\n"}
+,{"stream_name":"stdout","time":4409.440611596,"data":"\n"}
+,{"stream_name":"stdout","time":4409.440615096,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":4409.440619037,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":4409.440622785,"data":"\n"}
+,{"stream_name":"stdout","time":4409.440626161,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":4409.440637747,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":4409.440641918,"data":"\n"}
+,{"stream_name":"stdout","time":4409.440645464,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":4493.171644054,"data":"[比较完成] 任务6 ML架构 | run  8 | winner=baseline | 106.88s\n"}
+,{"stream_name":"stdout","time":4493.206863859,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":4493.206906809,"data":"\n"}
+,{"stream_name":"stdout","time":4493.206912061,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":4493.206916501,"data":"\n"}
+,{"stream_name":"stdout","time":4493.206920008,"data":"Run\n"}
+,{"stream_name":"stdout","time":4493.206923559,"data":"\n"}
+,{"stream_name":"stdout","time":4493.206927048,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":4493.206930979,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":4493.206934768,"data":"\n"}
+,{"stream_name":"stdout","time":4493.206938171,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":4493.206941817,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":4493.206945431,"data":"\n"}
+,{"stream_name":"stdout","time":4493.206949242,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":4493.234758505,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":4493.234799436,"data":"\n"}
+,{"stream_name":"stdout","time":4493.23480639,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":4493.234831379,"data":"\n"}
+,{"stream_name":"stdout","time":4493.234836384,"data":"Run\n"}
+,{"stream_name":"stdout","time":4493.234840992,"data":"\n"}
+,{"stream_name":"stdout","time":4493.234845789,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":4493.234850848,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":4493.234855871,"data":"\n"}
+,{"stream_name":"stdout","time":4493.234860203,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":4493.234864403,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":4493.234869102,"data":"\n"}
+,{"stream_name":"stdout","time":4493.23487317,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":4493.235798721,"data":"\n"}
+,{"stream_name":"stdout","time":4493.235820993,"data":"[阶段2完成] 本次补评 28 对\n"}
+,{"stream_name":"stdout","time":4493.244068844,"data":"\n"}
+,{"stream_name":"stdout","time":4493.244142701,"data":"========== 汇总统计（全部有效记录） ==========\n"}
+,{"stream_name":"stdout","time":4493.283184973,"data":"总比较次数: 60\n"}
+,{"stream_name":"stdout","time":4493.283236444,"data":"  baseline            :  49  ( 81.7%)\n"}
+,{"stream_name":"stdout","time":4493.283242307,"data":"  cleaned_word_pairs  :  10  ( 16.7%)\n"}
+,{"stream_name":"stdout","time":4493.283247163,"data":"  tie                 :   1  (  1.7%)\n"}
+,{"stream_name":"stdout","time":4493.283252531,"data":"\n"}
+,{"stream_name":"stdout","time":4493.283257347,"data":"按任务：\n"}
+,{"stream_name":"stdout","time":4493.283262181,"data":"  任务1 函数式编程语言              共 10 | baseline 胜  9 | cleaned 胜  1 | 平  0\n"}
+,{"stream_name":"stdout","time":4493.283267983,"data":"  任务2 提升LLM性能              共 10 | baseline 胜  9 | cleaned 胜  1 | 平  0\n"}
+,{"stream_name":"stdout","time":4493.283273026,"data":"  任务3 CLI工具Idea            共 10 | baseline 胜  8 | cleaned 胜  2 | 平  0\n"}
+,{"stream_name":"stdout","time":4493.283278118,"data":"  任务4 新理论                  共 10 | baseline 胜  8 | cleaned 胜  2 | 平  0\n"}
+,{"stream_name":"stdout","time":4493.283283353,"data":"  任务5 人格模型                 共 10 | baseline 胜  5 | cleaned 胜  4 | 平  1\n"}
+,{"stream_name":"stdout","time":4493.283288456,"data":"  任务6 ML架构                 共 10 | baseline 胜 10 | cleaned 胜  0 | 平  0\n"}
+,{"stream_name":"stdout","time":4493.283293345,"data":"\n"}
+,{"stream_name":"stdout","time":4493.28329771,"data":"平均分（1-10）：\n"}
+,{"stream_name":"stdout","time":4493.283302601,"data":"  维度                baseline    cleaned\n"}
+,{"stream_name":"stdout","time":4493.28330714,"data":"  logic                 8.92       7.78\n"}
+,{"stream_name":"stdout","time":4493.283311647,"data":"  concreteness          8.48       7.28\n"}
+,{"stream_name":"stdout","time":4493.283315998,"data":"  actionability         8.23       6.58\n"}
+,{"stream_name":"stdout","time":4493.283320329,"data":"  originality           7.15       8.25\n"}
+,{"stream_name":"stdout","time":4493.283325735,"data":"  overall               8.52       7.48\n"}
+,{"stream_name":"stdout","time":4493.283330366,"data":"\n"}
+,{"stream_name":"stdout","time":4493.283334777,"data":"========== 补数后仍剩余的缺口 ==========\n"}
+,{"stream_name":"stdout","time":4493.284320922,"data":"生成   : 缺 0 条（OK，已补齐）\n"}
+,{"stream_name":"stdout","time":4493.285306516,"data":"清洗   : 缺 0 条（OK，已补齐）\n"}
+,{"stream_name":"stdout","time":4493.286277438,"data":"盲评   : 缺 0 对（OK，已补齐）\n"}
+,{"stream_name":"stdout","time":4493.314059847,"data":"  [警告] git commit 失败: Author identity unknown\n"}
+,{"stream_name":"stdout","time":4493.314102748,"data":"\n"}
+,{"stream_name":"stdout","time":4493.314108889,"data":"*** Please tell me who you are.\n"}
+,{"stream_name":"stdout","time":4493.314113701,"data":"\n"}
+,{"stream_name":"stdout","time":4493.314117852,"data":"Run\n"}
+,{"stream_name":"stdout","time":4493.314121968,"data":"\n"}
+,{"stream_name":"stdout","time":4493.314126089,"data":"  git config --global user.email \"you@example.com\"\n"}
+,{"stream_name":"stdout","time":4493.314130817,"data":"  git config --global user.name \"Your Name\"\n"}
+,{"stream_name":"stdout","time":4493.314135123,"data":"\n"}
+,{"stream_name":"stdout","time":4493.314139332,"data":"to set your account's default identity.\n"}
+,{"stream_name":"stdout","time":4493.314144101,"data":"Omit --global to set the identity only in this repository.\n"}
+,{"stream_name":"stdout","time":4493.314148581,"data":"\n"}
+,{"stream_name":"stdout","time":4493.314152835,"data":"fatal: unable to auto-detect email address (got 'root@71b8c3f59fb4.(none)')\n"}
+,{"stream_name":"stdout","time":4493.315605991,"data":"\n"}
+,{"stream_name":"stdout","time":4493.315637233,"data":"全部完成。\n"}
+,{"stream_name":"stderr","time":4497.579115843,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":4497.579158461,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":4497.854296101,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":4497.854329934,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":4498.982667727,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":4499.130432506,"data":"[NbConvertApp] Writing 82301 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":4502.916621745,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":4503.860319052,"data":"[NbConvertApp] Writing 495281 bytes to __results__.html\n"}
+]

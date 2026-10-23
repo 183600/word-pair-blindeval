@@ -1,151 +1,115 @@
-# LLM 词对提示实验（Kaggle notebook22d6286ede 归档）
+# LLM 词对提示实验 v2（DeepSeek 官方 API）
 
-本仓库归档 Kaggle Notebook **`notebook22d6286ede`** 的代码、运行日志、LLM 生成内容和盲评实验结果。
-原 Notebook 地址：<https://www.kaggle.com/code/wenjiazhong82355/notebook22d6286ede>
+本仓库当前以 **v2 DeepSeek 官方 API 实验** 为主线，保存代码、逐条生成/清洗/盲评结果与论文。
+实验覆盖 2 个生成模型 × 6 个开放式任务 × 2 个条件（`baseline` / `word_pairs`）× 10 次重复，
+共 240 条生成；每个模型 60 条清洗、2 个评委各评 60 对，共 240 对盲评。
 
-> **v2 多模型实验**：通用/Kaggle 代码见 [`notebook_v2/`](notebook_v2/)，
-> DeepSeek 官方 API 本地实验入口见 [`deepseek_local/`](deepseek_local/)，
-> 结果与汇总见 [`llm_experiment_results_v2/`](llm_experiment_results_v2/)。
->
-> **论文**：针对本仓库 v2 数据的独立复算论文见 [`paper/`](paper/)（PDF：[`paper/paper.pdf`](paper/paper.pdf)）。
-> 该文用 240 对盲评重新核算了胜负、五维评分与长度效应，指出原结论中“质量下降”约有一半可由
-> 正文长度压缩解释，并附全部复算脚本与中间结果。
+> **历史版本已归档**：v1 Kaggle 实验（`notebook22d6286ede`）的代码、120 条生成、60 条清洗、
+> 60 对盲评已移到 [`branches/main-20261023/`](branches/main-20261023/)；
+> v2 Kaggle 分支快照在 [`branches/v2-kaggle/`](branches/v2-kaggle/)。
+> 更早的 master、opencode 分支归档见 [`branches/README.md`](branches/README.md)。
 
-## 1. 实验设计
+## 快速入口
+
+| 内容 | 路径 |
+|---|---|
+| DeepSeek 官方 API 本地运行入口 | [`deepseek_local/`](deepseek_local/) |
+| 通用流水线（Kaggle / DeepSeek 共用） | [`notebook_v2/`](notebook_v2/) |
+| v2 结果、逐条数据与汇总 | [`llm_experiment_results_v2/`](llm_experiment_results_v2/) |
+| 论文、LaTeX 源码与复算材料 | [`paper/`](paper/) |
+| 分支与历史版本归档 | [`branches/`](branches/) |
+
+## 1. 实验结果
+
+| 生成模型 | 评委 | 有效比较 | baseline 胜 | cleaned 胜 | tie | cleaned 残留 |
+|---|---|---:|---:|---:|---:|---:|
+| `deepseek-flash` | `deepseek-flash` | 60 | 54 | 5 | 1 | 0/60 |
+| `deepseek-flash` | `deepseek-v4-pro` | 60 | 52 | 8 | 0 | 0/60 |
+| `deepseek-v4-pro` | `deepseek-flash` | 60 | 59 | 1 | 0 | 0/60 |
+| `deepseek-v4-pro` | `deepseek-v4-pro` | 60 | 59 | 1 | 0 | 0/60 |
+
+- 240 对盲评全部有效；baseline 合计胜 **224/240（93.3%）**，cleaned 胜 15，平 1。
+- 两个模型各 120 条生成、60 条清洗，0 条 `[ERROR]`；严格清洗后残留 **0/60/模型**。
+- v1 的“词对引用被评委当成幻觉”解释不成立：在清洗残留为 0 的条件下，baseline 仍大幅领先。
+
+完整汇总见 [`llm_experiment_results_v2/SUMMARY.md`](llm_experiment_results_v2/SUMMARY.md)。
+
+## 2. 实验配置
 
 | 项目 | 内容 |
 |---|---|
-| 任务 | 6 个开放式生成任务（函数式编程语言、提升 LLM 性能、CLI 工具 Idea、新理论、人格模型、ML 架构） |
-| 条件 | `baseline`（直接回答）vs `word_pairs`（回答前先输出 200 组词对） |
-| 重复 | 每个任务 × 条件 × 10 次，共 **120** 条生成 |
-| 后处理 | 对 `word_pairs` 输出做清洗（删除开头词对），期望 60 条 |
-| 评价 | baseline vs cleaned 的 A/B 盲评，A/B 随机交换，期望 60 对 |
-| 模型 | `moonshotai/kimi-k3`，NVIDIA `integrate.api.nvidia.com` |
-| Notebook 最后运行 | 2026-10-19，版本 1，CPU，联网 |
-
-Notebook 的运行日志见 [`notebook/notebook22d6286ede_run.log`](notebook/notebook22d6286ede_run.log)。
-日志末尾显示三个阶段均补齐（生成缺 0、清洗缺 0、盲评缺 0），但最后的自动 `git commit` 因容器内缺少
-Git 作者信息而失败（`Author identity unknown`），所以完整结果当时没有自动推送；本仓库这次提交即为该次运行的归档。
-
-## 2. 实验结果
-
-### 2.1 数据完整性
-
-| 文件 | 行数 | 有效记录 | 说明 |
-|---|---:|---:|---|
-| `results.jsonl` | 120 | 120 | 6 任务 × 2 条件 × 10 run；无 `[ERROR]` 记录 |
-| `cleaned.jsonl` | 76 | 60 | 包含 16 行失败重试记录；按 `(task_id, run)` 取最新有效记录后为 60 |
-| `comparison.jsonl` | 68 | 60 | 包含 8 行解析失败/空回复重试；有效盲评为 60 对 |
-
-### 2.2 盲评胜负
-
-**总计：baseline 胜 49，cleaned word_pairs 胜 10，平 1（共 60 对）。**
-
-| 任务 | baseline 胜 | word_pairs 胜 | 平 |
-|---|---:|---:|---:|
-| 1 函数式编程语言 | 9 | 1 | 0 |
-| 2 提升 LLM 性能 | 9 | 1 | 0 |
-| 3 CLI 工具 Idea | 8 | 2 | 0 |
-| 4 新理论 | 8 | 2 | 0 |
-| 5 人格模型 | 5 | 4 | 1 |
-| 6 ML 架构 | 10 | 0 | 0 |
-
-### 2.3 平均分（1–10）
-
-| 维度 | baseline | cleaned word_pairs |
-|---|---:|---:|
-| logic（逻辑性与结构） | 8.92 | 7.78 |
-| concreteness（具体性） | 8.48 | 7.28 |
-| actionability（可操作性） | 8.23 | 6.58 |
-| originality（原创性） | 7.15 | 8.25 |
-| overall（整体质量） | 8.52 | 7.48 |
-
-结论：词对提示主要提升了**原创性**，但在逻辑性、具体性、可操作性和整体质量上均低于直接回答；
-在 6 个任务中 baseline 胜出 49/60。
+| API | `https://api.deepseek.com/v1` |
+| 生成模型 | `deepseek-flash`（DeepSeek-V4.1-Flash）、`deepseek-v4-pro`（DeepSeek-V4-Pro） |
+| 评委 | 同上两个模型（各评一次） |
+| 任务 | 6 个（函数式语言、提升 LLM 性能、CLI Idea、新理论、人格模型、ML 架构） |
+| 条件 | `baseline`（直接回答）vs `word_pairs`（回答前输出 200 组词） |
+| 重复 | 2 模型 × 6 任务 × 2 条件 × 10 run = 240 条生成 |
+| 清洗 | 每模型 60 条，共 120 条 |
+| 盲评 | 2 评委 × 2 生成模型 × 60 对 = 240 对 |
+| 并发 | 2400（按实验要求设置） |
+| 位置平衡 | 每个评委单顺序，A/B 位置由确定性 hash 平衡 |
 
 ## 3. 目录结构
 
 ```
 .
-├── results.jsonl                 # 120 条生成结果（增量追加，读取时按键取最新有效）
-├── cleaned.jsonl                 # 清洗结果（增量追加）
-├── comparison.jsonl              # 盲评结果（增量追加）
-├── task1_函数式编程语言/          # 每个任务下分 baseline/ 与 word_pairs/
-│   ├── baseline/run_01.md … run_10.md
-│   └── word_pairs/run_01.md … run_10.md
-├── cleaned/task*/run_*.md        # 清洗后的逐条 markdown
-├── comparison/task*/run_*.md     # 盲评的逐条 markdown（含 A/B 原文、评分、理由）
-├── jvdfka.py                     # 生成脚本
-├── vfdjk.py                      # 补数 / 清洗 / 盲评脚本
-├── notebook/
-│   ├── notebook22d6286ede.ipynb  # 从 Kaggle 导出的 notebook（已脱敏）
-│   ├── notebook22d6286ede.py     # notebook 代码的纯 Python 导出（已脱敏）
-│   ├── notebook22d6286ede_run.log# 本次 Kaggle 运行日志
-│   ├── provenance.json           # 来源、版本、运行环境、哈希
-│   └── README.md
-├── branches/                     # 已删除分支的文件归档（master / opencode-*-rerun）
-│   └── README.md                 # 归档清单与各分支说明
+├── deepseek_local/                 # DeepSeek 官方 API 入口、依赖、启动脚本
+├── notebook_v2/                    # 通用生成/清洗/盲评流水线（Kaggle 与 DeepSeek 共用）
+├── llm_experiment_results_v2/      # 240 条生成、120 条清洗、240 对盲评及汇总
+├── paper/                          # 论文 PDF/TeX、复算脚本、图表与中间结果
+│   ├── latex-src/                  # 合并自 v2-deepseek 的 LaTeX 源码
+│   └── pdf/                        # 对应的论文 PDF
+├── branches/                       # 历史版本与分支快照归档
+│   ├── main-20261023/              # 从 main 移出的 v1 Kaggle 内容
+│   ├── v2-kaggle/                  # v2-kaggle 分支完整快照
+│   ├── main/                       # 2026-10-22 的 main 完整快照
+│   ├── master/                     # master 分支快照
+│   └── opencode-*-rerun/           # opencode 分支快照
 ├── README.md
-├── SECURITY.md
-└── .gitignore
+└── SECURITY.md
 ```
 
-> **分支说明**：仓库自 2026-10-22 起只保留 `main`。原 `master`、`opencode-free-rerun`、
-> `opencode-experiment-rerun` 三个分支的文件已完整归档到 [`branches/`](branches/README.md)，
-> 删除远程分支不会丢失内容；完整 Git 历史另存为
-> `all-branches-backup-20261022.bundle`（含 4 个分支全部提交）。
-
-## 4. 密钥与安全
-
-- 原始 Notebook 中硬编码的 **Gitee 访问令牌**和 **NVIDIA API Key** 已从导出的 `.ipynb`、`.py` 以及
-  `jvdfka.py`、`vfdjk.py` 中移除；仓库所有分支的当前文件与**可达提交历史**中不再包含这些密钥。
-- 历史中的密钥已通过重写 Git 历史并强制推送清除（2026-10-22）。但 Gitee 仍可能通过旧 commit SHA
-  缓存不可达对象（旧 SHA 的 raw 链接仍可访问），因此**不能只依赖历史清理**：这些密钥此前已随公开
-  仓库暴露，请立即在 Gitee / NVIDIA / Kaggle 控制台撤销并轮换，不要继续使用旧密钥。
-- 运行前请通过环境变量或 Kaggle Secrets 提供凭据，不要写回代码：
-
-  ```bash
-  export OPENAI_API_KEY='<your-key>'
-  export OPENAI_BASE_URL='https://integrate.api.nvidia.com/v1'
-  export LLM_MODEL='moonshotai/kimi-k3'
-  # 需要自动推送时再设置（不要把带令牌的 URL 写入仓库）
-  export GIT_REMOTE_URL='https://gitee.com/qwe12345678/jkdsfn.git'
-  ```
-
-- 本地推送请使用 Git credential helper、SSH key 或临时 `http.extraheader`，不要把令牌拼进
-  remote URL 后提交。更多说明见 [`SECURITY.md`](SECURITY.md)。
-
-## 5. 复现
+## 4. 复现 DeepSeek 实验
 
 ```bash
-python3 -m pip install openai
-export OPENAI_API_KEY='<your-key>'
-export OPENAI_BASE_URL='https://integrate.api.nvidia.com/v1'
-export LLM_MODEL='moonshotai/kimi-k3'
-export SKIP_SYNC=1          # 使用仓库内已有数据，避免从 Gitee 重新 clone
-export DRY_RUN=1            # 先只做缺失分析，不调用 LLM、不写文件、不推送
-python3 vfdjk.py
+python3 -m pip install -r deepseek_local/requirements.txt
+
+export DEEPSEEK_API_KEY='sk-...'      # 不要写入仓库
+export GITEE_TOKEN='...'              # 运行结束推送结果时需要
+
+bash deepseek_local/run_deepseek_v2.sh
 ```
 
-去掉 `DRY_RUN=1` 后才会真正调用模型补齐缺失项。脚本按 `(task_id, condition, run)` /
-`(task_id, run)` 取最新有效记录，支持断点续跑。
+可选覆盖：
 
-## 6. 论文：对 v2 数据的独立复算
+```bash
+N_RUNS=3 CONCURRENCY=64 GIT_BRANCH=v2-deepseek-pilot \
+  bash deepseek_local/run_deepseek_v2.sh
+```
 
-[`paper/`](paper/) 收录了一篇针对本仓库 v2 实验的中文学术论文及其复算材料：
+脚本会从 Gitee 的 `v2-deepseek` 分支 clone/pull 到 `REPO_DIR`，分析
+`llm_experiment_results_v2/` 的缺口，然后补生成、补清洗、双评委盲评；每 5 条 commit、
+每 20 条 push，中断后重跑可续。默认结果分支是 `v2-deepseek`，可用 `GIT_BRANCH` 覆盖。
 
-- [`paper/paper.pdf`](paper/paper.pdf)：成稿（15 页，XeLaTeX）
-- [`paper/paper.tex`](paper/paper.tex)：源码；[`paper/figs/`](paper/figs/) 为 4 幅矢量图
-- [`paper/scripts/`](paper/scripts/)：复算脚本；[`paper/out/`](paper/out/)：中间结果与逐对数据
+## 5. 论文
 
-论文的核心结论：
+`paper/` 收录两套材料：
 
-| 项目 | 结果 |
-|---|---|
-| 主效应 | 直接回答胜 224/240（93.3%），任务聚类 95% CI [86.7%, 97.1%] |
-| 五维 | 仅原创性 +0.31；可操作性 −2.32、具体性 −2.08、逻辑性 −1.54、整体 −1.72 |
-| 长度 | 长度比与分差 Spearman ρ=0.585；长度比 ≥0.9 子集胜率降至 67.9% |
-| 等长效应 | 回归截距 −0.82（95% CI [−1.38, −0.26]），长度约解释一半差距 |
-| 机制 | 输出 token 2.02×/1.60×，正文 73%/46%；词元复现率 16.9%/15.1% |
+- [`paper/paper.pdf`](paper/paper.pdf)（15 页）与 [`paper/paper.tex`](paper/paper.tex)：针对 240 对
+  盲评的独立复算，含胜负、五维评分、长度分层、聚类 bootstrap、回归与 v1 跨代复现；
+  复算脚本在 [`paper/scripts/`](paper/scripts/)，中间结果在 [`paper/out/`](paper/out/)。
+- [`paper/latex-src/`](paper/latex-src/) 与 `paper/pdf/` 下的中文 PDF：合并自 `v2-deepseek`
+  分支的 LaTeX 稿与编译产物。
 
-复算方式见 [`paper/README.md`](paper/README.md)。
+论文的核心结论：直接回答胜 224/240（93.3%）；词对条件主要提升原创性（+0.31），
+但在可操作性（−2.32）、具体性（−2.08）、逻辑性（−1.54）和整体质量（−1.72）上更低；
+长度是主要通道，控制长度后条件效应从 −1.72 收窄到 −0.82。
+
+## 6. 安全
+
+- 仓库当前文件和可达历史中不包含 API Key 或 Gitee Token；运行前通过环境变量或
+  Kaggle Secrets 注入，不要写回代码或 remote URL。
+- 旧凭据曾随公开仓库暴露，请已在 Gitee / DeepSeek / NVIDIA / Kaggle 控制台撤销并轮换；
+  不要继续使用旧密钥。
+- 提交前请确认没有把 `.env`、token、`kaggle.json` 等文件加入暂存区。更多说明见
+  [`SECURITY.md`](SECURITY.md)。
