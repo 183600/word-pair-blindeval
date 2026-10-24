@@ -13,7 +13,7 @@
 
 | 路径 | 说明 |
 |---|---|
-| `paper.pdf` | 成稿，15 页，XeLaTeX 编译 |
+| `paper.pdf` | 成稿，16 页，XeLaTeX 编译 |
 | `paper.tex` | 源码（ctex 文档类，A4 11pt） |
 | `figs/` | 4 幅矢量图（PDF，matplotlib 生成） |
 | `scripts/01_analyze.py` | 复算：胜负、五维、长度分层、聚类 bootstrap、回归、v1 跨代复现 |

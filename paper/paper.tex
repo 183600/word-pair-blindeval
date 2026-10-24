@@ -154,6 +154,29 @@ mediation analysis; reproducibility
 既可能提供联想线索，也可能挤占本应用于答案的位置。前者是“灵感”，后者是“开销”，
 两者的净效应只能由实验区分——这正是本文要回答的问题。
 
+\subsection{随机刺激与发散—收敛提示}
+
+与“词对提示”最接近的先行工作分布在两条线上。第一条线是人类创造力方法。随机输入（random entry）
+是水平思考的核心工具之一：刻意引入一个与问题无关的随机词、图像或物件，借远距联想把思考推离惯常的
+方向\cite{debono1992}；其心理学基础可追溯到远距联想理论——创造过程即把语义距离较远的反应联结成
+新颖而有用的组合\cite{mednick1962}。“词对提示”的直觉与这套方法几乎同构：200 组两词短语相当于
+一次大规模的随机输入，只是执行者从人换成了模型，且联想过程被写进了答案所在的同一段输出。
+
+第二条线是 LLM 提示研究。文献~\cite{taveekit2023rwb} 把随机词头脑风暴（random word brainstorming）
+引入 ChatGPT 提示：把\textbf{外部}选定的随机词注入提示以激发非常规方案，问卷评估显示人类被试在
+20 个问题中的 65\% 上更偏好该方法的产出。CREATIVEDC~\cite{nguyen2025creative} 则提出
+“先发散、后收敛”的两阶段提示：模型先在同一次输出内头脑风暴一组非常规场景，再从中选取素材构造
+编程练习，产出的高效用且互异任务数约为基线的 1.6 倍。后者与词对提示在结构上最为相近——前置的
+发散文本与最终答案共享同一上下文与同一份输出预算——但其因变量是任务多样性而非盲评质量，
+也未对两条件做预算或长度上的控制。
+
+把这两条线放在一起，可以澄清本文的定位。其一，“用随机联想激发模型”并非新提议：它在创造力
+工程中已有半个多世纪的历史，在 LLM 上也至少自 2023 年起就有正式研究；本文的增量不在提出该技巧，
+而在于对它的社区流传变体（模型\textbf{自生成}词对、前置文本与答案\textbf{共享预算}）给出
+可复核的负结果与机制解释。其二，先行工作的正面结论（新颖性偏好、多样性提升）与原实验的负面
+结论（质量下降）表面上冲突，实则度量的是不同的因变量，且都缺少等预算、长度匹配与中性前缀
+对照——这正是第~\ref{sec:design}~节三项设计修正试图补齐的缺口。
+
 %=====================================================================
 \section{实验与数据}
 %=====================================================================
@@ -551,7 +574,7 @@ Spearman $\rho$（长度比, $\Delta$） & 0.359 & 0.585 \\
 在长度相近的子集上，胜率从 93\% 降到 68\%，等长点的条件效应只剩 $-0.82$。
 三条证据指向同一个结论：该提示的主要作用是改变输出的\textbf{预算分配}，而不是改变模型的\textbf{知识或联想}。
 
-\subsection{对提示设计的启示}
+\subsection{对提示设计的启示}\label{sec:design}
 
 如果确实想利用“远距联想”，本文的结果提示三种更合理的做法。
 其一，\textbf{把联想放在答案之后}：先让模型给出完整方案，再让它用词对做“二次发散”，最后合并修订；
@@ -650,7 +673,7 @@ Spearman $\rho$（长度比, $\Delta$） & 0.359 & 0.585 \\
 
 %=====================================================================
 \begin{thebibliography}{99}
-\small
+\footnotesize
 \setlength{\itemsep}{1pt}
 
 
@@ -711,6 +734,23 @@ scaling model parameters[C]//International Conference on Learning Representation
 \bibitem{jin2024}
 Jin M, Yu Q, Huang H, et al. The impact of reasoning step length on large language models[C]//
 Findings of the Association for Computational Linguistics: ACL 2024. 2024.
+
+\bibitem{debono1992}
+de Bono E. Serious creativity: using the power of lateral thinking to create new ideas[M].
+New York: HarperBusiness, 1992.
+
+\bibitem{mednick1962}
+Mednick S A. The associative basis of the creative process[J]. Psychological Bulletin, 1962,
+59(4): 220--232.
+
+\bibitem{taveekit2023rwb}
+Taveekitworachai P, Thawonmas R. Enhancing novelty in ChatGPT responses: incorporating random
+word brainstorming[C]//Proceedings of the 13th International Conference on Advances in
+Information Technology (IAIT 2023). 2023.
+
+\bibitem{nguyen2025creative}
+Nguyen M H, Tschiatschek S, Singla A. Enhancing diversity of LLM-generated educational
+tasks[EB/OL]. arXiv:2512.23601, 2025.
 
 \end{thebibliography}
 
