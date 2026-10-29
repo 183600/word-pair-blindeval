@@ -193,6 +193,7 @@ jobs:
           MODEL: ${{ steps.model.outputs.model }}
         run: |
           set -uo pipefail
+          set +e
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -265,7 +266,8 @@ jobs:
             fi
             # XeLaTeX 每次重新编译都会改变 PDF 的内部时间戳/ID，但源码没变时
             # 不应为这种二进制差异反复提交。
-            NON_PDF="$(git diff --cached --name-only | grep -v '^paper/paper.pdf$' | wc -l)"
+            NON_PDF="$(git diff --cached --name-only | grep -v '^paper/paper.pdf$' | wc -l || true)"
+            NON_PDF="${NON_PDF:-0}"
             if [ "$NON_PDF" -eq 0 ]; then
               echo "[git] iteration ${i} 只有 PDF 时间戳变化，跳过提交"
               git reset >/dev/null 2>&1 || true
@@ -302,7 +304,8 @@ jobs:
             echo "[git] 最终 PDF 无变化"
             exit 0
           fi
-          NON_PDF="$(git diff --cached --name-only | grep -v '^paper/paper.pdf$' | wc -l)"
+          NON_PDF="$(git diff --cached --name-only | grep -v '^paper/paper.pdf$' | wc -l || true)"
+          NON_PDF="${NON_PDF:-0}"
           if [ "$NON_PDF" -eq 0 ]; then
             echo "[git] 只有 PDF 时间戳变化，跳过提交"
             git reset >/dev/null 2>&1 || true
