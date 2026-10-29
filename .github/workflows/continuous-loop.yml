@@ -263,6 +263,15 @@ jobs:
               echo "[git] iteration ${i} 没有产生修改"
               continue
             fi
+            # XeLaTeX 每次重新编译都会改变 PDF 的内部时间戳/ID，但源码没变时
+            # 不应为这种二进制差异反复提交。
+            NON_PDF="$(git diff --cached --name-only | grep -v '^paper/paper.pdf$' | wc -l)"
+            if [ "$NON_PDF" -eq 0 ]; then
+              echo "[git] iteration ${i} 只有 PDF 时间戳变化，跳过提交"
+              git reset >/dev/null 2>&1 || true
+              git checkout HEAD -- paper/paper.pdf 2>/dev/null || true
+              continue
+            fi
             git commit -m "paper: automated verification iteration ${i}"
             if ! git pull --rebase origin main; then
               git rebase --abort 2>/dev/null || true
@@ -291,6 +300,13 @@ jobs:
           git add paper/paper.pdf paper/paper.tex paper/README.md README.md
           if git diff --cached --quiet; then
             echo "[git] 最终 PDF 无变化"
+            exit 0
+          fi
+          NON_PDF="$(git diff --cached --name-only | grep -v '^paper/paper.pdf$' | wc -l)"
+          if [ "$NON_PDF" -eq 0 ]; then
+            echo "[git] 只有 PDF 时间戳变化，跳过提交"
+            git reset >/dev/null 2>&1 || true
+            git checkout HEAD -- paper/paper.pdf 2>/dev/null || true
             exit 0
           fi
           git commit -m "paper: regenerate PDF after automated check"
