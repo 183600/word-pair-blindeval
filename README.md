@@ -96,7 +96,7 @@ N_RUNS=3 CONCURRENCY=64 GIT_BRANCH=v2-deepseek-pilot \
 
 `paper/` 收录两套材料：
 
-- [`paper/paper.pdf`](paper/paper.pdf)（15 页）与 [`paper/paper.tex`](paper/paper.tex)：针对 240 对
+- [`paper/paper.pdf`](paper/paper.pdf)（17 页）与 [`paper/paper.tex`](paper/paper.tex)：针对 240 对
   盲评的独立复算，含胜负、五维评分、长度分层、聚类 bootstrap、回归与 v1 跨代复现；
   复算脚本在 [`paper/scripts/`](paper/scripts/)，中间结果在 [`paper/out/`](paper/out/)。
 - [`paper/latex-src/`](paper/latex-src/) 与 `paper/pdf/` 下的中文 PDF：合并自 `v2-deepseek`
@@ -105,6 +105,11 @@ N_RUNS=3 CONCURRENCY=64 GIT_BRANCH=v2-deepseek-pilot \
 论文的核心结论：直接回答胜 224/240（93.3%）；词对条件主要提升原创性（+0.31），
 但在可操作性（−2.32）、具体性（−2.08）、逻辑性（−1.54）和整体质量（−1.72）上更低；
 长度是主要通道，控制长度后条件效应从 −1.72 收窄到 −0.82。
+
+论文仓库带有自动检查：`.github/workflows/continuous-loop.yml` 每 30 分钟循环调用
+opencode 检查并修复 `paper/paper.tex`，通过 XeLaTeX 编译后提交；`sync-to-gitee.yml`
+在 `main` 更新或检查完成后把 GitHub 仓库同步回 Gitee。`tests/` 不参与提交与同步，
+CI 也不运行测试。
 
 ## 6. 安全
 

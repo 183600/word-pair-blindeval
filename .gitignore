@@ -25,3 +25,13 @@ venv/
 Thumbs.db
 .idea/
 .vscode/
+
+# LaTeX 编译中间文件
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/*.synctex.gz
+
+# 本仓库不包含 tests；CI 也不运行测试
+tests/

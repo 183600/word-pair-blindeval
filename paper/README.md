@@ -13,7 +13,7 @@
 
 | 路径 | 说明 |
 |---|---|
-| `paper.pdf` | 成稿，16 页，XeLaTeX 编译 |
+| `paper.pdf` | 成稿，17 页，XeLaTeX 编译 |
 | `paper.tex` | 源码（ctex 文档类，A4 11pt） |
 | `figs/` | 4 幅矢量图（PDF，matplotlib 生成） |
 | `scripts/01_analyze.py` | 复算：胜负、五维、长度分层、聚类 bootstrap、回归、v1 跨代复现 |
@@ -54,8 +54,20 @@ python3 scripts/03_figures.py    # -> figs/*.pdf
 | 只有原创性略升 | +0.31；可操作性 −2.32、具体性 −2.08、逻辑性 −1.54、整体 −1.72 |
 | 长度是主要通道 | 长度比与分差 Spearman ρ=0.585；长度比 ≥0.9 的子集胜率降至 67.9% |
 | 等长处的条件效应 | −0.82（95% CI [−1.38, −0.26]），约为原始差距的 48% |
-| 预算是翻倍的 | 输出 token 2.02×（flash）与 1.60×（pro），正文却只有 73% 与 46% |
+| 预算明显增加 | 输出 token 2.02×（flash）与 1.60×（pro），正文却只有 73% 与 46% |
 | “灵感”基本没兑现 | 词对词元原样进入正文的比例仅 16.9% 与 15.1% |
 | 跨代复现 | v1（kimi-k3）49:10:1，长度比 0.84，胜率 81.7% |
 
 完整讨论（含 6 条效度威胁与三项设计修正）见 `paper.pdf` 第 5–6 节。
+
+## 自动检查与同步
+
+本仓库带有两个 GitHub Actions 工作流：
+
+- `.github/workflows/continuous-loop.yml`：每 30 分钟（也可手动触发）循环调用 opencode，
+  检查 `paper.tex` 的 LaTeX 语法、引用、表格和数值是否与 `out/` 数据一致；发现问题就修复、
+  重新编译 PDF，并把通过编译的修改提交回 `main`。不再运行 tests 或其他代码实验阶段。
+- `.github/workflows/sync-to-gitee.yml`：在 `main` 更新、Continuous Loop 完成或定时触发时，
+  把 GitHub 仓库镜像同步到 Gitee 的 `qwe12345678/jkdsfn`。
+
+如需暂停自动修改，把仓库变量 `PAPER_CHECK_FREEZE` 设为 `true`，或添加 `.github/PAPER_CHECK_FREEZE` 文件。

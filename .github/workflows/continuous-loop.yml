@@ -1,0 +1,319 @@
+name: Continuous Loop
+
+# 持续论文检查：每 30 分钟（以及手动触发）循环调用 opencode，
+# 独立检查 paper/paper.tex 的 LaTeX 语法、引用、表格和数值是否与 out/ 数据一致，
+# 发现问题就修复并重新编译 PDF；修改会提交回 main，再由 Sync to Gitee 推送。
+#
+# 与其他仓库的 Continuous Loop 不同，这里只保留“论文检查”这一种 opencode 调用，
+# 不再运行 perf / bug / sci / apply 等其他阶段，也不运行 tests。
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/30 * * * *'
+
+# 同一时间只保留 1 个 running + 1 个 pending；当前 run 结束后，后继 run 立刻开始。
+concurrency:
+  group: continuous-loop-paper
+  cancel-in-progress: false
+
+env:
+  LANG: C.UTF-8
+  LC_ALL: C.UTF-8
+  NO_COLOR: '1'
+  FORCE_COLOR: '0'
+  TERM: dumb
+  PYTHONIOENCODING: utf-8
+  PYTHONUTF8: '1'
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  paper-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      # 先把下一个 run 排进队列，保证链条不会因为本 run 失败/超时而断掉。
+      - name: Queue next run
+        if: always() && vars.PAPER_CHECK_FREEZE != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+          WF_REF: ${{ github.workflow_ref }}
+        run: |
+          set +e
+          BRANCH="${GITHUB_REF_NAME:-main}"
+          WF_FILE="${WF_REF%%@*}"
+          WF_FILE="${WF_FILE##*/}"
+          case "$WF_FILE" in
+            *.yml|*.yaml) ;;
+            *) WF_FILE="continuous-loop.yml" ;;
+          esac
+
+          pending_other() {
+            gh api "repos/${GH_REPO}/actions/workflows/${WF_FILE}/runs?per_page=30" \
+              --jq '[.workflow_runs[] | select((.id|tostring) != "'"${RUN_ID}"'") | select(.status=="pending" or .status=="queued" or .status=="waiting" or .status=="requested")] | length' \
+              2>/dev/null
+          }
+
+          Q="$(pending_other)"
+          case "$Q" in ''|*[!0-9]*) Q=0 ;; esac
+          echo "[loop] repo=${GH_REPO} workflow=${WF_FILE} branch=${BRANCH} queued_successors=${Q}"
+          if [ "$Q" != "0" ]; then
+            echo "[loop] 后继 run 已在队列中，无需重复派发"
+            exit 0
+          fi
+
+          for attempt in 1 2 3 4 5; do
+            if gh workflow run "$WF_FILE" --ref "$BRANCH"; then
+              echo "[loop] 已派发后继 run（attempt ${attempt}）"
+              exit 0
+            fi
+            echo "[loop][warn] 派发失败（attempt ${attempt}），10s 后重试"
+            sleep 10
+          done
+          echo "[loop][warn] 未能派发后继 run；*/30 定时心跳会补位"
+          exit 0
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check freeze switch
+        id: freeze
+        run: |
+          set +e
+          FROZEN="false"
+          if [ "${{ vars.PAPER_CHECK_FREEZE }}" = "true" ] || [ "${{ vars.PAPER_CHECK_FREEZE }}" = "1" ]; then
+            FROZEN="true"
+          fi
+          if [ -f .github/PAPER_CHECK_FREEZE ] || [ -f PAPER_CHECK_FREEZE ]; then
+            FROZEN="true"
+          fi
+          echo "frozen=${FROZEN}" >> "$GITHUB_OUTPUT"
+          echo "[freeze] frozen=${FROZEN}"
+
+      - name: Install XeLaTeX and Chinese fonts
+        if: steps.freeze.outputs.frozen != 'true'
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            texlive-xetex texlive-lang-chinese texlive-latex-extra \
+            texlive-fonts-recommended latexmk
+          xelatex --version | head -1
+
+      - name: Setup Node.js
+        if: steps.freeze.outputs.frozen != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Cache npm
+        if: steps.freeze.outputs.frozen != 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-paper-${{ hashFiles('.github/workflows/continuous-loop.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-paper-
+
+      - name: Install opencode
+        if: steps.freeze.outputs.frozen != 'true'
+        run: |
+          set -euo pipefail
+          npm i -g opencode-ai
+          opencode --version
+
+      - name: Select a free OpenCode model
+        id: model
+        if: steps.freeze.outputs.frozen != 'true'
+        run: |
+          set -euo pipefail
+
+          # 优先 deepseek-v4.1-flash-free；不可用时回退到其他免费模型。
+          PREFERRED="opencode/deepseek-v4.1-flash-free"
+          KNOWN=(
+            "$PREFERRED"
+            "opencode/big-pickle"
+            "opencode/beam-free"
+            "opencode/glm-5.3-flash-free"
+            "opencode/mimo-v2.6-flash-free"
+            "opencode/nemotron-3.5-lightning-free"
+          )
+
+          opencode models > /tmp/opencode-models.txt 2>/dev/null || true
+          mapfile -t AVAILABLE < <(grep -E '^opencode/' /tmp/opencode-models.txt || true)
+
+          CANDIDATES=()
+          add_candidate() {
+            local m="$1" existing
+            for existing in "${CANDIDATES[@]:-}"; do
+              [ "$existing" = "$m" ] && return 0
+            done
+            CANDIDATES+=("$m")
+          }
+
+          for m in "${KNOWN[@]}"; do
+            for a in "${AVAILABLE[@]:-}"; do
+              if [ "$m" = "$a" ]; then add_candidate "$m"; break; fi
+            done
+          done
+          for a in "${AVAILABLE[@]:-}"; do
+            case "$a" in
+              *-free) add_candidate "$a" ;;
+            esac
+          done
+
+          if [ "${#CANDIDATES[@]}" -eq 0 ]; then
+            echo "[model][error] 没有找到任何免费候选模型" >&2
+            exit 1
+          fi
+
+          MODEL=""
+          for m in "${CANDIDATES[@]}"; do
+            echo "[model] 冒烟测试 ${m} ..."
+            if timeout --kill-after=20 180 opencode run --standalone --auto -m "$m" \
+                 '只回复两个字：OK' >/tmp/opencode-smoke.log 2>&1; then
+              MODEL="$m"
+              echo "[model] 可用：${m}"
+              break
+            fi
+            echo "[model] 不可用：${m}"
+            tail -n 8 /tmp/opencode-smoke.log 2>/dev/null || true
+          done
+
+          if [ -z "$MODEL" ]; then
+            echo "[model][error] 所有免费候选模型均不可用" >&2
+            exit 1
+          fi
+          echo "model=${MODEL}" >> "$GITHUB_OUTPUT"
+
+      - name: Run opencode paper checks
+        if: steps.freeze.outputs.frozen != 'true'
+        env:
+          MODEL: ${{ steps.model.outputs.model }}
+        run: |
+          set -uo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config i18n.commitEncoding utf-8
+          git config core.quotepath false
+
+          cat > /tmp/paper-prompt.txt <<'PROMPT'
+          你正在 GitHub Actions 中维护仓库里的中文学术论文 paper/paper.tex。
+          目标：独立检查并修复论文中的错误，确保它能用 XeLaTeX 干净编译。
+
+          请按以下步骤工作：
+          1. 阅读 paper/paper.tex、paper/README.md、out/results.json、out/features.json、out/pairs.csv。
+          2. 检查 LaTeX 语法、环境配对、表格列数、\label/\ref、\cite/\bibitem、重复标签和未定义引用。
+          3. 对照 out/ 的数据复核论文中的关键数字：胜率、任务聚类置信区间、五维分差、
+             长度比、token 比、回归系数、评委分数、v1 跨代结果等。
+          4. 在 paper/ 目录运行 `xelatex -interaction=nonstopmode paper.tex` 两遍，检查 paper.log：
+             - 不能有 `!` 错误、`Undefined control sequence`、未定义引用或未定义文献；
+             - 尽量消除 overfull box；
+             - 附录代码段的少量 underfull hbox 可以接受。
+          5. 只修复明确的错误，保持论文结构、论证和文风；不要重写全文；不要修改 .github/、
+             out/ 数据或无关文件。
+          6. 如果修改了 paper.tex，必须重新生成 paper/paper.pdf；如果页数变化，同步更新
+             paper/README.md 和根 README.md 中的页数。
+          7. 不要执行 git commit / git push；工作流会处理提交和同步。
+          8. 结束时用简短中文列出：发现的问题、做的修改、编译结果、PDF 页数。
+
+          重要：不要删除或弱化任何原有的数值结论；不确定的修改宁可不做，并在报告中说明。
+          PROMPT
+
+          PROMPT_TEXT="$(cat /tmp/paper-prompt.txt)"
+
+          for i in 1 2 3; do
+            echo "=========== paper check iteration ${i} ==========="
+            timeout --kill-after=120 1500 opencode run --standalone --auto \
+              -m "$MODEL" "$PROMPT_TEXT" 2>&1 | tee "/tmp/paper-check-${i}.log"
+            EC=${PIPESTATUS[0]}
+            echo "[opencode] iteration=${i} exit=${EC}"
+
+            # 不允许 agent 改动 CI 配置。
+            git checkout HEAD -- .github 2>/dev/null || true
+            git clean -fdq .github 2>/dev/null || true
+            rm -rf opencode.json opencode.jsonc .opencode.json .opencode 2>/dev/null || true
+            rm -f paper/paper.aux paper/paper.log paper/paper.out
+
+            # 只有编译通过才提交，避免把损坏的 PDF 推到 GitHub/Gitee。
+            COMPILE_OK=0
+            if [ -f paper/paper.tex ]; then
+              (
+                cd paper
+                xelatex -interaction=nonstopmode paper.tex >/tmp/paper-compile-${i}-1.log 2>&1 || true
+                xelatex -interaction=nonstopmode paper.tex >/tmp/paper-compile-${i}-2.log 2>&1 || true
+              )
+              if grep -q 'Output written' paper/paper.log 2>/dev/null \
+                 && ! grep -qE '^!|Undefined control sequence|LaTeX Error|Citation .* undefined|Reference .* undefined' paper/paper.log; then
+                COMPILE_OK=1
+              fi
+            fi
+
+            if [ "$COMPILE_OK" -ne 1 ]; then
+              echo "[warn] iteration ${i} 编译未通过，保留工作区改动但不提交；下一次迭代/下一轮继续修复"
+              git reset >/dev/null 2>&1 || true
+              continue
+            fi
+
+            git add -A
+            if git diff --cached --quiet; then
+              echo "[git] iteration ${i} 没有产生修改"
+              continue
+            fi
+            git commit -m "paper: automated verification iteration ${i}"
+            if ! git pull --rebase origin main; then
+              git rebase --abort 2>/dev/null || true
+            fi
+            git push origin HEAD:main || echo "[warn] push 失败；下一轮会重试"
+          done
+
+      - name: Final compile verification
+        if: steps.freeze.outputs.frozen != 'true'
+        run: |
+          set -euo pipefail
+          cd paper
+          xelatex -interaction=nonstopmode paper.tex >/tmp/paper-final-1.log 2>&1
+          xelatex -interaction=nonstopmode paper.tex >/tmp/paper-final-2.log 2>&1
+          if grep -qE '^!|Undefined control sequence|LaTeX Error|Citation .* undefined|Reference .* undefined' paper.log; then
+            echo "[error] 论文没有干净编译："
+            tail -n 80 paper.log
+            exit 1
+          fi
+          grep 'Output written' paper.log
+
+      - name: Commit final PDF
+        if: steps.freeze.outputs.frozen != 'true'
+        run: |
+          set +e
+          git add paper/paper.pdf paper/paper.tex paper/README.md README.md
+          if git diff --cached --quiet; then
+            echo "[git] 最终 PDF 无变化"
+            exit 0
+          fi
+          git commit -m "paper: regenerate PDF after automated check"
+          git pull --rebase origin main || git rebase --abort || true
+          git push origin HEAD:main || echo "[warn] final push 失败"
+
+      - name: Upload paper-check logs
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper-check-${{ github.run_id }}
+          if-no-files-found: ignore
+          retention-days: 30
+          path: |
+            /tmp/paper-check-*.log
+            /tmp/paper-compile-*.log
+            /tmp/paper-final-*.log
+            /tmp/opencode-smoke.log
+            /tmp/opencode-models.txt

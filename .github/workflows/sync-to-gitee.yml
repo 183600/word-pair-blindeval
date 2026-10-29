@@ -1,0 +1,75 @@
+name: Sync to Gitee
+
+# 把 GitHub 的 main 镜像到 Gitee 的 qwe12345678/jkdsfn。
+# 触发方式：
+#   - main 有 push（tests/ 下的改动忽略）
+#   - Continuous Loop 完成（即使失败也同步已提交的修改）
+#   - 每 30 分钟兜底
+#   - 手动触发
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'tests/**'
+  workflow_dispatch:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_run:
+    workflows:
+      - 'Continuous Loop'
+    types: [completed]
+    branches:
+      - main
+
+concurrency:
+  group: sync-to-gitee
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  sync-to-gitee:
+    name: Mirror main to Gitee
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Mirror push to Gitee
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+          GITEE_REPO: ${{ secrets.GITEE_REPO }}
+        run: |
+          set -euo pipefail
+          export GIT_TERMINAL_PROMPT=0
+
+          if [ -z "${GITEE_TOKEN:-}" ]; then
+            echo "[error] 未配置 GITEE_TOKEN secret" >&2
+            exit 1
+          fi
+
+          REPO="${GITEE_REPO:-qwe12345678/jkdsfn}"
+          GH_URL="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          GITEE_URL="https://qwe12345678:${GITEE_TOKEN}@gitee.com/${REPO}.git"
+
+          GH_SHA="$(git ls-remote "$GH_URL" refs/heads/main | cut -f1)"
+          GITEE_SHA="$(git ls-remote "$GITEE_URL" refs/heads/main | cut -f1)"
+          echo "[sync] github main=${GH_SHA:-<missing>}"
+          echo "[sync] gitee  main=${GITEE_SHA:-<missing>}"
+
+          if [ -n "$GH_SHA" ] && [ "$GH_SHA" = "$GITEE_SHA" ]; then
+            echo "[sync] 两边已经一致，无需推送"
+            exit 0
+          fi
+
+          rm -rf repo.git
+          git clone --bare "$GH_URL" repo.git
+          cd repo.git
+          # 只同步 main 与 tags，不删除 Gitee 上可能存在的其他分支。
+          git push --force "$GITEE_URL" \
+            'refs/heads/main:refs/heads/main' \
+            'refs/tags/*:refs/tags/*'
+          echo "[sync] 已推送到 Gitee: ${REPO}"
