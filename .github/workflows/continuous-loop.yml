@@ -228,6 +228,33 @@ jobs:
 
           for i in 1 2 3; do
             echo "=========== paper check iteration ${i} ==========="
+            # ⭐ 前置测试门（本仓库的“测试”= 论文必须能干净编译，标准同 Final compile verification）。
+            # 失败 → 推送当前状态并以 exit 86 提前结束本 job；后继 run 已由 “Queue next run” 派发，数秒内自动接续。
+            PRE_OK=1
+            if [ -f paper/paper.tex ]; then
+              ( cd paper \
+                && xelatex -interaction=nonstopmode paper.tex >/tmp/pretest-1.log 2>&1 \
+                && xelatex -interaction=nonstopmode paper.tex >/tmp/pretest-2.log 2>&1 ) || true
+              if ! { grep -q 'Output written' paper/paper.log 2>/dev/null \
+                     && ! grep -qE '^!|Undefined control sequence|LaTeX Error|Citation .* undefined|Reference .* undefined' paper/paper.log; } then
+                PRE_OK=0
+              fi
+              rm -f paper/paper.aux paper/paper.log paper/paper.out
+            else
+              echo "[pre-test] paper/paper.tex 不存在，视为无可测试内容，放行"
+            fi
+            if [ "$PRE_OK" -ne 1 ]; then
+              echo "[pre-test] 论文编译未通过 → 推送当前状态并提前结束本 job"
+              git add -A
+              git commit -m "auto: pre-opencode test gate failed (paper compile)" \
+                || echo "[pre-test] 没有新内容可提交"
+              git pull --rebase origin main 2>/dev/null || git rebase --abort 2>/dev/null || true
+              git push origin HEAD:main \
+                || echo "[pre-test] [warn] push 失败"
+              exit 86
+            fi
+            echo "[pre-test] 论文编译通过"
+
             timeout --kill-after=120 1500 opencode run --standalone --auto \
               -m "$MODEL" "$PROMPT_TEXT" 2>&1 | tee "/tmp/paper-check-${i}.log"
             EC=${PIPESTATUS[0]}
