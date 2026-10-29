@@ -213,7 +213,8 @@ jobs:
              - 尽量消除 overfull box；
              - 附录代码段的少量 underfull hbox 可以接受。
           5. 只修复明确的错误，保持论文结构、论证和文风；不要重写全文；不要修改 .github/、
-             out/ 数据或无关文件。
+             out/ 数据或无关文件。如果论文已经能干净编译、引用/表格/数字都一致，
+             不要为了润色、改写或“再检查一遍”而修改任何文件；没有明确错误时保持 paper.tex 不变。
           6. 如果修改了 paper.tex，必须重新生成 paper/paper.pdf；如果页数变化，同步更新
              paper/README.md 和根 README.md 中的页数。
           7. 不要执行 git commit / git push；工作流会处理提交和同步。
