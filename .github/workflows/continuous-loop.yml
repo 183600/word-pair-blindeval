@@ -108,15 +108,19 @@ jobs:
             texlive-fonts-recommended latexmk
           xelatex --version | head -1
 
-      - name: Install opencode
+      - name: Setup Node.js
+        if: steps.freeze.outputs.frozen != 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install opencode v2
         if: steps.freeze.outputs.frozen != 'true'
         run: |
           set -euo pipefail
-          # 官方安装脚本提供 v2 CLI；npm 上的 opencode-ai 仍是 v1，
-          # v1 的 run 子命令不支持 --standalone，会导致下面的循环无法启动。
-          timeout 600 bash -c 'curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path'
-          export PATH="$HOME/.opencode/bin:$PATH"
-          echo "$HOME/.opencode/bin" >> "$GITHUB_PATH"
+          # npm 上的 opencode-ai 是 v1（run 子命令不支持 --standalone）；
+          # v2 的包名是 @opencode/cli。
+          npm i -g @opencode/cli
           opencode --version
 
       - name: Select a free OpenCode model
