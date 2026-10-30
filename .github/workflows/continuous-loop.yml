@@ -126,10 +126,16 @@ jobs:
       - name: Select a free OpenCode model
         id: model
         if: steps.freeze.outputs.frozen != 'true'
+        env:
+          # DeepSeek 官方 API 兜底：opencode 内置 provider 直接读取该环境变量；
+          # 免费池全部不可用时接管。secret 未配置时候选不会加入，行为与原先一致。
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         run: |
           set -euo pipefail
 
-          # 优先 deepseek-v4.1-flash-free；不可用时先回退 glm-5.3-flash-free，再 big-pickle，最后其他免费模型。
+          # 优先 deepseek-v4.1-flash-free；不可用时先回退 glm-5.3-flash-free，再 big-pickle，
+          # 再其他免费模型；全部免费模型都不可用（匿名限额耗尽/网关不稳）时，
+          # 最后回退 DeepSeek 官方 API（内置 provider，鉴权走 DEEPSEEK_API_KEY）。
           PREFERRED="opencode/deepseek-v4.1-flash-free"
           KNOWN=(
             "$PREFERRED"
@@ -141,7 +147,9 @@ jobs:
           )
 
           opencode models > /tmp/opencode-models.txt 2>/dev/null || true
-          mapfile -t AVAILABLE < <(grep -E '^opencode/' /tmp/opencode-models.txt || true)
+          # 同时纳入 opencode/ 免费池与 deepseek/ 官方内置 provider 的模型，
+          # 后者只有配置了 DEEPSEEK_API_KEY 时才会作为候选参与冒烟。
+          mapfile -t AVAILABLE < <(grep -E '^(opencode/|deepseek/)' /tmp/opencode-models.txt || true)
 
           CANDIDATES=()
           add_candidate() {
@@ -162,6 +170,17 @@ jobs:
               *-free) add_candidate "$a" ;;
             esac
           done
+
+          # 兜底：DeepSeek 官方 API（免费池全部不可用时接管，保证论文检查循环不断）；
+          # DEEPSEEK_API_KEY 未配置或模型不在列表中时不加入，链路与原先完全一致。
+          if [ -n "${DEEPSEEK_API_KEY:-}" ]; then
+            for a in "${AVAILABLE[@]:-}"; do
+              if [ "$a" = "deepseek/deepseek-flash" ]; then
+                add_candidate "deepseek/deepseek-flash"
+                break
+              fi
+            done
+          fi
 
           if [ "${#CANDIDATES[@]}" -eq 0 ]; then
             echo "[model][error] 没有找到任何免费候选模型" >&2
@@ -191,6 +210,8 @@ jobs:
         if: steps.freeze.outputs.frozen != 'true'
         env:
           MODEL: ${{ steps.model.outputs.model }}
+          # 选中官方 API 模型时，实际调用同样需要该 key。
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         run: |
           set -uo pipefail
           set +e
