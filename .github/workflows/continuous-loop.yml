@@ -195,6 +195,18 @@ jobs:
           set -uo pipefail
           set +e
 
+          # ⭐ 远端同步：后继 run 在本 run 开始时派发，checkout 可能停在旧 commit；对齐远端最新。
+          # ⭐ 远端同步：后继 run 在本 run 开始时派发的，workflow_dispatch 在事件创建时解析
+          # ref → SHA，排队中的 run 其 checkout 可能停在旧 commit；这里强制对齐远端最新提交。
+          BRANCH_SYNC="${GITHUB_REF_NAME:-main}"
+          git fetch origin "$BRANCH_SYNC" --prune >/dev/null 2>&1 || true
+          if git rev-parse --verify -q "origin/${BRANCH_SYNC}" >/dev/null 2>&1; then
+            if [ "$(git rev-parse HEAD)" != "$(git rev-parse "origin/${BRANCH_SYNC}")" ]; then
+              echo "[sync] 工作区落后于 origin/${BRANCH_SYNC}，重置到最新提交"
+              git reset --hard "origin/${BRANCH_SYNC}" >/dev/null 2>&1 || true
+            fi
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config i18n.commitEncoding utf-8
@@ -226,8 +238,11 @@ jobs:
 
           PROMPT_TEXT="$(cat /tmp/paper-prompt.txt)"
 
-          for i in 1 2 3; do
-            echo "=========== paper check iteration ${i} ==========="
+          # ⭐ 单次调用约束：本 job 只进行一次论文检查 opencode 调用。
+          # 需要下一次调用时由已排队的后继 job 接续（队列 + next-run + */30 心跳兜底）。
+          # 前置编译门与模型冒烟测试属测试，不受单次调用限制。
+          for i in "run${GITHUB_RUN_NUMBER:-1}"; do
+            echo "=========== paper check ${i} ==========="
             # ⭐ 前置测试门（本仓库的“测试”= 论文必须能干净编译，标准同 Final compile verification）。
             # 失败 → 推送当前状态并以 exit 86 提前结束本 job；后继 run 已由 “Queue next run” 派发，数秒内自动接续。
             PRE_OK=1
