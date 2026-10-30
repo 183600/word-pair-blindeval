@@ -129,13 +129,13 @@ jobs:
         run: |
           set -euo pipefail
 
-          # 优先 deepseek-v4.1-flash-free；不可用时回退到其他免费模型。
+          # 优先 deepseek-v4.1-flash-free；不可用时先回退 glm-5.3-flash-free，再 big-pickle，最后其他免费模型。
           PREFERRED="opencode/deepseek-v4.1-flash-free"
           KNOWN=(
             "$PREFERRED"
+            "opencode/glm-5.3-flash-free"
             "opencode/big-pickle"
             "opencode/beam-free"
-            "opencode/glm-5.3-flash-free"
             "opencode/mimo-v2.6-flash-free"
             "opencode/nemotron-3.5-lightning-free"
           )
