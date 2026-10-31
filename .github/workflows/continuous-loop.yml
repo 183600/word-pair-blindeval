@@ -331,9 +331,60 @@ jobs:
             fi
             echo "[pre-test] 论文编译通过"
 
-            timeout --kill-after=120 1500 opencode run --standalone --auto \
-              -m "$MODEL" "$PROMPT_TEXT" 2>&1 | tee "/tmp/paper-check-${i}.log"
-            EC=${PIPESTATUS[0]}
+            # ⭐ 停滞看门狗阈值：opencode 输出连续无增长的容忍秒数（20 分钟）。
+            STALL_TIMEOUT=1200
+            # ⭐ 停滞看门狗：后台执行+前台轮询输出大小；停滞 → 终止本次调用（EC=75），
+            #    已完成的改动走既有 编译检查→提交→推送 流程；rescue 步骤兜底推送；
+            #    下一次迭代立即重新发起调用。
+            echo "[watchdog] 停滞看门狗已启用（输出 ${STALL_TIMEOUT}s 无增长即终止本次调用）"
+            rm -f /tmp/.oc_exit_code
+            LOG_I="/tmp/paper-check-${i}.log"
+            setsid bash -c '
+              timeout --kill-after=120 "$1" opencode run --standalone --auto -m "$2" "$3" < /dev/null 2>&1 | tee "$4"
+              echo "${PIPESTATUS[0]}" > /tmp/.oc_exit_code
+            ' _ 1500 "$MODEL" "$PROMPT_TEXT" "$LOG_I" &
+            OC_BG=$!
+            _sz=-1; _ts=$(date +%s); _stalled=0
+            while kill -0 "$OC_BG" 2>/dev/null; do
+              sleep 20
+              _nsz=$(stat -c %s "$LOG_I" 2>/dev/null || echo 0)
+              if [ "$_nsz" != "$_sz" ]; then
+                _sz="$_nsz"; _ts=$(date +%s)
+              elif [ $(( $(date +%s) - _ts )) -ge "$STALL_TIMEOUT" ]; then
+                _stalled=1; break
+              fi
+            done
+            if [ "$_stalled" -eq 1 ]; then
+              echo "[watchdog] opencode 输出已 ${STALL_TIMEOUT}s 无增长（$LOG_I 停在 ${_sz}B）→ 判定网关停滞，终止本次迭代调用；改动按既有流程提交或由 rescue 推送"
+                # 先 TERM 优雅退出，60s 后升级 KILL。注意 GNU timeout 默认把子进程
+                # 放进独立进程组（其子进程都在该组），包装进程的组信号够不到它；
+                # 因此对每个 cmdline 匹配的进程，向其所在进程组逐一发信号，
+                # 包装组 + timeout 子组全覆盖，不留仍持有输出管道的孤儿进程。
+                for _pid in $(pgrep -f "opencode run" 2>/dev/null); do
+                  _pgid="$(ps -o pgid= -p "$_pid" 2>/dev/null | tr -d '[:space:]')"
+                  [ -n "$_pgid" ] && kill -TERM -- "-$_pgid" 2>/dev/null
+                done
+                kill -TERM -- "-$OC_BG" 2>/dev/null
+                pkill -TERM -f "opencode run" 2>/dev/null
+                kill -TERM "$OC_BG" 2>/dev/null
+                for _w in 1 2 3; do
+                  sleep 20
+                  kill -0 "$OC_BG" 2>/dev/null || break
+                done
+                for _pid in $(pgrep -f "opencode run" 2>/dev/null); do
+                  _pgid="$(ps -o pgid= -p "$_pid" 2>/dev/null | tr -d '[:space:]')"
+                  [ -n "$_pgid" ] && kill -KILL -- "-$_pgid" 2>/dev/null
+                done
+                kill -KILL -- "-$OC_BG" 2>/dev/null
+                pkill -KILL -f "opencode run" 2>/dev/null
+                kill -KILL "$OC_BG" 2>/dev/null
+                wait "$OC_BG" 2>/dev/null
+              EC=75
+            else
+              wait "$OC_BG" 2>/dev/null
+              EC=124
+              [ -s /tmp/.oc_exit_code ] && EC=$(cat /tmp/.oc_exit_code)
+            fi
             echo "[opencode] iteration=${i} exit=${EC}"
 
             # 不允许 agent 改动 CI 配置。
