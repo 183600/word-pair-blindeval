@@ -6,6 +6,14 @@ name: Continuous Loop
 #
 # 与其他仓库的 Continuous Loop 不同，这里只保留“论文检查”这一种 opencode 调用，
 # 不再运行 perf / bug / sci / apply 等其他阶段，也不运行 tests。
+#
+# ⭐ 失败保底：opencode 无法调用（免费池耗尽且官方 API 未配置）或任意步骤失败/被取消时——
+#   1) Rescue 步骤（if: always()）把工作区已产生但未提交的改动推送出去：
+#      干净可编译 → main；损坏状态 → rescue/paper-check 快照分支，绝不丢代码；
+#   2) 首步 Queue next run（if: always()）+ 收尾 next-run job 双保险，
+#      后继 run 立刻排队，本 run 一结束就接续，循环永不断链；
+#   3) DeepSeek 官方 API 兜底：配置 DEEPSEEK_API_KEY secret 后，
+#      免费池全部不可用时自动切换 deepseek/deepseek-flash 等官方模型。
 
 on:
   workflow_dispatch:
@@ -146,6 +154,34 @@ jobs:
             "opencode/nemotron-3.5-lightning-free"
           )
 
+          # ⭐ DeepSeek 官方 API 兜底（前置）：opencode v2 必须在仓库根提供 opencode.json
+          # 定义 provider，`opencode models` 才会列出 deepseek/* 模型；只设 DEEPSEEK_API_KEY
+          # 环境变量是不够的（这是此前兜底从未生效的根因）。secret 未配置时不写、不加候选，
+          # 行为与原先完全一致。该文件在主步骤收尾的既有清理逻辑中会被删除，不会入库。
+          if [ -n "${DEEPSEEK_API_KEY:-}" ] && [ ! -f opencode.json ]; then
+            cat > opencode.json <<'OCJSON'
+          {
+            "$schema": "https://opencode.ai/config.json",
+            "provider": {
+              "deepseek": {
+                "npm": "@ai-sdk/openai-compatible",
+                "name": "DeepSeek (official API)",
+                "options": {
+                  "baseURL": "https://api.deepseek.com/v1",
+                  "apiKey": "{env:DEEPSEEK_API_KEY}"
+                },
+                "models": {
+                  "deepseek-flash":    { "name": "DeepSeek Flash" },
+                  "deepseek-chat":     { "name": "DeepSeek Chat" },
+                  "deepseek-reasoner": { "name": "DeepSeek Reasoner" }
+                }
+              }
+            }
+          }
+          OCJSON
+            echo "[model] 已写入 opencode.json：DeepSeek 官方 API provider 就绪"
+          fi
+
           opencode models > /tmp/opencode-models.txt 2>/dev/null || true
           # 同时纳入 opencode/ 免费池与 deepseek/ 官方内置 provider 的模型，
           # 后者只有配置了 DEEPSEEK_API_KEY 时才会作为候选参与冒烟。
@@ -171,14 +207,18 @@ jobs:
             esac
           done
 
-          # 兜底：DeepSeek 官方 API（免费池全部不可用时接管，保证论文检查循环不断）；
+          # 兜底：DeepSeek 官方 API（免费池全部不可用时接管，保证论文检查循环不断）。
+          # opencode.json 已在前置步骤写好，deepseek/* 模型此时才会出现在 AVAILABLE 里；
+          # 依次尝试 deepseek-flash → deepseek-chat → deepseek-reasoner，
           # DEEPSEEK_API_KEY 未配置或模型不在列表中时不加入，链路与原先完全一致。
           if [ -n "${DEEPSEEK_API_KEY:-}" ]; then
-            for a in "${AVAILABLE[@]:-}"; do
-              if [ "$a" = "deepseek/deepseek-flash" ]; then
-                add_candidate "deepseek/deepseek-flash"
-                break
-              fi
+            for m in deepseek/deepseek-flash deepseek/deepseek-chat deepseek/deepseek-reasoner; do
+              for a in "${AVAILABLE[@]:-}"; do
+                if [ "$m" = "$a" ]; then
+                  add_candidate "$m"
+                  break
+                fi
+              done
             done
           fi
 
@@ -379,6 +419,57 @@ jobs:
           git pull --rebase origin main || git rebase --abort || true
           git push origin HEAD:main || echo "[warn] final push 失败"
 
+      # ⭐ 失败救援：opencode 无法调用（免费池耗尽 / 官方 API 未配置）、编译门失败、
+      # 任意步骤失败或被取消时，把工作区已产生但未提交的改动推送出去，绝不丢弃代码。
+      # 干净可编译的状态直接进 main（等同正常收尾）；损坏状态进 rescue/paper-check
+      # 快照分支，不污染主干（主干论文必须始终能干净编译，避免触发前置编译门死锁）。
+      - name: Rescue - push pending work
+        if: always() && steps.freeze.outputs.frozen != 'true'
+        continue-on-error: true
+        run: |
+          set +e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config i18n.commitEncoding utf-8
+          git config core.quotepath false
+          # 与主路径相同的防篡改清理：不提交 agent 动过的 CI / opencode 配置
+          git checkout HEAD -- .github 2>/dev/null || true
+          git clean -fdq .github 2>/dev/null || true
+          rm -f opencode.json opencode.jsonc .opencode.json 2>/dev/null
+          rm -f paper/paper.aux paper/paper.log paper/paper.out
+          git add -A
+          if git diff --cached --quiet; then
+            echo "[rescue] 工作区干净，没有需要救援的内容"
+            exit 0
+          fi
+          git commit -m "auto: rescue checkpoint (run ${GITHUB_RUN_NUMBER})"
+          # 判断当前状态是否干净可编译（与 Final compile verification 同一标准）
+          COMPILE_OK=0
+          if [ -f paper/paper.tex ] && command -v xelatex >/dev/null 2>&1; then
+            ( cd paper \
+              && xelatex -interaction=nonstopmode paper.tex >/tmp/rescue-c1.log 2>&1 \
+              && xelatex -interaction=nonstopmode paper.tex >/tmp/rescue-c2.log 2>&1 ) || true
+            if grep -q 'Output written' paper/paper.log 2>/dev/null \
+               && ! grep -qE '^!|Undefined control sequence|LaTeX Error|Citation .* undefined|Reference .* undefined' paper/paper.log; then
+              COMPILE_OK=1
+            fi
+            rm -f paper/paper.aux paper/paper.log paper/paper.out
+            git add -A
+            git commit -m "auto: rescue compile check" 2>/dev/null || true
+          fi
+          BRANCH="${GITHUB_REF_NAME:-main}"
+          if [ "$COMPILE_OK" = "1" ]; then
+            git pull --rebase origin "$BRANCH" 2>/dev/null || git rebase --abort 2>/dev/null || true
+            if git push origin "HEAD:${BRANCH}"; then
+              echo "[rescue] 干净可编译状态已直接推送到 ${BRANCH}"
+              exit 0
+            fi
+            echo "[rescue][warn] 推送 ${BRANCH} 失败，转快照分支"
+          fi
+          git push --force origin "HEAD:refs/heads/rescue/paper-check" \
+            && echo "[rescue] 已推送到 rescue/paper-check 快照分支" \
+            || echo "[rescue][warn] 快照分支推送也失败；改动记录在本次 run 日志中"
+
       - name: Upload paper-check logs
         if: always()
         continue-on-error: true
@@ -393,3 +484,54 @@ jobs:
             /tmp/paper-final-*.log
             /tmp/opencode-smoke.log
             /tmp/opencode-models.txt
+
+  # ===== 立刻续跑（下）：独立收尾 job =====
+  # needs + if: always()：主 job 无论成功、失败、被取消，这个 job 都会执行。
+  # 首步 Queue next run 已在 run 开始时派发过后继；这里做最终兜底——
+  # 若后继尚未排队（首步派发失败等），立刻补派，保证循环永不断链
+  # （最坏情况也只等下一次 */30 心跳）。
+  next-run:
+    needs: [paper-check]
+    if: always() && vars.PAPER_CHECK_FREEZE != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: write
+    steps:
+      - name: Ensure next run is queued
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set +e
+          BRANCH="${GITHUB_REF_NAME:-main}"
+          WF_REF="${GITHUB_WORKFLOW_REF%%@*}"
+          WF_FILE="${WF_REF##*/}"
+          case "$WF_FILE" in
+            *.yml|*.yaml) ;;
+            *) WF_FILE="continuous-loop.yml" ;;
+          esac
+          echo "[loop] 收尾检查 repo=${GH_REPO} workflow=${WF_FILE} branch=${BRANCH} run=${RUN_ID}"
+          pending_other() {
+            gh api "repos/${GH_REPO}/actions/workflows/${WF_FILE}/runs?per_page=30" \
+              --jq '[.workflow_runs[] | select((.id|tostring) != "'"${RUN_ID}"'") | select(.status=="pending" or .status=="queued" or .status=="waiting" or .status=="requested")] | length' \
+              2>/dev/null
+          }
+          Q="$(pending_other)"
+          case "$Q" in ''|*[!0-9]*) Q=0 ;; esac
+          echo "[loop] queued successors=${Q}"
+          if [ "$Q" != "0" ]; then
+            echo "[loop] 后继 run 已在队列中，无需补派"
+            exit 0
+          fi
+          for attempt in 1 2 3 4 5; do
+            if gh workflow run "$WF_FILE" --ref "$BRANCH"; then
+              echo "[loop] 已补派后继 run（attempt ${attempt}）"
+              exit 0
+            fi
+            echo "[loop][warn] 补派失败（attempt ${attempt}），10s 后重试"
+            sleep 10
+          done
+          echo "[loop][warn] 未能补派后继 run；*/30 定时心跳会补位"
+          exit 0
