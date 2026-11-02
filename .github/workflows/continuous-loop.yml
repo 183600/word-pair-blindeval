@@ -122,13 +122,15 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install opencode v2
+      - name: Install opencode
         if: steps.freeze.outputs.frozen != 'true'
         run: |
           set -euo pipefail
-          # npm 上的 opencode-ai 是 v1（run 子命令不支持 --standalone）；
-          # v2 的包名是 @opencode/cli。
-          npm i -g @opencode/cli
+          # 回到 v1（opencode-ai）：走 Zen 免费网关的 opencode/*-free 模型族，
+          # 与其他 12 个仓库一致，当前在 runner 上持续可用；
+          # v2（@opencode/cli）的 OpenCode Go 匿名免费额度已耗尽，
+          # 每次冒烟都返回 "Free usage limit reached"，造成了 33 小时的硬失败循环。
+          npm i -g opencode-ai
           opencode --version
 
       - name: Select a free OpenCode model
@@ -154,38 +156,77 @@ jobs:
             "opencode/nemotron-3.5-lightning-free"
           )
 
-          # ⭐ DeepSeek 官方 API 兜底（前置）：opencode v2 必须在仓库根提供 opencode.json
-          # 定义 provider，`opencode models` 才会列出 deepseek/* 模型；只设 DEEPSEEK_API_KEY
-          # 环境变量是不够的（这是此前兜底从未生效的根因）。secret 未配置时不写、不加候选，
-          # 行为与原先完全一致。该文件在主步骤收尾的既有清理逻辑中会被删除，不会入库。
-          if [ -n "${DEEPSEEK_API_KEY:-}" ] && [ ! -f opencode.json ]; then
-            cat > opencode.json <<'OCJSON'
+          # ⭐ v1 配置：写入全局配置目录，并带上权限放行块——v1 没有 v2 的 --auto，
+          # 缺权限配置时 agent 会在第一次工具调用处等确认而挂死。
+          # 同时（若配置了 DEEPSEEK_API_KEY）合并 DeepSeek 官方 API provider，
+          # 免费池全部不可用时兜底；secret 未配置时不加候选，行为与原先一致。
+          mkdir -p ~/.config/opencode
+          cat > ~/.config/opencode/opencode.json <<'OCJSON'
           {
             "$schema": "https://opencode.ai/config.json",
-            "provider": {
-              "deepseek": {
-                "npm": "@ai-sdk/openai-compatible",
-                "name": "DeepSeek (official API)",
-                "options": {
-                  "baseURL": "https://api.deepseek.com/v1",
-                  "apiKey": "{env:DEEPSEEK_API_KEY}"
-                },
-                "models": {
-                  "deepseek-flash":    { "name": "DeepSeek Flash" },
-                  "deepseek-chat":     { "name": "DeepSeek Chat" },
-                  "deepseek-reasoner": { "name": "DeepSeek Reasoner" }
-                }
+            "permission": {
+              "*": "allow",
+              "edit": {
+                "*": "allow",
+                ".github/**": "deny",
+                "**/.github/**": "deny",
+                "LICENSE": "deny",
+                "**/LICENSE": "deny",
+                "**/LICENSE.*": "deny"
+              },
+              "bash": {
+                "*": "allow",
+                "rm -rf .github*": "deny",
+                "rm -r .github*": "deny",
+                "rm .github*": "deny",
+                "mv .github*": "deny",
+                "git rm -r .github*": "deny",
+                "rm *LICENSE*": "deny",
+                "mv *LICENSE*": "deny",
+                "cp *LICENSE*": "deny",
+                "git rm *LICENSE*": "deny",
+                "git push*": "deny"
               }
-            }
+            },
+            "model": "opencode/deepseek-v4.1-flash-free"
           }
           OCJSON
-            echo "[model] 已写入 opencode.json：DeepSeek 官方 API provider 就绪"
+          if [ -n "${DEEPSEEK_API_KEY:-}" ]; then
+            python3 - <<'PYMERGE'
+          import json, os
+          p = os.path.expanduser('~/.config/opencode/opencode.json')
+          try:
+              with open(p) as f:
+                  cfg = json.load(f)
+          except Exception:
+              cfg = {}
+          cfg['$schema'] = 'https://opencode.ai/config.json'
+          cfg.setdefault('provider', {})
+          cfg['provider']['deepseek'] = {
+              'npm': '@ai-sdk/openai-compatible',
+              'name': 'DeepSeek (official API)',
+              'options': {
+                  'baseURL': 'https://api.deepseek.com/v1',
+                  'apiKey': '{env:DEEPSEEK_API_KEY}',
+              },
+              'models': {
+                  'deepseek-flash': {'name': 'DeepSeek Flash'},
+                  'deepseek-chat': {'name': 'DeepSeek Chat'},
+                  'deepseek-reasoner': {'name': 'DeepSeek Reasoner'},
+              },
+          }
+          os.makedirs(os.path.dirname(p), exist_ok=True)
+          with open(p, 'w') as f:
+              json.dump(cfg, f, indent=2, ensure_ascii=False)
+          PYMERGE
+            echo "[model] 已合并 DeepSeek 官方 API provider 到 opencode 配置"
           fi
 
+          # v1 不依赖 `opencode models` 的输出格式（v1/v2 列表格式不同，且网关挂起时
+          # 该命令本身可能超时）。KNOWN 全部直接进入候选，可用性由冒烟决定；
+          # models 列表仅用于补充发现额外的 *-free 模型，失败不影响主链路。
           opencode models > /tmp/opencode-models.txt 2>/dev/null || true
-          # 同时纳入 opencode/ 免费池与 deepseek/ 官方内置 provider 的模型，
-          # 后者只有配置了 DEEPSEEK_API_KEY 时才会作为候选参与冒烟。
-          mapfile -t AVAILABLE < <(grep -E '^(opencode/|deepseek/)' /tmp/opencode-models.txt || true)
+          mapfile -t AVAILABLE < <(grep -oE '(opencode|deepseek)/[A-Za-z0-9._-]+' /tmp/opencode-models.txt 2>/dev/null | sort -u || true)
 
           CANDIDATES=()
           add_candidate() {
@@ -196,29 +237,22 @@ jobs:
             CANDIDATES+=("$m")
           }
 
-          for m in "${KNOWN[@]}"; do
-            for a in "${AVAILABLE[@]:-}"; do
-              if [ "$m" = "$a" ]; then add_candidate "$m"; break; fi
-            done
-          done
+          # 已知免费模型优先（顺序即优先级），全部直接冒烟
+          for m in "${KNOWN[@]}"; do add_candidate "$m"; done
+
+          # models 列表中发现的额外免费模型
           for a in "${AVAILABLE[@]:-}"; do
             case "$a" in
-              *-free) add_candidate "$a" ;;
+            opencode/*-free) add_candidate "$a" ;;
             esac
           done
 
           # 兜底：DeepSeek 官方 API（免费池全部不可用时接管，保证论文检查循环不断）。
-          # opencode.json 已在前置步骤写好，deepseek/* 模型此时才会出现在 AVAILABLE 里；
-          # 依次尝试 deepseek-flash → deepseek-chat → deepseek-reasoner，
-          # DEEPSEEK_API_KEY 未配置或模型不在列表中时不加入，链路与原先完全一致。
+          # 依次尝试 deepseek-flash → deepseek-chat → deepseek-reasoner；
+          # DEEPSEEK_API_KEY 未配置时不加入，链路与原先完全一致。
           if [ -n "${DEEPSEEK_API_KEY:-}" ]; then
             for m in deepseek/deepseek-flash deepseek/deepseek-chat deepseek/deepseek-reasoner; do
-              for a in "${AVAILABLE[@]:-}"; do
-                if [ "$m" = "$a" ]; then
-                  add_candidate "$m"
-                  break
-                fi
-              done
+              add_candidate "$m"
             done
           fi
 
@@ -230,7 +264,7 @@ jobs:
           MODEL=""
           for m in "${CANDIDATES[@]}"; do
             echo "[model] 冒烟测试 ${m} ..."
-            if timeout --kill-after=20 180 opencode run --standalone --auto -m "$m" \
+            if timeout --kill-after=20 180 opencode run -m "$m" \
                  '只回复两个字：OK' >/tmp/opencode-smoke.log 2>&1; then
               MODEL="$m"
               echo "[model] 可用：${m}"
@@ -340,7 +374,7 @@ jobs:
             rm -f /tmp/.oc_exit_code
             LOG_I="/tmp/paper-check-${i}.log"
             setsid bash -c '
-              timeout --kill-after=120 "$1" opencode run --standalone --auto -m "$2" "$3" < /dev/null 2>&1 | tee "$4"
+              timeout --kill-after=120 "$1" opencode run -m "$2" "$3" < /dev/null 2>&1 | tee "$4"
               echo "${PIPESTATUS[0]}" > /tmp/.oc_exit_code
             ' _ 1500 "$MODEL" "$PROMPT_TEXT" "$LOG_I" &
             OC_BG=$!
