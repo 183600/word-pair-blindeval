@@ -13,7 +13,7 @@ name: Continuous Loop
 #   2) 首步 Queue next run（if: always()）+ 收尾 next-run job 双保险，
 #      后继 run 立刻排队，本 run 一结束就接续，循环永不断链；
 #   3) DeepSeek 官方 API 兜底：配置 DEEPSEEK_API_KEY secret 后，
-#      免费池全部不可用时自动切换 deepseek/deepseek-flash 等官方模型。
+#      免费池不可用时走 NVIDIA NIM 模型链（deepseek-v4.1-flash → glm → minimax → step）。
 
 on:
   workflow_dispatch:
@@ -137,15 +137,14 @@ jobs:
         id: model
         if: steps.freeze.outputs.frozen != 'true'
         env:
-          # DeepSeek 官方 API 兜底：opencode 内置 provider 直接读取该环境变量；
-          # 免费池全部不可用时接管。secret 未配置时候选不会加入，行为与原先一致。
-          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          # NVIDIA NIM API：主力模型来源（opencode 内置 provider，读该环境变量鉴权）
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
         run: |
           set -euo pipefail
 
-          # 优先 deepseek-v4.1-flash-free；不可用时先回退 glm-5.3-flash-free，再 big-pickle，
-          # 再其他免费模型；全部免费模型都不可用（匿名限额耗尽/网关不稳）时，
-          # 最后回退 DeepSeek 官方 API（内置 provider，鉴权走 DEEPSEEK_API_KEY）。
+          # 主力：NVIDIA NIM 模型链（deepseek-v4.1-flash → glm-5.3-flash → glm-5.3
+          # → minimax-m3.1-flash → step-5-preview，鉴权 NVIDIA_API_KEY）；
+          # 之后回退 Zen 免费池（deepseek-v4.1-flash-free → glm → big-pickle → 其他）。
           PREFERRED="opencode/deepseek-v4.1-flash-free"
           KNOWN=(
             "$PREFERRED"
@@ -158,8 +157,7 @@ jobs:
 
           # ⭐ v1 配置：写入全局配置目录，并带上权限放行块——v1 没有 v2 的 --auto，
           # 缺权限配置时 agent 会在第一次工具调用处等确认而挂死。
-          # 同时（若配置了 DEEPSEEK_API_KEY）合并 DeepSeek 官方 API provider，
-          # 免费池全部不可用时兜底；secret 未配置时不加候选，行为与原先一致。
+          # NVIDIA NIM 为 opencode 内置 provider（读 NVIDIA_API_KEY），无需合并配置。
           mkdir -p ~/.config/opencode
           cat > ~/.config/opencode/opencode.json <<'OCJSON'
           {
@@ -191,36 +189,6 @@ jobs:
             "model": "opencode/deepseek-v4.1-flash-free"
           }
           OCJSON
-          if [ -n "${DEEPSEEK_API_KEY:-}" ]; then
-            python3 - <<'PYMERGE'
-          import json, os
-          p = os.path.expanduser('~/.config/opencode/opencode.json')
-          try:
-              with open(p) as f:
-                  cfg = json.load(f)
-          except Exception:
-              cfg = {}
-          cfg['$schema'] = 'https://opencode.ai/config.json'
-          cfg.setdefault('provider', {})
-          cfg['provider']['deepseek'] = {
-              'npm': '@ai-sdk/openai-compatible',
-              'name': 'DeepSeek (official API)',
-              'options': {
-                  'baseURL': 'https://api.deepseek.com/v1',
-                  'apiKey': '{env:DEEPSEEK_API_KEY}',
-              },
-              'models': {
-                  'deepseek-flash': {'name': 'DeepSeek Flash'},
-                  'deepseek-chat': {'name': 'DeepSeek Chat'},
-                  'deepseek-reasoner': {'name': 'DeepSeek Reasoner'},
-              },
-          }
-          os.makedirs(os.path.dirname(p), exist_ok=True)
-          with open(p, 'w') as f:
-              json.dump(cfg, f, indent=2, ensure_ascii=False)
-          PYMERGE
-            echo "[model] 已合并 DeepSeek 官方 API provider 到 opencode 配置"
-          fi
 
           # v1 不依赖 `opencode models` 的输出格式（v1/v2 列表格式不同，且网关挂起时
           # 该命令本身可能超时）。KNOWN 全部直接进入候选，可用性由冒烟决定；
@@ -237,6 +205,11 @@ jobs:
             CANDIDATES+=("$m")
           }
 
+          # 主力：NVIDIA NIM 模型链（指定顺序），优先于免费池
+          for m in "nvidia/deepseek-ai/deepseek-v4.1-flash" "nvidia/z-ai/glm-5.3-flash" "nvidia/z-ai/glm-5.3" "nvidia/minimaxai/minimax-m3.1-flash" "nvidia/stepfun-ai/step-5-preview"; do
+            add_candidate "$m"
+          done
+
           # 已知免费模型优先（顺序即优先级），全部直接冒烟
           for m in "${KNOWN[@]}"; do add_candidate "$m"; done
 
@@ -247,14 +220,6 @@ jobs:
             esac
           done
 
-          # 兜底：DeepSeek 官方 API（免费池全部不可用时接管，保证论文检查循环不断）。
-          # 依次尝试 deepseek-flash → deepseek-chat → deepseek-reasoner；
-          # DEEPSEEK_API_KEY 未配置时不加入，链路与原先完全一致。
-          if [ -n "${DEEPSEEK_API_KEY:-}" ]; then
-            for m in deepseek/deepseek-flash deepseek/deepseek-chat deepseek/deepseek-reasoner; do
-              add_candidate "$m"
-            done
-          fi
 
           if [ "${#CANDIDATES[@]}" -eq 0 ]; then
             echo "[model][error] 没有找到任何免费候选模型" >&2
@@ -264,7 +229,8 @@ jobs:
           MODEL=""
           for m in "${CANDIDATES[@]}"; do
             echo "[model] 冒烟测试 ${m} ..."
-            if timeout --kill-after=20 180 opencode run -m "$m" \
+            SMK_T=90; case "$m" in nvidia/*) SMK_T=300 ;; esac
+            if timeout --kill-after=20 $SMK_T opencode run -m "$m" \
                  '只回复两个字：OK' >/tmp/opencode-smoke.log 2>&1; then
               MODEL="$m"
               echo "[model] 可用：${m}"
@@ -284,8 +250,8 @@ jobs:
         if: steps.freeze.outputs.frozen != 'true'
         env:
           MODEL: ${{ steps.model.outputs.model }}
-          # 选中官方 API 模型时，实际调用同样需要该 key。
-          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          # NVIDIA NIM 鉴权（opencode 内置 provider）
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
         run: |
           set -uo pipefail
           set +e
