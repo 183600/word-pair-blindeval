@@ -766,15 +766,14 @@ tasks[EB/OL]. arXiv:2512.23601, 2025.
 \addcontentsline{toc}{section}{附录：数据字段与复算命令}
 \markboth{附录：数据字段与复算命令}{附录：数据字段与复算命令}
 
-\begin{sloppypar}
-盲评记录的关键字段包括：\texttt{gen\_model}、\texttt{judge\_model}、\texttt{task\_id}、
-\texttt{run}、\texttt{swap}、\texttt{A\_source}、\texttt{B\_source}、\texttt{baseline\_content}、
+盲评记录的关键字段包括：
+\texttt{gen\_model}、\texttt{judge\_model}、\texttt{task\_id}、\texttt{run}、
+\texttt{swap}、\texttt{A\_source}、\texttt{B\_source}、\texttt{baseline\_content}、
 \texttt{cleaned\_content}、\texttt{A\_scores}、\texttt{B\_scores}、\texttt{winner\_label} 与 \texttt{reason}。
 由于 \texttt{baseline\_content} 与 \texttt{cleaned\_content} 字段保存的是评委实际看到的全文，
 本文的长度测量无需再拼接提示模板。复算时在每个（生成模型 $\times$ 评委）文件内按
 \texttt{(task\_id, run)} 取最新记录，四个文件合计得到 240 对；按 \texttt{A\_source} 把
 \texttt{A\_scores}/\texttt{B\_scores} 还原到条件后，即可复现表~\ref{tab:main} 与表~\ref{tab:dims}。
-\end{sloppypar}
 
 \vspace{0.5em}
 \noindent\small
@@ -797,10 +796,8 @@ python3 scripts/03_figures.py    # 生成图 1--图 4 的 PDF 矢量图
 xelatex paper.tex && xelatex paper.tex   # 生成 paper.pdf
 \end{verbatim}
 
-\begin{sloppypar}
-\noindent 其中 \texttt{01\_analyze.py} 输出 \texttt{out/results.json} 与 \texttt{out/pairs.csv}，
+\noindent 其中 \texttt{01\_analyze.py} 输出 \texttt{out/results.json} 与 \texttt{out/pairs.csv}，\\
 \texttt{02\_features.py} 输出 \texttt{out/features.json}；正文中的每个数字都可以在这三个文件中
 找到对应字段。若只需核对主结果，读取 8 个 JSONL 并复现表~\ref{tab:main} 即可，无需运行任何统计模型。
-\end{sloppypar}
 
 \end{document}
