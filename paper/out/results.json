@@ -565,40 +565,6 @@
     }
   },
   "v1": {
-    "n_raw": 68,
-    "n_valid": 60,
-    "wins": {
-      "baseline": 49,
-      "cleaned_word_pairs": 10,
-      "tie": 1
-    },
-    "dims": {
-      "logic": {
-        "baseline": 8.916666666666666,
-        "cleaned": 7.783333333333333,
-        "diff": -1.1333333333333329
-      },
-      "concreteness": {
-        "baseline": 8.483333333333333,
-        "cleaned": 7.283333333333333,
-        "diff": -1.1999999999999993
-      },
-      "actionability": {
-        "baseline": 8.233333333333333,
-        "cleaned": 6.583333333333333,
-        "diff": -1.6499999999999995
-      },
-      "originality": {
-        "baseline": 7.15,
-        "cleaned": 8.25,
-        "diff": 1.0999999999999996
-      },
-      "overall": {
-        "baseline": 8.516666666666667,
-        "cleaned": 7.483333333333333,
-        "diff": -1.033333333333334
-      }
-    },
-    "has_len": true
+    "error": "FileNotFoundError(2, 'No such file or directory')"
   }
 }
