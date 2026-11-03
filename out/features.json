@@ -1,0 +1,59 @@
+{
+ "chars": {
+  "baseline": 3174.675,
+  "cleaned": 1774.3166666666666,
+  "diff": -1400.3583333333333
+ },
+ "cjk": {
+  "baseline": 1234.3,
+  "cleaned": 820.7833333333333,
+  "diff": -413.51666666666665
+ },
+ "headings": {
+  "baseline": 14.566666666666666,
+  "cleaned": 7.441666666666666,
+  "diff": -7.125
+ },
+ "bullets": {
+  "baseline": 22.8,
+  "cleaned": 13.391666666666667,
+  "diff": -9.408333333333333
+ },
+ "nums": {
+  "baseline": 7.025,
+  "cleaned": 5.775,
+  "diff": -1.25
+ },
+ "digits": {
+  "baseline": 35.38333333333333,
+  "cleaned": 18.991666666666667,
+  "diff": -16.391666666666666
+ },
+ "blocks": {
+  "baseline": 55.358333333333334,
+  "cleaned": 26.916666666666668,
+  "diff": -28.441666666666666
+ },
+ "code": {
+  "baseline": 4.016666666666667,
+  "cleaned": 0.9833333333333333,
+  "diff": -3.033333333333333
+ },
+ "colons": {
+  "baseline": 38.016666666666666,
+  "cleaned": 23.475,
+  "diff": -14.541666666666666
+ },
+ "bold": {
+  "baseline": 17.191666666666666,
+  "cleaned": 12.425,
+  "diff": -4.766666666666667
+ }
+}
+corr: {"chars": 0.541, "cjk": 0.48, "headings": 0.441, "bullets": 0.201, "nums": 0.123, "digits": 0.357, "blocks": 0.48, "code": 0.131, "colons": 0.385, "bold": 0.236}
+reg: {"d_chars": {"beta": 0.8433500703231731, "se": 0.2842285815165747, "t": 2.9671543439553543}, "d_headings": {"beta": 0.1676360919113457, "se": 0.048026940096391295, "t": 3.490459554052284}, "d_bullets": {"beta": 0.07386237791009226, "se": 0.08955825359025901, "t": 0.8247411595141473}, "d_digits": {"beta": -0.10915551919226978, "se": 0.14182422710134504, "t": -0.7696535452597193}, "d_code": {"beta": -0.24755757649009663, "se": 0.08437081926041451, "t": -2.9341611075980962}} R2=0.472
+kw: {"结构": 168, "具体": 158, "可操作": 184, "细节": 140, "完整": 148, "清晰": 144, "逻辑": 70, "原创": 96, "创新": 5, "深度": 12, "篇幅": 0, "简洁": 5, "冗长": 0, "重复": 1, "例子": 1, "落地": 106, "抽象": 23, "空泛": 1, "系统": 73, "可检验": 40}
+judge_level: {"deepseek-flash|deepseek-flash": 8.093333333333334, "deepseek-flash|deepseek-v4-pro": 7.46, "deepseek-v4-pro|deepseek-flash": 8.22, "deepseek-v4-pro|deepseek-v4-pro": 7.626666666666667}
+v1: {"n": 60, "lb_mean": 1564.4833333333333, "lc_mean": 1242.95, "ratio_mean": 0.8410584960445485, "spearman": 0.3588207964394701, "d_overall": -1.0333333333333334, "d_orig": 1.1, "wr_base": 0.8166666666666667, "long_subset": {"n": 17, "wr": 0.6470588235294118, "d": -0.47058823529411764}}
+cell_corr: {"deepseek-flash|deepseek-flash": 0.358, "deepseek-flash|deepseek-v4-pro": 0.3, "deepseek-v4-pro|deepseek-flash": 0.404, "deepseek-v4-pro|deepseek-v4-pro": 0.501}
+cost: {"deepseek-flash|baseline": {"tokens": 245377, "mean_tokens": 4089.616666666667}, "deepseek-flash|word_pairs": {"tokens": 495138, "mean_tokens": 8252.3}, "deepseek-v4-pro|baseline": {"tokens": 367402, "mean_tokens": 6123.366666666667}, "deepseek-v4-pro|word_pairs": {"tokens": 587740, "mean_tokens": 9795.666666666666}}
