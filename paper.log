@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2026.11.3)  3 NOV 2026 07:43
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2026.11.3)  3 NOV 2026 09:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**/home/runner/work/word-pair-blindeval/word-pair-blindeval/paper/paper.tex
-(/home/runner/work/word-pair-blindeval/word-pair-blindeval/paper/paper.tex
+**paper/paper.tex
+(./paper/paper.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
 (/usr/share/texlive/texmf-dist/tex/latex/ctex/ctexart.cls
@@ -1327,11 +1327,11 @@ Package rerunfilecheck Info: File `paper.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  33174 strings out of 476893
- 751346 string characters out of 5805464
+ 751174 string characters out of 5805464
  1953627 words of memory out of 5000000
  54510 multiletter control sequences out of 15000+600000
  569852 words of font info for 120 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 93i,17n,97p,1066b,579s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 93i,17n,97p,1008b,579s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on paper.pdf (15 pages).
