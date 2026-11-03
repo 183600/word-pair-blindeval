@@ -96,7 +96,7 @@ N_RUNS=3 CONCURRENCY=64 GIT_BRANCH=v2-deepseek-pilot \
 
 `paper/` 收录两套材料：
 
-- [`paper/paper.pdf`](paper/paper.pdf)（17 页）与 [`paper/paper.tex`](paper/paper.tex)：针对 240 对
+- [`paper/paper.pdf`](paper/paper.pdf)（15 页）与 [`paper/paper.tex`](paper/paper.tex)：针对 240 对
   盲评的独立复算，含胜负、五维评分、长度分层、聚类 bootstrap、回归与 v1 跨代复现；
   复算脚本在 [`paper/scripts/`](paper/scripts/)，中间结果在 [`paper/out/`](paper/out/)。
 - [`paper/latex-src/`](paper/latex-src/) 与 `paper/pdf/` 下的中文 PDF：合并自 `v2-deepseek`

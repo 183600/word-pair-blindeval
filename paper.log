@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2026.11.3)  3 NOV 2026 10:11
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2026.11.3)  3 NOV 2026 10:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**paper/paper.tex
-(./paper/paper.tex
+**/home/runner/work/word-pair-blindeval/word-pair-blindeval/paper/paper.tex
+(/home/runner/work/word-pair-blindeval/word-pair-blindeval/paper/paper.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
 (/usr/share/texlive/texmf-dist/tex/latex/ctex/ctexart.cls
@@ -1295,27 +1295,7 @@ l.510 ...=0.52\textwidth]{figs/fig_score_dist.pdf}
 The requested image couldn't be read because
 it was not a recognized image format.
 
-[10] [11] [12] [13] [14]
-Underfull \hbox (badness 1769) in paragraph at lines 771--779
-[]\TU/FandolSong-Regular(0)/m/n/10.95 盲 评 记 录 的 关 键 字 段 包 括：| \TU/lmtt/m/n/10.9
-5 gen_model\TU/FandolSong-Regular(0)/m/n/10.95 、| \TU/lmtt/m/n/10.95 judge_mode
-l\TU/FandolSong-Regular(0)/m/n/10.95 、| \TU/lmtt/m/n/10.95 task_id\TU/FandolSon
-g-Regular(0)/m/n/10.95 、| \TU/lmtt/m/n/10.95 run\TU/FandolSong-Regular(0)/m/n/1
-0.95 、| \TU/lmtt/m/n/10.95 swap\TU/FandolSong-Regular(0)/m/n/10.95 、| \TU/lmtt/
-m/n/10.95 A_source\TU/FandolSong-Regular(0)/m/n/10.95 、|
- []
-
-
-Underfull \hbox (badness 4366) in paragraph at lines 771--779
-\TU/lmtt/m/n/10.95 B_source\TU/FandolSong-Regular(0)/m/n/10.95 、| \TU/lmtt/m/n/
-10.95 baseline_content\TU/FandolSong-Regular(0)/m/n/10.95 、| \TU/lmtt/m/n/10.95
- cleaned_content\TU/FandolSong-Regular(0)/m/n/10.95 、| \TU/lmtt/m/n/10.95 A_sco
-res\TU/FandolSong-Regular(0)/m/n/10.95 、| \TU/lmtt/m/n/10.95 B_scores\TU/Fandol
-Song-Regular(0)/m/n/10.95 、| \TU/lmtt/m/n/10.95 winner_label \TU/FandolSong-Reg
-ular(0)/m/n/10.95 与
- []
-
-[15
+[10] [11] [12] [13] [14] [15
 
 ] (./paper.aux)
  ***********
@@ -1327,11 +1307,11 @@ Package rerunfilecheck Info: File `paper.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  33174 strings out of 476893
- 751174 string characters out of 5805464
+ 751346 string characters out of 5805464
  1953627 words of memory out of 5000000
  54510 multiletter control sequences out of 15000+600000
  569852 words of font info for 120 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 93i,17n,97p,1008b,579s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 93i,17n,97p,1066b,579s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on paper.pdf (15 pages).
