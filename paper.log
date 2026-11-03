@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2026.11.3)  3 NOV 2026 05:16
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2026.11.3)  3 NOV 2026 06:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1296,7 +1296,7 @@ The requested image couldn't be read because
 it was not a recognized image format.
 
 [10] [11] [12] [13] [14]
-Underfull \hbox (badness 1769) in paragraph at lines 769--777
+Underfull \hbox (badness 1769) in paragraph at lines 771--779
 []\TU/FandolSong-Regular(0)/m/n/10.95 盲 评 记 录 的 关 键 字 段 包 括：| \TU/lmtt/m/n/10.9
 5 gen_model\TU/FandolSong-Regular(0)/m/n/10.95 、| \TU/lmtt/m/n/10.95 judge_mode
 l\TU/FandolSong-Regular(0)/m/n/10.95 、| \TU/lmtt/m/n/10.95 task_id\TU/FandolSon
@@ -1306,7 +1306,7 @@ m/n/10.95 A_source\TU/FandolSong-Regular(0)/m/n/10.95 、|
  []
 
 
-Underfull \hbox (badness 4366) in paragraph at lines 769--777
+Underfull \hbox (badness 4366) in paragraph at lines 771--779
 \TU/lmtt/m/n/10.95 B_source\TU/FandolSong-Regular(0)/m/n/10.95 、| \TU/lmtt/m/n/
 10.95 baseline_content\TU/FandolSong-Regular(0)/m/n/10.95 、| \TU/lmtt/m/n/10.95
  cleaned_content\TU/FandolSong-Regular(0)/m/n/10.95 、| \TU/lmtt/m/n/10.95 A_sco
