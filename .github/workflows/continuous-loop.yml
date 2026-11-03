@@ -340,14 +340,54 @@ jobs:
               echo "[pre-test] paper/paper.tex 不存在，视为无可测试内容，放行"
             fi
             if [ "$PRE_OK" -ne 1 ]; then
-              echo "[pre-test] 论文编译未通过 → 推送当前状态并提前结束本 job"
-              git add -A
-              git commit -m "auto: pre-opencode test gate failed (paper compile)" \
-                || echo "[pre-test] 没有新内容可提交"
-              git pull --rebase origin main 2>/dev/null || git rebase --abort 2>/dev/null || true
-              git push origin HEAD:main \
-                || echo "[pre-test] [warn] push 失败"
-              exit 86
+              echo "[pre-test] 论文编译未通过 → 先安排一次论文修复（testfix）"
+              # ⭐ 门禁自愈（2026-11-03）：不再直接 exit 86——后继 run 会撞上同一道门，
+              # 永远轮不到修复，循环死锁。先用已选模型修复论文编译，复跑编译门；
+              # 仍失败才推送当前状态并退出（后继 run 会再次尝试修复）。
+              {
+                echo '本仓库的论文无法通过编译（xelatex），请修复。复现方式：在 paper/ 目录连续运行两次 xelatex -interaction=nonstopmode paper.tex。'
+                echo
+                echo '第一次编译日志（最后 80 行）：'
+                tail -80 /tmp/pretest-1.log 2>/dev/null
+                echo
+                echo '第二次编译日志（最后 80 行）：'
+                tail -80 /tmp/pretest-2.log 2>/dev/null
+                echo
+                echo '要求：'
+                echo '1. 只修复导致编译失败的问题，不得删除或绕过论文的实质内容来消错；'
+                echo '2. .github 目录是 CI 配置，绝对不要删除、修改或移动其中任何文件；'
+                echo '3. paper/ 目录之外除非确有必要不要改动；'
+                echo '4. 修复后必须自行连续编译两次，确认出现 Output written 且无 LaTeX Error、无未定义引用。'
+              } > /tmp/ptf_fix_prompt.txt
+              # shellcheck disable=SC2086
+              timeout --kill-after=60 2400 opencode run -m "${MODEL:-opencode/deepseek-v4.1-flash-free}" "$(cat /tmp/ptf_fix_prompt.txt)" \
+                > /tmp/ptf_fix_run.log 2>&1 || echo "[pre-test] testfix 调用失败/超时，保留现场"
+              PTF_OK=1
+              if [ -f paper/paper.tex ]; then
+                ( cd paper \
+                  && xelatex -interaction=nonstopmode paper.tex >/tmp/ptf-1.log 2>&1 \
+                  && xelatex -interaction=nonstopmode paper.tex >/tmp/ptf-2.log 2>&1 ) || true
+                if ! { grep -q 'Output written' paper/paper.log 2>/dev/null \
+                       && ! grep -qE '^!|Undefined control sequence|LaTeX Error|Citation .* undefined|Reference .* undefined' paper/paper.log; } then
+                  PTF_OK=0
+                fi
+                rm -f paper/paper.aux paper/paper.log paper/paper.out
+              fi
+              if [ "$PTF_OK" -eq 1 ]; then
+                echo "[pre-test] testfix 修复后论文编译通过，继续本次检查"
+                git add -A
+                git commit -m "auto: pre-gate paper testfix" \
+                  || echo "[pre-test] 没有新内容可提交"
+              else
+                echo "[pre-test] testfix 修复后论文编译仍未通过 → 推送当前状态并提前结束本 job（后继 run 会再次尝试修复）"
+                git add -A
+                git commit -m "auto: pre-opencode test gate failed (paper compile, testfix attempted)" \
+                  || echo "[pre-test] 没有新内容可提交"
+                git pull --rebase origin main 2>/dev/null || git rebase --abort 2>/dev/null || true
+                git push origin HEAD:main \
+                  || echo "[pre-test] [warn] push 失败"
+                exit 86
+              fi
             fi
             echo "[pre-test] 论文编译通过"
 
