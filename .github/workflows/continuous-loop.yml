@@ -250,14 +250,33 @@ jobs:
           for m in "${CANDIDATES[@]}"; do
             echo "[model] 冒烟测试 ${m} ..."
             SMK_T=90; case "$m" in nvidia/*) SMK_T=75 ;; esac
-            if timeout --kill-after=20 $SMK_T opencode run -m "$m" \
-                 '只回复两个字：OK' >/tmp/opencode-smoke.log 2>&1; then
-              MODEL="$m"
-              echo "[model] 可用：${m}"
+            _ok=0; _try=0
+            while :; do
+              if timeout --kill-after=20 $SMK_T opencode run -m "$m" \
+                   '只回复两个字：OK' >/tmp/opencode-smoke.log 2>&1; then
+                _ok=1
+                break
+              fi
+              if grep -qiE "too many requests|rate.?limit|status.{0,3}429|FreeTierError|free tier" /tmp/opencode-smoke.log 2>/dev/null; then
+                if [ "$_try" -ge 4 ]; then
+                  echo "[model][error] $m 持续 429/限流（已退避重试 4 次）：不换模型，中止本次选择，后继 run 自动重试"
+                  exit 1
+                fi
+                _try=$((_try+1))
+                echo "[model] $m 撞 429/限流（第 ${_try}/4 次）：不换模型，$((45*_try))s 后同模型重试"
+                sleep $((45*_try))
+                continue
+              fi
               break
+            done
+            if [ "$_ok" -ne 1 ]; then
+              echo "[model] 不可用：${m}"
+              tail -n 8 /tmp/opencode-smoke.log 2>/dev/null || true
+              continue
             fi
-            echo "[model] 不可用：${m}"
-            tail -n 8 /tmp/opencode-smoke.log 2>/dev/null || true
+            MODEL="$m"
+            echo "[model] 可用：${m}"
+            break
           done
 
           if [ -z "$MODEL" ]; then
