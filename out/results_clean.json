@@ -1,0 +1,108 @@
+{
+  "N": 240,
+  "overall_wins": {
+    "baseline": 224,
+    "cleaned_word_pairs": 15,
+    "tie": 1
+  },
+  "length": {
+    "deepseek-flash": {
+      "lb_mean": 2773.7,
+      "lc_mean": 1960.3333333333333,
+      "ratio_mean": 0.7164626141207117,
+      "ratio_median": 0.6750577321648882,
+      "pc_clean_longer": 0.15
+    },
+    "deepseek-v4-pro": {
+      "lb_mean": 3575.65,
+      "lc_mean": 1588.3,
+      "ratio_mean": 0.4528537646059028,
+      "ratio_median": 0.4273009462610644,
+      "pc_clean_longer": 0.0
+    },
+    "all": {
+      "lb_mean": 3174.675,
+      "lc_mean": 1774.3166666666666,
+      "ratio_mean": 0.5846581893633072,
+      "ratio_median": 0.5755880909973521
+    }
+  },
+  "corr": {
+    "deepseek-flash": {
+      "spearman_ratio_doverall": 0.382776008743423,
+      "p": 1.5980909943141835e-05,
+      "pearson": 0.45893384836431633,
+      "p_pearson": 1.3506624271922918e-07,
+      "n": 120
+    },
+    "deepseek-v4-pro": {
+      "spearman_ratio_doverall": 0.5209376555243743,
+      "p": 1.0635623249938023e-09,
+      "pearson": 0.5814548888128012,
+      "p_pearson": 3.318078952641147e-12,
+      "n": 120
+    },
+    "all": {
+      "spearman_ratio_doverall": 0.5852946177900035,
+      "p": 1.847240770107472e-23,
+      "pearson": 0.6147630371371579,
+      "p_pearson": 2.4441697405810225e-26,
+      "n": 240
+    }
+  },
+  "subsets": [
+    {
+      "name": "ratio>=0.9",
+      "n": 28,
+      "baseline": 19,
+      "cleaned_word_pairs": 9,
+      "tie": 0,
+      "wr": 0.6785714285714286,
+      "d_overall": -0.5,
+      "d_orig": 0.6785714285714286
+    },
+    {
+      "name": "ratio>=1.0",
+      "n": 18,
+      "baseline": 9,
+      "cleaned_word_pairs": 9,
+      "tie": 0,
+      "wr": 0.5,
+      "d_overall": -0.2222222222222222,
+      "d_orig": 0.6666666666666666
+    },
+    {
+      "name": "|ratio-1|<=0.15",
+      "n": 26,
+      "baseline": 20,
+      "cleaned_word_pairs": 5,
+      "tie": 1,
+      "wr": 0.7692307692307693,
+      "d_overall": -0.6538461538461539,
+      "d_orig": 0.8076923076923077
+    },
+    {
+      "name": "|ratio-1|<=0.30",
+      "n": 72,
+      "baseline": 60,
+      "cleaned_word_pairs": 11,
+      "tie": 1,
+      "wr": 0.8333333333333334,
+      "d_overall": -0.9861111111111112,
+      "d_orig": 0.5833333333333334
+    }
+  ],
+  "sign_test": {
+    "n_pos": 0,
+    "n": 6,
+    "p_two_sided": 0.03125
+  },
+  "position": {
+    "n_A_baseline": 113,
+    "n_A_cleaned": 127,
+    "D1_AminusB_when_A_base": 2.1150442477876106,
+    "D2_AminusB_when_A_clean": -1.3700787401574803,
+    "cond_effect": 1.7425614939725453,
+    "pos_effect": 0.3724827538150651
+  }
+}

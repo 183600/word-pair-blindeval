@@ -8,11 +8,11 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
 from scipy import stats
 
-ROOT = pathlib.Path(__file__).resolve().parents[1]
+ROOT = pathlib.Path(__file__).resolve().parents[2]
 OUT = ROOT / "out"
 FIG = ROOT / "figs"
 FIG.mkdir(exist_ok=True)
-res = json.loads((OUT / "results.json").read_text())
+res = json.loads((OUT / "results_clean.json").read_text())
 feat = json.loads((OUT / "features.json").read_text())
 
 plt.rcParams.update({
