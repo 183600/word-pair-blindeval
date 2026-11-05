@@ -1,13 +1,13 @@
 This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex)
  restricted \write18 enabled.
 entering extended mode
-! I can't find file `paper.tex'.
-<*> paper.tex
-             
+! I can't find file `paper2.tex'.
+<*> paper2.tex
+              
 (Press Enter to retry, or Control-D to exit)
 Please type another input file name
 ! Emergency stop.
-<*> paper.tex
-             
+<*> paper2.tex
+              
 No pages of output.
 Transcript written on texput.log.
