@@ -1,6 +1,6 @@
 name: Continuous Loop
 
-# 持续论文检查：每 30 分钟（以及手动触发）循环调用 opencode，
+# 持续论文检查：每小时（以及手动触发）循环调用 opencode，
 # 独立检查 paper/paper.tex 的 LaTeX 语法、引用、表格和数值是否与 out/ 数据一致，
 # 发现问题就修复并重新编译 PDF；修改会提交回 main，再由 Sync to Gitee 推送。
 #
@@ -18,7 +18,7 @@ name: Continuous Loop
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '11 * * * *'
 
 # 同一时间只保留 1 个 running + 1 个 pending；当前 run 结束后，后继 run 立刻开始。
 concurrency:
@@ -84,7 +84,7 @@ jobs:
             echo "[loop][warn] 派发失败（attempt ${attempt}），10s 后重试"
             sleep 10
           done
-          echo "[loop][warn] 未能派发后继 run；*/30 定时心跳会补位"
+          echo "[loop][warn] 未能派发后继 run；每小时定时心跳会补位"
           exit 0
 
       - name: Checkout
@@ -339,7 +339,7 @@ jobs:
           PROMPT_TEXT="$(cat /tmp/paper-prompt.txt)"
 
           # ⭐ 单次调用约束：本 job 只进行一次论文检查 opencode 调用。
-          # 需要下一次调用时由已排队的后继 job 接续（队列 + next-run + */30 心跳兜底）。
+          # 需要下一次调用时由已排队的后继 job 接续（队列 + next-run + 每小时心跳兜底）。
           # 前置编译门与模型冒烟测试属测试，不受单次调用限制。
           for i in "run${GITHUB_RUN_NUMBER:-1}"; do
             echo "=========== paper check ${i} ==========="
@@ -619,7 +619,7 @@ jobs:
   # needs + if: always()：主 job 无论成功、失败、被取消，这个 job 都会执行。
   # 首步 Queue next run 已在 run 开始时派发过后继；这里做最终兜底——
   # 若后继尚未排队（首步派发失败等），立刻补派，保证循环永不断链
-  # （最坏情况也只等下一次 */30 心跳）。
+  # （最坏情况也只等下一次每小时心跳）。
   next-run:
     needs: [paper-check]
     if: always() && vars.PAPER_CHECK_FREEZE != 'true'
@@ -663,5 +663,5 @@ jobs:
             echo "[loop][warn] 补派失败（attempt ${attempt}），10s 后重试"
             sleep 10
           done
-          echo "[loop][warn] 未能补派后继 run；*/30 定时心跳会补位"
+          echo "[loop][warn] 未能补派后继 run；每小时定时心跳会补位"
           exit 0

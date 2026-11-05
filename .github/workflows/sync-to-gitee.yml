@@ -4,7 +4,6 @@ name: Sync to Gitee
 # 触发方式：
 #   - main 有 push（tests/ 下的改动忽略）
 #   - Continuous Loop 完成（即使失败也同步已提交的修改）
-#   - 每 30 分钟兜底
 #   - 手动触发
 
 on:
@@ -14,8 +13,6 @@ on:
     paths-ignore:
       - 'tests/**'
   workflow_dispatch:
-  schedule:
-    - cron: '*/30 * * * *'
   workflow_run:
     workflows:
       - 'Continuous Loop'
@@ -24,8 +21,10 @@ on:
       - main
 
 concurrency:
+  # 连发触发（push / workflow_run）时只保留最新一次同步，排队中的旧任务直接被替换，
+  # 不再串行堆一串重复的镜像 job（镜像推送幂等，取消旧的没有副作用）。
   group: sync-to-gitee
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions:
   contents: read
