@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2026.11.6)  6 NOV 2026 03:53
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2026.11.6)  6 NOV 2026 07:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**paper/paper.tex
-(./paper/paper.tex
+**/home/runner/work/word-pair-blindeval/word-pair-blindeval/paper/paper.tex
+(/home/runner/work/word-pair-blindeval/word-pair-blindeval/paper/paper.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
 (/usr/share/texlive/texmf-dist/tex/latex/ctex/ctexart.cls
@@ -1149,14 +1149,122 @@ Package fontspec Info: Font family 'FandolFang-Regular(0)' created for font
 (fontspec)             <->"[FandolFang-Regular.otf]/OT:language=dflt;"
 (fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
 
+
+LaTeX Warning: Citation `meyer1971' on page 1 undefined on input line 88.
+
+
+LaTeX Warning: Citation `wei2022cot' on page 1 undefined on input line 89.
+
+
+LaTeX Warning: Citation `kojima2022' on page 1 undefined on input line 89.
+
+
+LaTeX Warning: Citation `Wang2023selfconsistency' on page 1 undefined on input 
+line 89.
+
 [1
 
 ]
+
+LaTeX Warning: Citation `sclar2024' on page 2 undefined on input line 94.
+
+
+LaTeX Warning: Citation `webson2022' on page 2 undefined on input line 94.
+
+
+LaTeX Warning: Citation `mizrahi2024' on page 2 undefined on input line 94.
+
+
+LaTeX Warning: Citation `zheng2023' on page 2 undefined on input line 96.
+
+
+LaTeX Warning: Citation `wang2024fair' on page 2 undefined on input line 96.
+
+
+LaTeX Warning: Citation `saito2023' on page 2 undefined on input line 96.
+
+
+LaTeX Warning: Citation `dubois2024lc' on page 2 undefined on input line 96.
+
+
+LaTeX Warning: Citation `panickssery2024' on page 2 undefined on input line 97.
+
+
+
+LaTeX Warning: Citation `wei2022cot' on page 2 undefined on input line 125.
+
+
+LaTeX Warning: Citation `kojima2022' on page 2 undefined on input line 125.
+
+
+LaTeX Warning: Citation `Wang2023selfconsistency' on page 2 undefined on input 
+line 126.
+
+
+LaTeX Warning: Citation `snell2025' on page 2 undefined on input line 128.
+
+
+LaTeX Warning: Citation `jin2024' on page 2 undefined on input line 129.
+
 LaTeX Font Info:    Font shape `TU/FandolSong-Regular(0)/m/sl' in size <10.95> 
 not available
 (Font)              Font shape `TU/FandolSong-Regular(0)/m/it' tried instead on
  input line 131.
- [2] [3] [4] [5]
+[2]
+
+LaTeX Warning: Citation `webson2022' on page 3 undefined on input line 134.
+
+
+LaTeX Warning: Citation `sclar2024' on page 3 undefined on input line 135.
+
+
+LaTeX Warning: Citation `mizrahi2024' on page 3 undefined on input line 136.
+
+
+LaTeX Warning: Citation `zheng2023' on page 3 undefined on input line 143.
+
+
+LaTeX Warning: Citation `wang2024fair' on page 3 undefined on input line 143.
+
+
+LaTeX Warning: Citation `saito2023' on page 3 undefined on input line 144.
+
+
+LaTeX Warning: Citation `dubois2024lc' on page 3 undefined on input line 145.
+
+
+LaTeX Warning: Citation `panickssery2024' on page 3 undefined on input line 145
+.
+
+
+LaTeX Warning: Citation `meyer1971' on page 3 undefined on input line 151.
+
+
+LaTeX Warning: Citation `debono1992' on page 3 undefined on input line 161.
+
+
+LaTeX Warning: Citation `mednick1962' on page 3 undefined on input line 162.
+
+
+LaTeX Warning: Citation `taveekit2023rwb' on page 3 undefined on input line 165
+.
+
+
+LaTeX Warning: Citation `nguyen2025creative' on page 3 undefined on input line 
+167.
+
+[3]
+
+LaTeX Warning: Reference `sec:design' on page 4 undefined on input line 178.
+
+[4]
+
+LaTeX Warning: Reference `tab:budget' on page 5 undefined on input line 265.
+
+
+LaTeX Warning: Reference `tab:main' on page 5 undefined on input line 278.
+
+[5]
 
 LaTeX Warning: File `figs/fig_wins_by_task.pdf' not found on input line 314.
 
@@ -1164,169 +1272,14 @@ LaTeX Warning: File `figs/fig_wins_by_task.pdf' not found on input line 314.
 <to be read again> 
                    }
 l.314 ....92\textwidth]{figs/fig_wins_by_task.pdf}
-                                                  
-The requested image couldn't be read because
-it was not a recognized image format.
-
-
-! Package graphics Error: Division by 0.
-
-See the graphics package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.314 ....92\textwidth]{figs/fig_wins_by_task.pdf}
-                                                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-File: figs/fig_wins_by_task.pdf Graphic file (type pdf)
-<use figs/fig_wins_by_task.pdf>
-! Unable to load picture or PDF file 'figs/fig_wins_by_task.pdf'.
-<to be read again> 
-                   \GPT@clipend 
-l.314 ....92\textwidth]{figs/fig_wins_by_task.pdf}
-                                                  
-The requested image couldn't be read because
-it was not a recognized image format.
-
-
-LaTeX Warning: File `figs/fig_dims_budget.pdf' not found on input line 350.
-
-! Unable to load picture or PDF file 'figs/fig_dims_budget.pdf'.
-<to be read again> 
-                   }
-l.350 ...0.95\textwidth]{figs/fig_dims_budget.pdf}
-                                                  
-The requested image couldn't be read because
-it was not a recognized image format.
-
-
-! Package graphics Error: Division by 0.
-
-See the graphics package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.350 ...0.95\textwidth]{figs/fig_dims_budget.pdf}
-                                                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-File: figs/fig_dims_budget.pdf Graphic file (type pdf)
-<use figs/fig_dims_budget.pdf>
-! Unable to load picture or PDF file 'figs/fig_dims_budget.pdf'.
-<to be read again> 
-                   \GPT@clipend 
-l.350 ...0.95\textwidth]{figs/fig_dims_budget.pdf}
-                                                  
-The requested image couldn't be read because
-it was not a recognized image format.
-
-[6]
-
-LaTeX Warning: File `figs/fig_len_score.pdf' not found on input line 399.
-
-! Unable to load picture or PDF file 'figs/fig_len_score.pdf'.
-<to be read again> 
-                   }
-l.399 ...th=0.9\textwidth]{figs/fig_len_score.pdf}
-                                                  
-The requested image couldn't be read because
-it was not a recognized image format.
-
-
-! Package graphics Error: Division by 0.
-
-See the graphics package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.399 ...th=0.9\textwidth]{figs/fig_len_score.pdf}
-                                                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-File: figs/fig_len_score.pdf Graphic file (type pdf)
-<use figs/fig_len_score.pdf>
-! Unable to load picture or PDF file 'figs/fig_len_score.pdf'.
-<to be read again> 
-                   \GPT@clipend 
-l.399 ...th=0.9\textwidth]{figs/fig_len_score.pdf}
-                                                  
-The requested image couldn't be read because
-it was not a recognized image format.
-
-[7]
-Underfull \hbox (badness 1242) in paragraph at lines 454--461
-[]\TU/FandolSong-Regular(0)/m/n/10.95 值 得 强 调 的 是，|  缩 短 并 非 被 动 截 断。|  从 观 测 值
- 看，|  两 个 条 件 的 输 出 上 限 相 同  |（最 大 输 出
- []
-
-
-Underfull \hbox (badness 1038) in paragraph at lines 454--461
-\TU/FandolSong-Regular(0)/m/n/10.95 为 \TU/lmr/m/n/10.95 16383/16384 \TU/FandolS
-ong-Regular(0)/m/n/10.95 个 \TU/lmr/m/n/10.95 token\TU/FandolSong-Regular(0)/m/n
-/10.95 ） 。|  词 对 条 件 输 出 中 \TU/lmr/m/n/10.95 token \TU/FandolSong-Regular(0)/m/
-n/10.95 数 达 到 或 超 过 \TU/lmr/m/n/10.95 8192 \TU/FandolSong-Regular(0)/m/n/10.95 
-的 样 本 分 别 为
- []
-
-[8] [9]
-
-LaTeX Warning: File `figs/fig_score_dist.pdf' not found on input line 512.
-
-! Unable to load picture or PDF file 'figs/fig_score_dist.pdf'.
-<to be read again> 
-                   }
-l.512 ...=0.52\textwidth]{figs/fig_score_dist.pdf}
-                                                  
-The requested image couldn't be read because
-it was not a recognized image format.
-
-
-! Package graphics Error: Division by 0.
-
-See the graphics package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.512 ...=0.52\textwidth]{figs/fig_score_dist.pdf}
-                                                  
-Your command was ignored.
-Type  I <command> <return>  to replace it with another command,
-or  <return>  to continue without it.
-
-File: figs/fig_score_dist.pdf Graphic file (type pdf)
-<use figs/fig_score_dist.pdf>
-! Unable to load picture or PDF file 'figs/fig_score_dist.pdf'.
-<to be read again> 
-                   \GPT@clipend 
-l.512 ...=0.52\textwidth]{figs/fig_score_dist.pdf}
-                                                  
-The requested image couldn't be read because
-it was not a recognized image format.
-
-[10] [11] [12] [13] [14] [15
-
-] (./paper.aux)
- ***********
-LaTeX2e <2023-11-01> patch level 1
-L3 programming layer <2022/07/14>
- ***********
-Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: C19EADC8524DAC240E79841D5A027D57;3963.
- ) 
+                                                   
 Here is how much of TeX's memory you used:
- 33175 strings out of 476893
- 751188 string characters out of 5805464
- 1953627 words of memory out of 5000000
- 54511 multiletter control sequences out of 15000+600000
- 569852 words of font info for 120 fonts, out of 8000000 for 9000
+ 32728 strings out of 476893
+ 727264 string characters out of 5805464
+ 1950627 words of memory out of 5000000
+ 54074 multiletter control sequences out of 15000+600000
+ 569820 words of font info for 116 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 93i,17n,97p,1008b,579s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 93i,17n,97p,1066b,579s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on paper.pdf (15 pages).
+Output written on paper.pdf (5 pages).
