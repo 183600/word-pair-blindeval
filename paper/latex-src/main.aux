@@ -1,0 +1,132 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand*\HyPL@Entry[1]{}
+\HyPL@Entry{0<</S/D>>}
+\providecommand \oddpage@label [2]{}
+\citation{wei2022cot}
+\citation{kojima2022zeroshot}
+\citation{kojima2022zeroshot}
+\citation{wang2023selfconsistency}
+\citation{yao2023tot}
+\citation{shi2023distracted}
+\citation{liu2024lost}
+\citation{deepseekv3}
+\@writefile{toc}{\contentsline {section}{\numberline {1}引言}{2}{section.1}\protected@file@percent }
+\citation{zheng2023judging}
+\citation{wei2022cot}
+\citation{kojima2022zeroshot}
+\citation{wang2023selfconsistency}
+\citation{yao2023tot}
+\citation{ouyang2022instructgpt}
+\citation{sclar2024format}
+\citation{shi2023distracted}
+\citation{liu2024lost}
+\@writefile{toc}{\contentsline {section}{\numberline {2}相关工作}{3}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}思维链家族与中间生成策略}{3}{subsection.2.1}\protected@file@percent }
+\citation{zheng2023judging}
+\citation{shi2025position}
+\citation{li2023emotion}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}提示敏感性与无关上下文干扰}{4}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}LLM 作为评委及其偏差}{4}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}实验设计}{4}{section.3}\protected@file@percent }
+\newlabel{sec:method}{{3}{4}{实验设计}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}总体架构}{4}{subsection.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces 实验三阶段流水线。生成阶段的 \textsc  {baseline}{} 输出直接进入盲评，\textsc  {word\_pairs}{} 输出需先经清洗阶段剥离词对列表与引用。}}{4}{figure.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:pipeline}{{1}{4}{实验三阶段流水线。生成阶段的 \baseline {} 输出直接进入盲评，\wordpairs {} 输出需先经清洗阶段剥离词对列表与引用。}{figure.caption.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}任务集}{5}{subsection.3.2}\protected@file@percent }
+\newlabel{sec:tasks}{{3.2}{5}{任务集}{subsection.3.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 实验任务与指令原文}}{5}{table.caption.2}\protected@file@percent }
+\newlabel{tab:tasks}{{1}{5}{实验任务与指令原文}{table.caption.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}实验条件与词对前缀}{5}{subsection.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}清洗协议}{5}{subsection.3.4}\protected@file@percent }
+\newlabel{sec:cleaning}{{3.4}{5}{清洗协议}{subsection.3.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}盲评协议}{5}{subsection.3.5}\protected@file@percent }
+\newlabel{sec:judge}{{3.5}{5}{盲评协议}{subsection.3.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}实现细节与数据完整性}{6}{subsection.3.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7}评价指标与统计方法}{6}{subsection.3.7}\protected@file@percent }
+\newlabel{sec:metrics}{{3.7}{6}{评价指标与统计方法}{subsection.3.7}{}}
+\newlabel{eq:diff}{{1}{6}{评价指标与统计方法}{equation.3.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}实验结果}{6}{section.4}\protected@file@percent }
+\newlabel{sec:results}{{4}{6}{实验结果}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}总体胜负}{6}{subsection.4.1}\protected@file@percent }
+\newlabel{sec:wins}{{4.1}{6}{总体胜负}{subsection.4.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces 盲评胜负汇总（每格 60 对；行 = 生成模型，列属性 = 评委）}}{7}{table.caption.3}\protected@file@percent }
+\newlabel{tab:wins}{{2}{7}{盲评胜负汇总（每格 60 对；行 = 生成模型，列属性 = 评委）}{table.caption.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}五维平均分}{7}{subsection.4.2}\protected@file@percent }
+\newlabel{sec:scores}{{4.2}{7}{五维平均分}{subsection.4.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces 五维平均分（10 分制；按生成模型 $\times $ 评委分组，$n=60$/格）}}{7}{table.caption.4}\protected@file@percent }
+\newlabel{tab:dims}{{3}{7}{五维平均分（10 分制；按生成模型 $\times $ 评委分组，$n=60$/格）}{table.caption.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces 五维平均分雷达图（双评委均值，10 分制）。虚线（\textsc  {word\_pairs}{}）仅在原创性轴超出实线（\textsc  {baseline}{}）。(a) V4.1-Flash 生成；(b) V4-Pro 生成。}}{8}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:radar}{{2}{8}{五维平均分雷达图（双评委均值，10 分制）。虚线（\wordpairs {}）仅在原创性轴超出实线（\baseline {}）。(a) V4.1-Flash 生成；(b) V4-Pro 生成。}{figure.caption.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}配对分差与显著性检验}{8}{subsection.4.3}\protected@file@percent }
+\newlabel{sec:diff}{{4.3}{8}{配对分差与显著性检验}{subsection.4.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces 合并配对分差 $\Delta ^{(d)}$ 的统计检验（$n=240$；正值表示 \textsc  {baseline}{} 更优；Wilcoxon 检验剔除零差后进行）}}{8}{table.caption.6}\protected@file@percent }
+\newlabel{tab:tests}{{4}{8}{合并配对分差 $\Delta ^{(d)}$ 的统计检验（$n=240$；正值表示 \baseline {} 更优；Wilcoxon 检验剔除零差后进行）}{table.caption.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces 配对分差分布（$n=240$）。(a) 整体质量分差集中于正值区（均值 $+1.72$）；(b) 原创性分差分布近似对称且略偏负（均值 $-0.31$，即 \textsc  {word\_pairs}{} 略优）。}}{9}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:dist}{{3}{9}{配对分差分布（$n=240$）。(a) 整体质量分差集中于正值区（均值 $+1.72$）；(b) 原创性分差分布近似对称且略偏负（均值 $-0.31$，即 \wordpairs {} 略优）。}{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}任务异质性}{9}{subsection.4.4}\protected@file@percent }
+\newlabel{sec:tasks-hetero}{{4.4}{9}{任务异质性}{subsection.4.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces 按任务分解的 \textsc  {word\_pairs}{} 胜场（双评委合并，每柱满分 20）。虚线为 50\% 随机水平。T5（人格模型）的胜场远高于其余任务，贡献全部 15 胜中的 9 胜。}}{9}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:task}{{4}{9}{按任务分解的 \wordpairs {} 胜场（双评委合并，每柱满分 20）。虚线为 50\% 随机水平。T5（人格模型）的胜场远高于其余任务，贡献全部 15 胜中的 9 胜。}{figure.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}生成与清洗成本}{10}{subsection.4.5}\protected@file@percent }
+\newlabel{sec:cost}{{4.5}{10}{生成与清洗成本}{subsection.4.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces 生成与清洗成本（均值 $\pm $ 标准差；长度为字符数；压缩比 = 清洗后/原始长度）}}{10}{table.caption.9}\protected@file@percent }
+\newlabel{tab:cost}{{5}{10}{生成与清洗成本（均值 $\pm $ 标准差；长度为字符数；压缩比 = 清洗后/原始长度）}{table.caption.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces 生成与清洗成本对比。(a) 平均完成 token 数：\textsc  {word\_pairs}{} 条件为 \textsc  {baseline}{} 的 1.60--2.02 倍；(b) 输出长度与清洗压缩：清洗后的词对正文（浅色）反而短于 \textsc  {baseline}{} 正文。}}{10}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:cost}{{5}{10}{生成与清洗成本对比。(a) 平均完成 token 数：\wordpairs {} 条件为 \baseline {} 的 1.60--2.02 倍；(b) 输出长度与清洗压缩：清洗后的词对正文（浅色）反而短于 \baseline {} 正文。}{figure.caption.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}位置偏差分析}{10}{subsection.4.6}\protected@file@percent }
+\newlabel{sec:position}{{4.6}{10}{位置偏差分析}{subsection.4.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces 评委位置偏差（A/B 位平均分与条件化分差）}}{11}{table.caption.11}\protected@file@percent }
+\newlabel{tab:position}{{6}{11}{评委位置偏差（A/B 位平均分与条件化分差）}{table.caption.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7}与前版实验的对比}{11}{subsection.4.7}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces 与前版实验（v1）的协议与结果对比}}{11}{table.caption.12}\protected@file@percent }
+\newlabel{tab:v1}{{7}{11}{与前版实验（v1）的协议与结果对比}{table.caption.12}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}案例分析}{11}{section.5}\protected@file@percent }
+\newlabel{sec:case}{{5}{11}{案例分析}{section.5}{}}
+\citation{ouyang2022instructgpt}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces T1 任务第 1 次重复的两篇输出节选（V4.1-Flash 生成，V4-Pro 评审）。评审给分：Aster 整体 9 / 原创 7；潮织整体 7 / 原创 9。}}{12}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:case}{{6}{12}{T1 任务第 1 次重复的两篇输出节选（V4.1-Flash 生成，V4-Pro 评审）。评审给分：Aster 整体 9 / 原创 7；潮织整体 7 / 原创 9。}{figure.caption.13}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}讨论}{12}{section.6}\protected@file@percent }
+\newlabel{sec:discussion}{{6}{12}{讨论}{section.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}词对提示为何整体失效：三条机制}{12}{subsection.6.1}\protected@file@percent }
+\citation{shi2023distracted}
+\citation{li2023emotion}
+\citation{zheng2023judging}
+\citation{shi2025position}
+\citation{zheng2023judging}
+\citation{zheng2023judging}
+\citation{deepseekv3}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}词对提示何时可能有价值}{13}{subsection.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}对提示工程与 LLM 评审方法学的启示}{13}{subsection.6.3}\protected@file@percent }
+\bibcite{wei2022cot}{1}
+\bibcite{kojima2022zeroshot}{2}
+\bibcite{wang2023selfconsistency}{3}
+\bibcite{yao2023tot}{4}
+\@writefile{toc}{\contentsline {section}{\numberline {7}有效性威胁}{14}{section.7}\protected@file@percent }
+\newlabel{sec:threats}{{7}{14}{有效性威胁}{section.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}结论}{14}{section.8}\protected@file@percent }
+\newlabel{sec:conclusion}{{8}{14}{结论}{section.8}{}}
+\bibcite{sclar2024format}{5}
+\bibcite{shi2023distracted}{6}
+\bibcite{liu2024lost}{7}
+\bibcite{zheng2023judging}{8}
+\bibcite{shi2025position}{9}
+\bibcite{ouyang2022instructgpt}{10}
+\bibcite{li2023emotion}{11}
+\bibcite{deepseekv3}{12}
+\bibcite{deepseekr1}{13}
+\bibcite{wei2022cot}{1}
+\bibcite{kojima2022zeroshot}{2}
+\bibcite{wang2023selfconsistency}{3}
+\bibcite{yao2023tot}{4}
+\bibcite{sclar2024format}{5}
+\bibcite{shi2023distracted}{6}
+\bibcite{liu2024lost}{7}
+\bibcite{zheng2023judging}{8}
+\bibcite{shi2025position}{9}
+\bibcite{ouyang2022instructgpt}{10}
+\bibcite{li2023emotion}{11}
+\bibcite{deepseekv3}{12}
+\bibcite{deepseekr1}{13}
+\gdef \@abspage@last{16}
