@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2026.11.7)  7 NOV 2026 10:15
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023/Debian) (preloaded format=xelatex 2026.11.7)  7 NOV 2026 12:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1260,29 +1260,14 @@ l.399 ...th=0.9\textwidth]{figs/fig_len_score.pdf}
 The requested image couldn't be read because
 it was not a recognized image format.
 
-[7]
-Underfull \hbox (badness 1242) in paragraph at lines 454--461
-[]\TU/FandolSong-Regular(0)/m/n/10.95 值 得 强 调 的 是，|  缩 短 并 非 被 动 截 断。|  从 观 测 值
- 看，|  两 个 条 件 的 输 出 上 限 相 同  |（最 大 输 出
- []
+[7] [8] [9]
 
-
-Underfull \hbox (badness 1038) in paragraph at lines 454--461
-\TU/FandolSong-Regular(0)/m/n/10.95 为 \TU/lmr/m/n/10.95 16383/16384 \TU/FandolS
-ong-Regular(0)/m/n/10.95 个 \TU/lmr/m/n/10.95 token\TU/FandolSong-Regular(0)/m/n
-/10.95 ） 。|  词 对 条 件 输 出 中 \TU/lmr/m/n/10.95 token \TU/FandolSong-Regular(0)/m/
-n/10.95 数 达 到 或 超 过 \TU/lmr/m/n/10.95 8192 \TU/FandolSong-Regular(0)/m/n/10.95 
-的 样 本 分 别 为
- []
-
-[8] [9]
-
-LaTeX Warning: File `figs/fig_score_dist.pdf' not found on input line 512.
+LaTeX Warning: File `figs/fig_score_dist.pdf' not found on input line 510.
 
 ! Unable to load picture or PDF file 'figs/fig_score_dist.pdf'.
 <to be read again> 
                    }
-l.512 ...=0.52\textwidth]{figs/fig_score_dist.pdf}
+l.510 ...=0.52\textwidth]{figs/fig_score_dist.pdf}
                                                   
 The requested image couldn't be read because
 it was not a recognized image format.
@@ -1294,7 +1279,7 @@ See the graphics package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.512 ...=0.52\textwidth]{figs/fig_score_dist.pdf}
+l.510 ...=0.52\textwidth]{figs/fig_score_dist.pdf}
                                                   
 Your command was ignored.
 Type  I <command> <return>  to replace it with another command,
@@ -1305,7 +1290,7 @@ File: figs/fig_score_dist.pdf Graphic file (type pdf)
 ! Unable to load picture or PDF file 'figs/fig_score_dist.pdf'.
 <to be read again> 
                    \GPT@clipend 
-l.512 ...=0.52\textwidth]{figs/fig_score_dist.pdf}
+l.510 ...=0.52\textwidth]{figs/fig_score_dist.pdf}
                                                   
 The requested image couldn't be read because
 it was not a recognized image format.
